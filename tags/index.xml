@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags | Academic</title>
+    <link>https://leidawt.github.io/tags/</link>
+      <atom:link href="https://leidawt.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <description>Tags</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Tue, 04 Feb 2020 17:10:37 +0800</lastBuildDate>
+    <image>
+      <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
+      <title>Tags</title>
+      <link>https://leidawt.github.io/tags/</link>
+    </image>
+    
+    <item>
+      <title>test</title>
+      <link>https://leidawt.github.io/tags/test/</link>
+      <pubDate>Tue, 04 Feb 2020 17:10:37 +0800</pubDate>
+      <guid>https://leidawt.github.io/tags/test/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
