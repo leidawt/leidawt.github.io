@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="王笑涵">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="AutoEncoder属于无监督学习的技术，其思想影响深远。 @[TOC] 1.经典 AutoEncoder Ref:Reducing the Dimensionality of Data with Neural Networks 简单采用背靠背的全连接层，形成一个瓶颈neck就为经">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/">
+  <meta property="og:title" content="几种AutoEncoder原理 | Academic">
+  <meta property="og:description" content="AutoEncoder属于无监督学习的技术，其思想影响深远。 @[TOC] 1.经典 AutoEncoder Ref:Reducing the Dimensionality of Data with Neural Networks 简单采用背靠背的全连接层，形成一个瓶颈neck就为经"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:circle]">
+  <meta property="twitter:image" content="img/map[gravatar:%!s(bool=false) shape:circle]"><meta property="og:locale" content="zh-Hans">
+  
+    
+      <meta property="article:published_time" content="2019-01-15T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2019-01-15T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/"
+  },
+  "headline": "几种AutoEncoder原理",
+  
+  "datePublished": "2019-01-15T12:00:00+08:00",
+  "dateModified": "2019-01-15T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "王笑涵"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "AutoEncoder属于无监督学习的技术，其思想影响深远。 @[TOC] 1.经典 AutoEncoder Ref:Reducing the Dimensionality of Data with Neural Networks 简单采用背靠背的全连接层，形成一个瓶颈neck就为经"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>几种AutoEncoder原理 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">中文 (简体)</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>几种AutoEncoder原理</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/admin/">王笑涵</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jan 15, 2019
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    9 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>AutoEncoder属于无监督学习的技术，其思想影响深远。
+@[TOC]</p>
+<h3 id="1经典-autoencoder">1.经典 AutoEncoder</h3>
+<p>Ref:Reducing the Dimensionality of Data with Neural Networks
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/0_hu58abbaf8eea734ebdbb0f90c46bffa8a_68342_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/0_hu58abbaf8eea734ebdbb0f90c46bffa8a_68342_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="791" height="375">
+</a>
+
+
+
+</figure>
+
+简单采用背靠背的全连接层，形成一个瓶颈neck就为经典AutoEncoder的架构核心，层数一般不多，以1或2层隐含层为主。其是与PCA做了相似的事情。
+Hinton提出也可Deep起来</p>
+<p>这里有趣之处是以RBM逐层初始化，然后穿起来Fine-tune。
+此外这里的Encoder Decoder权重是共享的（仅取了转置），不过并不很重要。
+结构如下所示
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/1_hu0b962ec7d08b59a2d3d6e0fe7c9075bf_129236_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/1_hu0b962ec7d08b59a2d3d6e0fe7c9075bf_129236_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="727" height="611">
+</a>
+
+
+
+</figure>
+
+我实验发现直接使用relu激活加adam优化，在50000个MNIST数据集上跑，经10epochs就可达到较好的重建精度。
+原图
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/2_hub7484a9fd78fb65066b18d92d6f14b45_2574_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/2_hub7484a9fd78fb65066b18d92d6f14b45_2574_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="175" height="272">
+</a>
+
+
+
+</figure>
+
+重建
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/3_hu3b945445cf8e73dc5aed9ac52ed53b82_3203_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/3_hu3b945445cf8e73dc5aed9ac52ed53b82_3203_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="182" height="283">
+</a>
+
+
+
+</figure>
+
+<strong>n.b. RBM及其训练</strong>
+上述文章里训练每一层作为初始化时用到的RBM是一种经典的能量模型，（能量模型通俗解释https://www.zhihu.com/question/59264464），RBM很像但隐含层神经网络，但训练上区别很大，采用一种CD-K方法。
+ref：https://wenku.baidu.com/view/7b9634e56bec0975f565e240.html
+过程有点类似train一个单隐层AutoEncoder，参数有两个偏置项和一个链接权重项W，其目标函数F是依据能量背景提出的，优化目标是降低F，方法是梯度下降。比较有趣的地方是其是把概率p算出来后又取了采样（一般伯努利即可），使其变为0-1二值的。
+RBM在relu，batchnorm等改善深度NN训练难题的技术普遍应用后，已经不再是必要的，而在06年左右，必需通过RBM逐层per-train才能train起来深度网路结构，故论文中还是应用了RBM。</p>
+<p>通过可视化隐含层，可以证明AutoEncoder确实学到了表征</p>
+<h3 id="2denoising-autoencoder">2.Denoising AutoEncoder</h3>
+<p>ref: Extracting and Composing Robust Features with Denoising Autoencoders
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/4_hu1def66e6e52fa1fce81b761c1b3bd01f_9265_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/4_hu1def66e6e52fa1fce81b761c1b3bd01f_9265_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="330" height="134">
+</a>
+
+
+
+</figure>
+
+其思想很朴素，仅改动了一点：将输入数据加噪声（具体方法是随机把某些像素从0-&gt;1）后送进模型，然后期望恢复没有噪声的原始图像。通过这样的方法，作者认为能提取到更好更鲁棒性的表征。解释如下。
+1.从流型学习角度解释
+下图直观可认为，我们期望算法能把红圈内加噪声的x（由此偏离了原位置）推回去，这样的能力就有可能在处理与x的相似样本时有更好的泛化能力
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/5_hue862abf4651ed1192971c7abe50e8f32_27889_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/5_hue862abf4651ed1192971c7abe50e8f32_27889_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="524" height="271">
+</a>
+
+
+
+</figure>
+
+2.信息论观点解释（interesting）
+这个AutoEncoder的工作可看做它把有噪声的的数据‘滤波’成了无噪声数据，使得信息量增加，这个增加正是来自‘滤波器’的注入，因此在训练时候隐含层参数就会保留（学习）到一些信息。因此最终的优化目标就可理解为在保留信息和尽可能最优化重建结果之间的权衡。</p>
+<h3 id="3sparse-autoencoder">3.Sparse AutoEncoder</h3>
+<p>ref:
+An Analysis of Single-Layer Networks in Unsupervised Feature Learning
+<a href="http://deeplearning.stanford.edu/wiki/index.php/UFLDL%E6%95%99%E7%A8%8B">http://deeplearning.stanford.edu/wiki/index.php/UFLDL%E6%95%99%E7%A8%8B</a>
+这个工作使用了新的Loss函数，在经典AE的Loss上加了稀疏惩罚项（sparsity penalty）,即下图第二项
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/6_hu3dfa96691c62cc61ed48a24206debd23_11096_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/6_hu3dfa96691c62cc61ed48a24206debd23_11096_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="460" height="91">
+</a>
+
+
+
+</figure>
+
+第二项展开为
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/7_hu9465b15a98dfd3a8e3d6c5798a033402_8074_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/7_hu9465b15a98dfd3a8e3d6c5798a033402_8074_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="353" height="101">
+</a>
+
+
+
+</figure>
+
+其中s2为隐含层s2的神经元个数，ρ为一个固定的超参数，表达稀疏程度，ρ_head为
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/8_huc2e3db1e9f1f0ec4aa0cd0c1aa0e89ab_7802_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/8_huc2e3db1e9f1f0ec4aa0cd0c1aa0e89ab_7802_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="253" height="93">
+</a>
+
+
+
+</figure>
+
+即在整个数据集上的平均激活度。
+为了了解算法学到的特征，我们可以进行可视化，即寻找能最大化激活隐含层的输入图像（需要建立在某些约束条件下，比如约束图像像素和）。这里通过约束
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/9_hubbc4d9944cf67e72eef82863b710cea3_3171_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/9_hubbc4d9944cf67e72eef82863b710cea3_3171_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="135" height="38">
+</a>
+
+
+
+</figure>
+
+给出了能最佳激活第i个神经元的输入的解（其中xj是输入图像展开后的第j个像素）
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/10_hubb54ece80e9d782c8dfeca0a60d42305_9415_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/10_hubb54ece80e9d782c8dfeca0a60d42305_9415_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="287" height="119">
+</a>
+
+
+
+</figure>
+
+具体的代码如下：
+SAE稀疏自编码在MNIST数据集表现，进行10*10随机切割，不然可视化效果不明显。</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import torch as t
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torchvision import datasets, transforms
+from BasicModule import BasicModule
+from tensorboardX import SummaryWriter
+from sklearn.decomposition import PCA
+
+writer = SummaryWriter('./runs/exp1')
+t.manual_seed(1)
+
+root = './AI/DataSets/MNIST'
+
+batch_size = 32
+data_spilt = 50000  # 截取的数据集大小，以减小计算量
+inshape = (10, 10)
+
+trainData = datasets.MNIST(root, transform=transforms.Compose([
+    transforms.RandomCrop(10),
+    transforms.ToTensor(),
+    transforms.Normalize((0.1307,), (0.3081,)),
+]))
+trainData = t.utils.data.random_split(
+    trainData, [data_spilt, len(trainData)-data_spilt])[0]
+
+
+train_loader = t.utils.data.DataLoader(
+    trainData, batch_size=batch_size, shuffle=True)
+    
+class SparseAutoEncoder(BasicModule):
+    def __init__(self, BETA=1, ROU=0.01, hiddenshape=300, USE_P=False):
+        super(SparseAutoEncoder, self).__init__()
+        self.model_name = 'SparseAutoEncoder'
+        self.BETA = BETA  # 稀疏项考虑程度
+        self.ROU = ROU  # 稀疏度
+        self.USE_P = USE_P
+        self.inshape = inshape[0]*inshape[1]
+        self.hiddenshape = hiddenshape
+        self.encoder = nn.Linear(self.inshape, self.hiddenshape)
+        self.decoder = nn.Linear(self.hiddenshape, self.inshape)
+
+    def forward(self, x):
+        encode = t.sigmoid(self.encoder(x))
+        decode = t.sigmoid(self.decoder(encode))
+        return encode, decode
+
+    def display_hidden(self, index):
+        with t.no_grad():
+            paras = [each for name,
+                     each in self.encoder.named_parameters()]  # w,b
+            w = paras[0]
+            num = w[index, :]
+            den = ((w[index, :]**2).sum())**0.5
+            plt.imshow((num/den).view(inshape).numpy())
+            plt.show()
+
+    def cal_hidden(self):
+        with t.no_grad():
+            paras = [each for name,
+                     each in self.encoder.named_parameters()]  # w,b
+            w = paras[0]
+            out = t.Tensor(w.shape[0], 1, inshape[0], inshape[1])
+            for i in range(w.shape[0]):
+                num = w[i, :]
+                den = ((w[i, :]**2).sum())**0.5
+                out[i, 0] = (num/den).view(inshape)
+            return out
+
+    def predict(self, x, load=None):
+        '''输入单张图片预测dataset元组(Tensor[1,28,28],class)
+        '''
+        self.eval()
+        with t.no_grad():
+            if load is not None:
+                self.load(load)
+            x, c = x
+            x = x.view(1, -1)
+            result = self(x)[1]
+            result = result.detach()
+            return x.view(inshape).numpy(), result.view(inshape).numpy()
+
+    def trainNN(self, lr=1, weight_decay=1e-5, epochs=5):
+        self.train()
+        optimizer = optim.Adam(
+            self.parameters(),
+            lr=lr,
+            weight_decay=weight_decay
+        )
+
+        batch_loss = 0
+        for epoch in range(epochs):
+            for i, (bx, by) in enumerate(train_loader):
+                bx = bx.view(bx.shape[0], -1)
+                optimizer.zero_grad()
+
+                criterion = nn.MSELoss()  # mse损失
+                encode, decode = self(bx)
+                p_head = encode.sum(dim=0, keepdim=True)/encode.shape[0]
+                p = t.ones(p_head.shape)*self.ROU
+                penalty = (p*t.log(p/p_head)+(1-p) *
+                           t.log((1-p)/(1-p_head))).sum()/p.shape[1]
+                if self.USE_P:
+                    loss = criterion(decode, bx) + \
+                        self.BETA*penalty
+                else:
+                    loss = criterion(decode, bx)
+
+                loss.backward()
+                batch_loss += loss.item()
+                optimizer.step()
+
+            if epoch % 1 == 0:
+                print('batch loss={}@epoch={}'.format(batch_loss, epoch))
+            batch_loss = 0
+
+</code></pre>
+<p>为方便，训练和可视化部分代码在jupyter进行，代码如下</p>
+<pre><code class="language-python">%load_ext autoreload
+%autoreload 2
+import SparseAutoEncoder2
+from SparseAutoEncoder2 import  SparseAutoEncoder as SAE
+t.manual_seed(1)
+model = SAE(BETA=5.0, ROU=0.01, hiddenshape=100,USE_P=True)
+model.trainNN(lr=0.001, weight_decay=0, epochs=15)
+from torchvision.utils import make_grid,save_image
+
+hidden=model.cal_hidden()
+res=make_grid(hidden,normalize=True, scale_each=False)
+model.show(res)
+save_image(hidden,normalize=True,filename='./hidden.png')
+</code></pre>
+<p>不加稀疏约束的隐含层激活状态，可看到很混乱，不含有明显的分工
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/11_hua88823cf0cafb35d31e290d5f5afe012_19332_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/11_hua88823cf0cafb35d31e290d5f5afe012_19332_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="98" height="158">
+</a>
+
+
+
+</figure>
+
+加入稀疏约束项后明显改善，可看到隐含层较好的提取到了各个笔画的特征
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/12_huf42f4243279b75f86d99c1cc5a47ce3b_18346_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/12_huf42f4243279b75f86d99c1cc5a47ce3b_18346_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="98" height="158">
+</a>
+
+
+
+</figure>
+</p>
+<p>接下来我试着在输入图片加一点噪声看看是否稀疏约束对降噪性能会有帮助。因为注意到不加约束的时候，算法对抹去大面积空白处的盐粒噪声很积极，反而对有数字区域不敏感，感觉加一点稀疏约束会有帮助，因为稀疏约束让隐含层更有效的捕获有价值信息，而非仅有白噪声区域。实验证明确实会略好一些，能恢复更多些的细节，进一步体现了稀疏约束的有效。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/13_hu1aa08763b3bccd95b12bef641573d5c7_8791_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/13_hu1aa08763b3bccd95b12bef641573d5c7_8791_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="249" height="254">
+</a>
+
+
+
+</figure>
+</p>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/14_hu461f6d2bbf0e64635325819a7433a0a6_5184_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/14_hu461f6d2bbf0e64635325819a7433a0a6_5184_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="244" height="252">
+</a>
+
+
+
+</figure>
+
+<h3 id="4vae">4.VAE</h3>
+<p>原文：
+Auto-Encoding Variational Bayes
+解读：
+<a href="https://zhuanlan.zhihu.com/p/22464764">https://zhuanlan.zhihu.com/p/22464764</a>
+<a href="https://zhuanlan.zhihu.com/p/34998569">https://zhuanlan.zhihu.com/p/34998569</a>
+近期进展：
+<a href="https://zhuanlan.zhihu.com/p/52676826?utm_source=qq&amp;utm_medium=social">https://zhuanlan.zhihu.com/p/52676826?utm_source=qq&amp;utm_medium=social</a></p>
+<p>VAE相对较新，是一种生成模型，常用于生成图片。核心优势是其生成图片可控性好，可通过code控制，缺点是生成的图像较为模糊，内容不清晰，相比之下GAN能生成更清晰的图像。
+其核心架构仍是Encode-Decode，但在中间加了code模糊化的环节。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/15_hua513b017aa18a6498d9364382e774afe_73289_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/15_hua513b017aa18a6498d9364382e774afe_73289_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="663" height="497">
+</a>
+
+
+
+</figure>
+
+直觉上可如下理解：code有一定噪声区域时，就有更大的机会产生基于训练样本的新图片。如下：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/16_hu6318576cd45cd8ead1bf99ad0f593300_112437_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/16_hu6318576cd45cd8ead1bf99ad0f593300_112437_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="658" height="490">
+</a>
+
+
+
+</figure>
+
+故，虽然VAE推导较为复杂，但其最终实现是及其简洁的，两个NN，以重构精度和约束（结构图黄色框内，显然若无约束，NN会为了重构精度将所有噪声都设为0）为优化目标，然后进行标准的SGD即可训练。至于约束目标的来历，是较为精彩和复杂的。下面描述之</p>
+<p>首先，有两大类学习模型：生成模型（Generative Model）和判别模型（Discriminative Model）
+直接学习决策函数Y=f(X)或者条件概率分布P(Y|X)作为预测的模型
+而生成模型基本思想是首先建立样本的联合概率概率密度模型P(X,Y)，然后通过P(Y|X)= P(X,Y)/ P(X)得到P(Y|X)
+故VAE的核心是：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/17_hu16f73ec62ce6c770dd7aff32f7cb4491_5548_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/17_hu16f73ec62ce6c770dd7aff32f7cb4491_5548_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="197" height="76">
+</a>
+
+
+
+</figure>
+
+z是一些隐含变量，这在生成模型里经常出现，表达着一系列抽象特征。
+这个式子在有些情况下是很好求解的，如在朴素贝叶斯分类器中，实现的是下式：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/18_hub220d873ec4b7f25e15180e69c3e6577_16345_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/18_hub220d873ec4b7f25e15180e69c3e6577_16345_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="516" height="88">
+</a>
+
+
+
+</figure>
+
+其中p(ci)是i类在数据集的占比，（数一下就可，易），p(x|ci)是从数据集所有的标记为i的数据中，抽出x的概率（假想为多元高斯的概率密度函数（PDF））,p(ci|x)即x属于ci的概率（求解目标）
+但这里，由于p(X)是连续的，即有无穷多class，故加法变为下面的积分，并不好求
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/19_hue582c5fdaca3cb626ce50ff59644d571_7706_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/19_hue582c5fdaca3cb626ce50ff59644d571_7706_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="246" height="69">
+</a>
+
+
+
+</figure>
+
+为此，提出了一种方法直接近似出p(z|X)，这里的解决方法很经典，称之为Variational Inference。
+可参考 <a href="http://blog.huajh7.com/2013/03/06/variational-bayes/">http://blog.huajh7.com/2013/03/06/variational-bayes/</a>
+这里提出q(z)逼近之，以KL散度为判断标准
+不难整理出下式（代入贝叶斯公式，KL散度公式）：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/20_huffcb74f175eb38dac434fc624584bf06_11524_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/20_huffcb74f175eb38dac434fc624584bf06_11524_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="619" height="46">
+</a>
+
+
+
+</figure>
+
+<strong>接下来的大部分工作就是处理右边来转换这个优化目标。</strong>
+观察之，为使得KL（q|p）最小，考虑到log(p(X))是个未知的常数，故，期望右一小，右二大。
+至此都是相对常规化的内容，下面进入VAE论文的核心Reparameterization Trick，解释见 <a href="https://zhuanlan.zhihu.com/p/22464768">https://zhuanlan.zhihu.com/p/22464768</a> 通过此技巧换z=g(X+e),e为随机变量，同时有q(z)=p(e)，带入有
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/21_hub40f15708137888d2d8a87a172e48bde_12851_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/21_hub40f15708137888d2d8a87a172e48bde_12851_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="704" height="53">
+</a>
+
+
+
+</figure>
+
+这一步前进了一大步，可以看到q(z|X)出现了。进一步，对右边第二项KL散度里两个分布均假设为标准高斯分布，即令q(&hellip;)=N(miu,sigma),p(z)=N(0,I)便可化简为
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/22_hu2607e42507d7ff2fb57073c332cf00bc_11387_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/22_hu2607e42507d7ff2fb57073c332cf00bc_11387_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="626" height="60">
+</a>
+
+
+
+</figure>
+
+用NN吐出这个复杂的q的均值和方差，这就是ENCODER（重要思想，用NN代替难以计算和表达的复杂函数），其优化loss就是上面式子。实际实现有个细节就是吐出 logσ^2 而不是方差，因为方差只有正。同时注意到正是假设了p(z)为标准高斯，形成先验分布，才保证了优化中不会产生方差都变0的退化。
+至此就给出了q的具体计算和其loss目标。
+右边第一项即表达的是p(X|z)的对数似然，即DECODER的loss目标。VAE没有对DECODER进行假设，实现上直接由NN进行z-&gt;X_head的重建，以X X_head之间的BCE loss进行优化，与其他AutoEncoder一样。
+实现：
+pytorch官方有实现 <a href="https://github.com/pytorch/examples/tree/master/vae">https://github.com/pytorch/examples/tree/master/vae</a>
+其核心model为：</p>
+<pre><code class="language-python">class VAE(nn.Module):
+    def __init__(self):
+        super(VAE, self).__init__()
+
+        self.fc1 = nn.Linear(784, 400)
+        self.fc21 = nn.Linear(400, 20)
+        self.fc22 = nn.Linear(400, 20)
+        self.fc3 = nn.Linear(20, 400)
+        self.fc4 = nn.Linear(400, 784)
+
+    def encode(self, x):
+        h1 = F.relu(self.fc1(x))
+        return self.fc21(h1), self.fc22(h1)
+
+    def reparameterize(self, mu, logvar):
+        std = torch.exp(0.5*logvar)
+        eps = torch.randn_like(std)
+        return eps.mul(std).add_(mu)
+
+    def decode(self, z):
+        h3 = F.relu(self.fc3(z))
+        return torch.sigmoid(self.fc4(h3))
+
+    def forward(self, x):
+        mu, logvar = self.encode(x.view(-1, 784))
+        z = self.reparameterize(mu, logvar)
+        return self.decode(z), mu, logvar
+
+def loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    return BCE + KLD
+</code></pre>
+<p>大致运行情况：
+重建情况
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/23_hu8b91161deb281381be7bd7ba062ccbcc_7304_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/23_hu8b91161deb281381be7bd7ba062ccbcc_7304_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="242" height="62">
+</a>
+
+
+
+</figure>
+
+decoder对随机输入的输出，可看到VAE的特点，大概意思对，但并不清晰
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/24_hu2947edb18fd077d8e9f142f36a745632_44097_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/24_hu2947edb18fd077d8e9f142f36a745632_44097_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="242" height="242">
+</a>
+
+
+
+</figure>
+</p>
+<h3 id="5-卷积autoencoder">5. 卷积AutoEncoder</h3>
+<p>ref: Stacked Convolutional Auto-Encoders for Hierarchical Feature Extraction
+<a href="https://github.com/L1aoXingyu/pytorch-beginner/blob/master/08-AutoEncoder/conv_autoencoder.py">https://github.com/L1aoXingyu/pytorch-beginner/blob/master/08-AutoEncoder/conv_autoencoder.py</a>
+思路是将卷积加到AE架构中，改善了解决图像问题的性能，利用了CNN不会权重爆炸等一系列优点。核心是 反卷积 和 反池化怎么实现。（原论文通过使用发现maxpooling池化效果较好，其解释是max起到一种稀疏约束）</p>
+<p>反池化很简单，非最大的部分全置零即可
+pytorch实现有maxunpool层，但其需要maxpool层额外返回记录最大值索引的矩阵，比较麻烦，故这里就不采用，直接用反卷积卷回去也不错
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/25_hu5fe409525b5b6118c1db1a6a2f5f3b93_208290_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/25_hu5fe409525b5b6118c1db1a6a2f5f3b93_208290_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="626" height="404">
+</a>
+
+
+
+</figure>
+
+反卷积实际就是再做一次卷积即可（通过补零，信号与系统典型套路）
+pytorch实现有ConvTranspose2d层
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/26_hu948647576b6d9aa3b2ceb9fcb60dbe61_81515_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/26_hu948647576b6d9aa3b2ceb9fcb60dbe61_81515_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="679" height="486">
+</a>
+
+
+
+</figure>
+
+实现
+用MNIST_FASHION来做实验，MNIST_FASHION细节更丰富，同时计算量较小</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import torch as t
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torchvision import datasets, transforms
+from BasicModule import BasicModule
+from torchvision.utils import make_grid, save_image
+
+
+# 加噪声的SAE
+t.manual_seed(1)
+
+# root = ./AI/DataSets/MNIST'
+root = './AI/DataSets/MNIST_FASHION'
+batch_size = 32
+data_spilt = 50000  # 截取的数据集大小，以减小计算量
+inshape = (28, 28)
+
+
+trainData = datasets.FashionMNIST(root, transform=transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+
+]))
+trainData = t.utils.data.random_split(
+    trainData, [data_spilt, len(trainData)-data_spilt])[0]
+
+
+train_loader = t.utils.data.DataLoader(
+    trainData, batch_size=batch_size, shuffle=True)
+
+
+class ConvAutoEncoder(BasicModule):
+    def __init__(self):
+        super(ConvAutoEncoder, self).__init__()
+        self.model_name = 'ConvAutoEncoder'
+
+        self.encoder = nn.Sequential(
+            nn.Conv2d(1, 16, 3, stride=3, padding=1),  # b, 16, 10, 10
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=2),  # b, 16, 5, 5
+            nn.Conv2d(16, 8, 3, stride=2, padding=1),  # b, 8, 3, 3
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=1)  # b, 8, 2, 2
+        )
+
+        self.decoder = nn.Sequential(
+            nn.ConvTranspose2d(8, 16, 3, stride=2),  # b, 16, 5, 5
+            nn.ReLU(True),
+            nn.ConvTranspose2d(16, 8, 5, stride=3, padding=1),  # b, 8, 15, 15
+            nn.ReLU(True),
+            nn.ConvTranspose2d(8, 1, 2, stride=2, padding=1),  # b, 1, 28, 28
+            nn.Tanh()
+        )
+       
+
+    def forward(self, x):
+        encode = self.encoder(x)
+        decode = self.decoder(encode)
+        return encode, decode
+
+    def predict(self, x, load=None):
+        '''输入单张图片预测dataset元组(Tensor[1,28,28],class)
+        '''
+        self.eval()
+        with t.no_grad():
+            if load is not None:
+                self.load(load)
+            x, c = x
+            x = t.unsqueeze(x, 0)  # (1,28,28) -&gt;(1,1,28,28)
+            result = self(x)[1]
+            result = result.detach()
+            return x.view(inshape).numpy(), result.view(inshape).numpy()
+
+    def show(self):
+        def showim(img):
+            npimg = img.numpy()
+            plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
+            plt.show()
+        for i, (bx, by) in enumerate(train_loader):
+            img_in = make_grid(bx, normalize=True)
+            showim(img_in)
+            self.eval()
+            with t.no_grad():
+                img_out = (self(bx)[1]).detach()
+                img_out = make_grid(img_out, normalize=True)
+                showim(img_out)
+            break
+
+    def trainNN(self, lr=1, weight_decay=1e-5, epochs=10):
+        self.train()
+        optimizer = optim.Adam(
+            self.parameters(),
+            lr=lr,
+            weight_decay=weight_decay
+        )
+
+        batch_loss = 0
+        for epoch in range(epochs):
+            for i, (bx, by) in enumerate(train_loader):
+                optimizer.zero_grad()
+
+                criterion = nn.MSELoss()  # mse损失
+                encode, decode = self(bx)
+
+                loss = criterion(decode, bx)
+
+                loss.backward()
+                batch_loss += loss.item()
+                optimizer.step()
+
+            if epoch % 1 == 0:
+                print('batch loss={}@epoch={}'.format(batch_loss, epoch))
+            batch_loss = 0
+
+</code></pre>
+<p>训练</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import ConvAutoEncoder
+from ConvAutoEncoder import ConvAutoEncoder as CAE
+model=CAE()
+model.trainNN(lr=0.003, weight_decay=1e-5, epochs=18)
+
+x,y=model.predict(ConvAutoEncoder.trainData[0])
+plt.imshow(x)
+plt.show()
+plt.imshow(y)
+plt.show()
+model.show()
+</code></pre>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/27_hu3d16b289e77ccd5ee7a98108337f37ac_100570_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/27_hu3d16b289e77ccd5ee7a98108337f37ac_100570_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="396" height="405">
+</a>
+
+
+
+</figure>
+
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/&amp;text=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/&amp;t=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86&amp;body=https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/&amp;title=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86%20https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/%E5%87%A0%E7%A7%8Dautoencoder%E5%8E%9F%E7%90%86/&amp;title=%e5%87%a0%e7%a7%8dAutoEncoder%e5%8e%9f%e7%90%86" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">王笑涵</a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

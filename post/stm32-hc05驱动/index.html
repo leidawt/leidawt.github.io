@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="王笑涵">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="这个模块提供了格式化发送字符串到HC05的功能，占用stm32的串口3 1.头文件 #ifndef __HC_05 #define __HC_05 /* 本模块为HC05蓝牙透传模块，只写了通信，AT指令">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/stm32-hc05%E9%A9%B1%E5%8A%A8/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/">
+  <meta property="og:title" content="stm32 HC05驱动 | Academic">
+  <meta property="og:description" content="这个模块提供了格式化发送字符串到HC05的功能，占用stm32的串口3 1.头文件 #ifndef __HC_05 #define __HC_05 /* 本模块为HC05蓝牙透传模块，只写了通信，AT指令"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:circle]">
+  <meta property="twitter:image" content="img/map[gravatar:%!s(bool=false) shape:circle]"><meta property="og:locale" content="zh-Hans">
+  
+    
+      <meta property="article:published_time" content="2018-10-15T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2018-10-15T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/"
+  },
+  "headline": "stm32 HC05驱动",
+  
+  "datePublished": "2018-10-15T12:00:00+08:00",
+  "dateModified": "2018-10-15T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "王笑涵"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "这个模块提供了格式化发送字符串到HC05的功能，占用stm32的串口3 1.头文件 #ifndef __HC_05 #define __HC_05 /* 本模块为HC05蓝牙透传模块，只写了通信，AT指令"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>stm32 HC05驱动 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">中文 (简体)</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/stm32-hc05%E9%A9%B1%E5%8A%A8/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>stm32 HC05驱动</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/admin/">王笑涵</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Oct 15, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>这个模块提供了格式化发送字符串到HC05的功能，占用stm32的串口3
+1.头文件</p>
+<pre><code class="language-c">#ifndef __HC_05
+#define __HC_05
+/*
+本模块为HC05蓝牙透传模块，只写了通信，AT指令部分
+单独用串口测试
+因此本模块基本就是个串口
+占用串口USART3
+PB10 TX 5v兼容
+PB11 RX 5v兼容
+
+
+*/
+#include &quot;sys.h&quot;
+#define HC05_REC_LEN  			100  	//定义最大接收字节数 100
+#define HC05_TEC_LEN  			100  	//发送缓存区 100
+
+void initHC05(void);			//初始化
+void sendToHC05(char* fmt ,...);//发送到HC05
+static void receiveHandler(void);
+static void SendCharToHC05(u8 ch);//私有
+extern char HC05_RX_BUF[HC05_REC_LEN];
+#endif
+
+</code></pre>
+<p>2.c文件</p>
+<pre><code class="language-c">#include &quot;hc05.h&quot;
+#include &quot;stdarg.h&quot;
+#include &quot;stdio.h&quot;
+#include &quot;delay.h&quot;
+#include &lt;string.h&gt; 
+#include &lt;stdlib.h&gt;
+#include &quot;main.h&quot;
+
+
+//PB10 模块RX
+//BB11 模块TX
+//注意,读取USARTx-&gt;SR能避免莫名其妙的错误   	
+char HC05_RX_BUF[HC05_REC_LEN];     //接收缓冲
+//接收状态
+//bit15，	接收完成标志
+//bit14，	接收到0x0d
+//bit13~0，	接收到的有效字节数目
+u16 HC05_RX_STA=0;       //接收状态标记	  
+void initHC05(void){
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	USART_InitTypeDef  USART_InittStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+	USART_DeInit(USART3);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;               
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;      //TX复用推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;    
+	GPIO_Init(GPIOB, &amp;GPIO_InitStructure);               
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;              
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; //RX浮空输入
+	GPIO_Init(GPIOB, &amp;GPIO_InitStructure);
+	
+	USART_InittStructure.USART_BaudRate = 9600;  //波特率
+	USART_InittStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None; //硬件流设置
+	USART_InittStructure.USART_Mode = USART_Mode_Rx|USART_Mode_Tx; //接收发送模式
+	USART_InittStructure.USART_Parity = USART_Parity_No; //奇偶校验位
+	USART_InittStructure.USART_StopBits = USART_StopBits_1; //停止位
+	USART_InittStructure.USART_WordLength = USART_WordLength_8b; //字长
+	
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);  //设置中断类型，接收中断
+	
+	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn; //串口3中断，在stm32F10x.h中有定义
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;  //抢占优先级为3
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  //响应优先级为3
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道使能
+
+	NVIC_Init(&amp;NVIC_InitStructure);
+	USART_Init(USART3, &amp;USART_InittStructure);
+	USART_Cmd(USART3, ENABLE);
+}
+void USART3_IRQHandler(void)
+{
+	u8 Res;
+    if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET){
+		Res =USART_ReceiveData(USART3);	//读取接收到的数据
+		if((HC05_RX_STA&amp;0x8000)==0){	//接收未完成
+			if(HC05_RX_STA&amp;0x4000){	//接收到了0x0d
+				if(Res!=0x0a){
+					HC05_RX_STA=0;//接收错误,重新开始
+				}
+				else {
+					//接收完成了
+					HC05_RX_STA|=0x8000;
+					//完成逻辑:
+					printf(&quot;recrived: %s&quot;,HC05_RX_BUF);
+					receiveHandler();
+					HC05_RX_STA=0;
+					HC05_RX_STA&amp;=~0x8000;//清除完成标志
+				}	 
+			}
+			else {
+				//还没收到0X0D	
+				if(Res==0x0d){
+					HC05_RX_STA|=0x4000;
+				}
+				else {
+					HC05_RX_BUF[HC05_RX_STA&amp;0X3FFF]=Res ;
+					HC05_RX_STA++;
+					if(HC05_RX_STA&gt;(HC05_REC_LEN-1))HC05_RX_STA=0;//接收数据错误,重新开始接收	  
+				}		 
+			}
+		}
+	}
+}
+//向蓝牙发送一个字节
+void SendCharToHC05(u8 ch){      
+	while((USART3-&gt;SR&amp;0X40)==0)
+		;//等待发送完毕   
+    USART3-&gt;DR = ch;      
+}
+//格式化发送到蓝牙
+void sendToHC05(char* fmt ,...){
+	unsigned char i,num;
+	char lcd_buf[HC05_TEC_LEN];
+	va_list ap;
+    va_start(ap,fmt); 
+	num=vsprintf(lcd_buf,fmt,ap);
+	//printf(&quot;num=%d\r\n&quot;,num);
+	for(i=0;i&lt;num;i++){
+		SendCharToHC05(lcd_buf[i]);
+		//printf(&quot;char=%c\r\n&quot;,lcd_buf[i]);
+	}
+	va_end(ap);
+}
+//接收回调，处理和解析命令
+//指令格式：XXXX;arg0;arg1;arg2
+void receiveHandler() {
+	//指令表
+    const char* list[] = {&quot;setpid&quot;, &quot;restart!&quot;, &quot;hello&quot;,&quot;SetCapBeginFlag&quot;,&quot;restart&quot;};
+    unsigned char count = 0;
+    double args[3] = {0};
+    char* token;
+    char* cmd;
+    char delim[] = &quot;;&quot;;
+    int i;
+    int length = sizeof(list) / sizeof(char*);
+	//先获得命令,';'分割
+    cmd = strtok(HC05_RX_BUF, delim);
+    printf(&quot;cmd= %s\r\n&quot;, cmd);
+	//然后解析参数，最多3个，解析成double
+    token = strtok(NULL, delim);    
+    while (token != NULL &amp;&amp; count &lt; 3) {
+        args[count] = atof(token);
+        count++;
+        token = strtok(NULL, delim);        
+    }
+    for (i = 0; i &lt; length; i++) {
+        if (strcmp(cmd, list[i]) == 0) break;
+    }
+	//printf(&quot;cmd N=%d\r\n&quot;,i);
+	//printf(&quot;length=%d\r\n&quot;,length);
+	//按照解析的命令查找执行
+    if (i &lt; length) {
+        switch (i) {
+            case 0:
+				pid.Kp = args[0];
+				pid.Ki = args[1];
+				pid.Kd = args[2];
+				printf(&quot;setpid:p=%f i=%f d=%f\r\n&quot;,args[0],args[1],args[2]);
+				savePIDdata();
+				__set_FAULTMASK(1);// 关闭所有中断
+				NVIC_SystemReset();// 复位
+                break;
+            case 1:
+				__set_FAULTMASK(1);// 关闭所有中断
+				NVIC_SystemReset();// 复位
+                printf(&quot;cmd%d\r\n&quot;, i);
+                break;
+			case 2:
+                printf(&quot;cmd%d\r\n&quot;, i);
+				printf(&quot;hello world\r\n&quot;);
+                break;
+			case 3:
+                printf(&quot;cmd%d\r\n&quot;, i);
+				pauseFlag=0;
+                break;
+			case 4:
+                printf(&quot;cmd%d\r\n&quot;, i);
+				pauseFlag=1;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+</code></pre>
+<p>IO配置：
+PB10 TX 5v兼容
+PB11 RX 5v兼容</p>
+<p>初始化initHC05()
+其中发送可用格式化发送函数sendToHC05，与printf的格式相同
+接收需要修改receiveHandler() 函数。接受到数据后会在中断里调用此函数</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/&amp;text=stm32%20HC05%e9%a9%b1%e5%8a%a8" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/&amp;t=stm32%20HC05%e9%a9%b1%e5%8a%a8" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=stm32%20HC05%e9%a9%b1%e5%8a%a8&amp;body=https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/&amp;title=stm32%20HC05%e9%a9%b1%e5%8a%a8" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=stm32%20HC05%e9%a9%b1%e5%8a%a8%20https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/stm32-hc05%E9%A9%B1%E5%8A%A8/&amp;title=stm32%20HC05%e9%a9%b1%e5%8a%a8" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">王笑涵</a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

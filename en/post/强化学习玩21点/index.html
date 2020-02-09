@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Xiaohan Wang">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="sutton RL an introduction 2nd CH5例子 ref: https://github.com/ShangtongZhang/reinforcement-learning-an-introduction/edit/master/chapter05/blackjack.py 本文解读整理上述示例代码 规则 21点（blackjack）是经典赌场游戏，玩的是在牌面和不超过21点的情况下尽可能大。">
+
+  
+  <link rel="alternate" hreflang="zh" href="https://leidawt.github.io/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/">
+  
+  <link rel="alternate" hreflang="en-us" href="https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/en/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/">
+  <meta property="og:title" content="强化学习玩21点 | Academic">
+  <meta property="og:description" content="sutton RL an introduction 2nd CH5例子 ref: https://github.com/ShangtongZhang/reinforcement-learning-an-introduction/edit/master/chapter05/blackjack.py 本文解读整理上述示例代码 规则 21点（blackjack）是经典赌场游戏，玩的是在牌面和不超过21点的情况下尽可能大。"><meta property="og:image" content="https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/featured.png">
+  <meta property="twitter:image" content="https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/featured.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2019-07-19T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2019-07-19T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/"
+  },
+  "headline": "强化学习玩21点",
+  
+  "image": [
+    "https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/featured.png"
+  ],
+  
+  "datePublished": "2019-07-19T12:00:00+08:00",
+  "dateModified": "2019-07-19T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Xiaohan Wang"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "sutton RL an introduction 2nd CH5例子 ref: https://github.com/ShangtongZhang/reinforcement-learning-an-introduction/edit/master/chapter05/blackjack.py 本文解读整理上述示例代码 规则 21点（blackjack）是经典赌场游戏，玩的是在牌面和不超过21点的情况下尽可能大。"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>强化学习玩21点 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#featured"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/courses/"><span>Courses</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">English</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>English</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/">
+            <span>中文 (简体)</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+  <h1>强化学习玩21点</h1>
+
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/en/authors/admin/">Xiaohan Wang</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 19, 2019
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    7 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 302px;">
+  <div style="position: relative">
+    <img src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/featured_hu388c1f15122bd0ca4e8cefe4ae653479_108712_720x0_resize_lanczos_2.png" alt="" class="featured-image">
+    <span class="article-header-caption">Center</span>
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>sutton RL an introduction 2nd CH5例子
+ref:
+<a href="https://github.com/ShangtongZhang/reinforcement-learning-an-introduction/edit/master/chapter05/blackjack.py">https://github.com/ShangtongZhang/reinforcement-learning-an-introduction/edit/master/chapter05/blackjack.py</a>
+本文解读整理上述示例代码</p>
+<h1 id="规则">规则</h1>
+<p>21点（blackjack）是经典赌场游戏，玩的是在牌面和不超过21点的情况下尽可能大。牌面规定：Ace可以是1 或 11， J,Q,K均为10，无大小王。具体规则有很多种，书中规定如下：</p>
+<blockquote>
+<p>The object of the popular casino card game of blackjack is to obtain cards the sum of whose numerical values is as great as possible without exceeding 21. All face cards count as 10, and an ace can count either as 1 or as 11. We consider the version in which each player competes independently against the dealer. The game begins with two cards dealt to both dealer and player. One of the dealer’s cards is face up and the other is face down. If the player has 21 immediately (an ace and a 10-card), it is called a natural. He then wins unless the dealer also has a natural, in which case the game is a draw. If the player does not have a natural, then he can request additional cards, one by one (hits), until he either stops (sticks) or exceeds 21 (goes bust ). If he goes bust, he loses; if he sticks, then it becomes the dealer’s turn. The dealer hits or sticks according to a fixed strategy without choice: he sticks on any sum of 17 or greater, and hits otherwise. If the dealer goes bust, then the player wins; otherwise, the outcome—win, lose, or draw—is determined by whose final sum is closer to 21.</p>
+</blockquote>
+<p>首先是21点游戏逻辑的定义和一些预设policy。
+作为玩家，只有hit 和 stand两种action
+其进行决策只需考虑如下三点：</p>
+<ol>
+<li>usable_ace手头是否有ace牌，且能叫为11点而不爆牌</li>
+<li>手头牌面值和（12-21）0-11不需考虑，因为无论抽到什么牌怎么都不可能爆牌，故一定是hit</li>
+<li>庄家的明牌。(1,&hellip;10)（J Q K都是10）
+所以共有2*10*10 200个state，故policy表和value表就是2*10*10的</li>
+</ol>
+<pre><code class="language-python">import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+from tqdm import tqdm
+
+# actions: hit or stand
+ACTION_HIT = 0
+ACTION_STAND = 1  #  &quot;strike&quot; in the book
+ACTIONS = [ACTION_HIT, ACTION_STAND]
+
+# policy for player
+# 这是书中规定的一个policy，用于演示MC policy evaluation，
+# 其很朴素，只在自己牌面和为 20 or 21 时stand，其余一律hit，不考虑其他因素
+POLICY_PLAYER = np.zeros(22, dtype=np.int)
+for i in range(12, 20):
+    POLICY_PLAYER[i] = ACTION_HIT
+POLICY_PLAYER[20] = ACTION_STAND
+POLICY_PLAYER[21] = ACTION_STAND
+
+###########这俩policy是为off-policy算法准备 
+# function form of target policy of player
+def target_policy_player(usable_ace_player, player_sum, dealer_card):
+    return POLICY_PLAYER[player_sum]
+
+# function form of behavior policy of player
+def behavior_policy_player(usable_ace_player, player_sum, dealer_card):
+    if np.random.binomial(1, 0.5) == 1:
+        return ACTION_STAND
+    return ACTION_HIT
+###########
+# policy for dealer
+# 21点游戏规则规定的庄家policy，即持续hit直至&gt;=17
+POLICY_DEALER = np.zeros(22)
+for i in range(12, 17):
+    POLICY_DEALER[i] = ACTION_HIT
+for i in range(17, 22):
+    POLICY_DEALER[i] = ACTION_STAND
+
+# get a new card
+def get_card():
+    card = np.random.randint(1, 14)# [1,14)
+    card = min(card, 10)#（J Q K都是10）
+    return card
+
+# get the value of a card (11 for ace).
+def card_value(card_id):
+    return 11 if card_id == 1 else card_id
+
+# play a game 环境交互核心函数，返回：
+#（state, reward, player_trajectory）
+# 其中state = [usable_ace_player, player_sum, dealer_card1]
+#     reward 是+1 或-1或0
+#     player_trajectory [(usable_ace_player, player_sum, dealer_card1), action])的
+#     序列
+
+# @policy_player: specify policy for player
+# @initial_state: [whether player has a usable Ace, sum of player's cards, one card of dealer]
+# @initial_action: the initial action
+def play(policy_player, initial_state=None, initial_action=None):
+    # player status
+
+    # sum of player
+    player_sum = 0
+
+    # trajectory of player
+    player_trajectory = []
+
+    # whether player uses Ace as 11
+    usable_ace_player = False
+
+    # dealer status
+    dealer_card1 = 0
+    dealer_card2 = 0
+    usable_ace_dealer = False
+
+    if initial_state is None:
+        # generate a random initial state
+
+        while player_sum &lt; 12:
+            # if sum of player is less than 12, always hit
+            card = get_card()
+            player_sum += card_value(card)
+
+            # If the player's sum is larger than 21, he may hold one or two aces.
+            if player_sum &gt; 21:
+                assert player_sum == 22
+                # last card must be ace
+                player_sum -= 10
+            else:
+                usable_ace_player |= (1 == card)
+
+        # initialize cards of dealer, suppose dealer will show the first card he gets
+        dealer_card1 = get_card()
+        dealer_card2 = get_card()
+
+    else:
+        # use specified initial state
+        usable_ace_player, player_sum, dealer_card1 = initial_state
+        dealer_card2 = get_card()
+
+    # initial state of the game
+    state = [usable_ace_player, player_sum, dealer_card1]
+
+    # initialize dealer's sum
+    dealer_sum = card_value(dealer_card1) + card_value(dealer_card2)
+    usable_ace_dealer = 1 in (dealer_card1, dealer_card2)
+    # if the dealer's sum is larger than 21, he must hold two aces.
+    if dealer_sum &gt; 21:
+        assert dealer_sum == 22
+        # use one Ace as 1 rather than 11
+        dealer_sum -= 10
+    assert dealer_sum &lt;= 21
+    assert player_sum &lt;= 21
+
+    # game starts!
+
+    # player's turn
+    while True:
+        if initial_action is not None:
+            action = initial_action
+            initial_action = None
+        else:
+            # get action based on current sum
+            action = policy_player(usable_ace_player, player_sum, dealer_card1)
+
+        # track player's trajectory for importance sampling
+        player_trajectory.append([(usable_ace_player, player_sum, dealer_card1), action])
+
+        if action == ACTION_STAND:
+            break
+        # if hit, get new card
+        card = get_card()
+        # Keep track of the ace count. the usable_ace_player flag is insufficient alone as it cannot
+        # distinguish between having one ace or two.
+        ace_count = int(usable_ace_player)
+        if card == 1:
+            ace_count += 1
+        player_sum += card_value(card)
+        # If the player has a usable ace, use it as 1 to avoid busting and continue.
+        while player_sum &gt; 21 and ace_count:
+            player_sum -= 10
+            ace_count -= 1
+        # player busts
+        if player_sum &gt; 21:
+            return state, -1, player_trajectory
+        assert player_sum &lt;= 21
+        usable_ace_player = (ace_count == 1)
+
+    # dealer's turn
+    while True:
+        # get action based on current sum
+        action = POLICY_DEALER[dealer_sum]
+        if action == ACTION_STAND:
+            break
+        # if hit, get a new card
+        new_card = get_card()
+        ace_count = int(usable_ace_dealer)
+        if new_card == 1:
+            ace_count += 1
+        dealer_sum += card_value(new_card)
+        # If the dealer has a usable ace, use it as 1 to avoid busting and continue.
+        while dealer_sum &gt; 21 and ace_count:
+            dealer_sum -= 10
+            ace_count -= 1
+        # dealer busts
+        if dealer_sum &gt; 21:
+            return state, 1, player_trajectory
+        usable_ace_dealer = (ace_count == 1)
+
+    # compare the sum between player and dealer
+    assert player_sum &lt;= 21 and dealer_sum &lt;= 21
+    if player_sum &gt; dealer_sum:
+        return state, 1, player_trajectory
+    elif player_sum == dealer_sum:
+        return state, 0, player_trajectory
+    else:
+        return state, -1, player_trajectory
+</code></pre>
+<h1 id="蒙特卡洛-policy-评估">蒙特卡洛 policy 评估</h1>
+<p>
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/0_hu388c1f15122bd0ca4e8cefe4ae653479_108712_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/0_hu388c1f15122bd0ca4e8cefe4ae653479_108712_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="992" height="416">
+</a>
+
+
+
+</figure>
+
+该方法是对无完整过程模型p，无法使用DP，而仅从交互序列中进行值函数v(s)估计的方法。可分为first-visit 和 every-visit两种，其区别在于first-visit仅处理每一个交互序列中某state的第一次出现，而every-visit对每一个交互序列中某state的每次出现一视同仁。
+具体做法可由代码进行理解：</p>
+<pre><code class="language-python"># Monte Carlo Sample with On-Policy
+def monte_carlo_on_policy(episodes):
+    states_usable_ace = np.zeros((10, 10))
+    # initialze counts to 1 to avoid 0 being divided
+    states_usable_ace_count = np.ones((10, 10))
+    states_no_usable_ace = np.zeros((10, 10))
+    # initialze counts to 1 to avoid 0 being divided
+    states_no_usable_ace_count = np.ones((10, 10))
+    for i in tqdm(range(0, episodes)):
+        _, reward, player_trajectory = play(target_policy_player)
+        for (usable_ace, player_sum, dealer_card), _ in player_trajectory:
+            player_sum -= 12 # 因为value表的第一个index是12
+            dealer_card -= 1 # 同样是index问题
+            if usable_ace:
+                states_usable_ace_count[player_sum, dealer_card] += 1
+                states_usable_ace[player_sum, dealer_card] += reward
+            else:
+                states_no_usable_ace_count[player_sum, dealer_card] += 1
+                states_no_usable_ace[player_sum, dealer_card] += reward
+    return states_usable_ace / states_usable_ace_count, states_no_usable_ace / states_no_usable_ace_count
+</code></pre>
+<p>该函数对前面定义的简单policy进行v(s)评估。将200个state按有无ace分两类分别返回（100+100）。此函数使用every-visit，实践中绝大部分都是every-visit，因为实现更方便，不用验证是不是first-visit。拿到一个交互序列后，遍历其中每一step，将交互序列的reward对应加到各个state上。整个过程重复episodes次，最后对value表用state count求平均。
+按此方法即可在未知过程模型的情况下，仅用policy 与 环境的交互结果对policy对应的v(s)进行估计。</p>
+<h1 id="monte-carlo-policy-iteration-with-exploring-starts">Monte Carlo policy iteration with Exploring Starts</h1>
+<p>上部分主要目的是阐述Monte Carlo 估计RL问题的基本方法。我们要想将Monte Carlo应用到DP中的 policy iteration算法上求optimal policy，需要估计state_action_values 即q(a,s)而非v(s)，这是因为没有过程模型p时，仅有v(s)是无法求optimal action的。（DP中可以）。下面的算法采用greedy policy，并用Exploring Starts弥补探索的缺失。所谓Exploring Starts就是随机选取交互的init，这样在当进行的episodes足够多的时候，就可以保证每个state都被探索到了。显然Exploring Starts在很多实际问题中并不现实，因为init态很多时候是定死的，导致Exploring Starts无法进行，之后会讨论其他保证探索的方法。</p>
+<pre><code class="language-python"># Monte Carlo policy iteration with Exploring Starts
+def monte_carlo_es(episodes):
+    # (playerSum, dealerCard, usableAce, action)
+    state_action_values = np.zeros((10, 10, 2, 2))
+    # initialze counts to 1 to avoid division by 0
+    state_action_pair_count = np.ones((10, 10, 2, 2))
+
+    # behavior policy is greedy
+    # 如遇到value的action则随机选取
+    def behavior_policy(usable_ace, player_sum, dealer_card):
+        usable_ace = int(usable_ace)
+        player_sum -= 12
+        dealer_card -= 1
+        # get argmax of the average returns(s, a)
+        values_ = state_action_values[player_sum, dealer_card, usable_ace, :] / \
+                  state_action_pair_count[player_sum, dealer_card, usable_ace, :]
+        return np.random.choice([action_ for action_, value_ in enumerate(values_) if value_ == np.max(values_)])
+
+    # play for several episodes
+    for episode in tqdm(range(episodes)):
+        # for each episode, use a randomly initialized state and action
+        # 即Exploring Starts
+        # x下面更新q(s,a)表
+        initial_state = [bool(np.random.choice([0, 1])),
+                         np.random.choice(range(12, 22)),
+                         np.random.choice(range(1, 11))]
+        initial_action = np.random.choice(ACTIONS)
+        current_policy = behavior_policy if episode else target_policy_player
+        _, reward, trajectory = play(current_policy, initial_state, initial_action)
+        for (usable_ace, player_sum, dealer_card), action in trajectory:
+            usable_ace = int(usable_ace)
+            player_sum -= 12
+            dealer_card -= 1
+            # update values of state-action pairs
+            state_action_values[player_sum, dealer_card, usable_ace, action] += reward
+            state_action_pair_count[player_sum, dealer_card, usable_ace, action] += 1
+
+    return state_action_values / state_action_pair_count
+</code></pre>
+<h1 id="on-policy-和-off-policy">On-Policy 和 Off-Policy</h1>
+<p>为了能不用Exploring Starts并保证探索，可以采用Chapter2中的e-greedy策略，但这种方法最后收敛得到的value* π*是对e-greedy这个policy的，只是近似最优，为了解决此问题，又发展了一类方法叫off-policy。其使用两个policy，一个target_policy作为目标policy作为最终的policy（一般就是按value greedy的），另一个带探索的behavior_policy用于产生交互序列。off-policy名称的含义即指这种用其他policy的交互数据对本policy进行提升和评估的一类方法。与之相对的on-policy就是形如上面Monte Carlo policy iteration with Exploring Starts的一类方法，仅有一个policy自给自足。
+off-policy为了能利用behavior_policy的交互数据为target_policy进行action_value表估计，需要引入importance sampling来进行补偿一面产生biased的估计。
+某个policy交互出某一action state序列的概率可表示为：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/1_huf6ad7f72494e5e110838f7755359945a_42745_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/1_huf6ad7f72494e5e110838f7755359945a_42745_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="867" height="202">
+</a>
+
+
+
+</figure>
+
+忽略环境p的部分，可推知其importance-sampling-ratio应该是
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/2_huaf4678234cad094e558a24c231ec6062_25536_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/2_huaf4678234cad094e558a24c231ec6062_25536_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="806" height="133">
+</a>
+
+
+
+</figure>
+
+importance-sampling进一步分为ordinary importance sampling
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/3_huc5021a58bc21abded2718a2ddd54875f_11341_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/3_huc5021a58bc21abded2718a2ddd54875f_11341_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="392" height="107">
+</a>
+
+
+
+</figure>
+
+和 weighted importance sampling
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/4_huee8c4add92b7c88d64707b892f1a53c3_14048_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/4_huee8c4add92b7c88d64707b892f1a53c3_14048_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="392" height="91">
+</a>
+
+
+
+</figure>
+
+实践上weighted importance sampling更常用。下面的函数同时计算了两类方法。注意importance-sampling-ratio的计算，一旦序列中action出现不同，就会给0，终止计算。（因为错误的action后，p(s|s,a)就会产生出0，既拐不回去了。。）</p>
+<pre><code class="language-python"># Monte Carlo Sample with Off-Policy
+def monte_carlo_off_policy(episodes):
+    initial_state = [True, 13, 2]
+
+    rhos = []
+    returns = []
+
+    for i in range(0, episodes):
+        _, reward, player_trajectory = play(behavior_policy_player, initial_state=initial_state)
+
+        # get the importance ratio
+        numerator = 1.0
+        denominator = 1.0
+        for (usable_ace, player_sum, dealer_card), action in player_trajectory:
+            if action == target_policy_player(usable_ace, player_sum, dealer_card):
+                denominator *= 0.5
+            else:
+                numerator = 0.0
+                break
+        rho = numerator / denominator
+        rhos.append(rho)
+        returns.append(reward)
+
+    rhos = np.asarray(rhos)
+    returns = np.asarray(returns)
+    weighted_returns = rhos * returns
+	# 这里算accumulate是方便后面的误差统计，无关紧要
+    weighted_returns = np.add.accumulate(weighted_returns)
+    rhos = np.add.accumulate(rhos)
+
+    ordinary_sampling = weighted_returns / np.arange(1, episodes + 1)
+
+    with np.errstate(divide='ignore', invalid='ignore'):
+        weighted_sampling = np.where(rhos != 0, weighted_returns / rhos, 0)
+
+    return ordinary_sampling, weighted_sampling
+</code></pre>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/&amp;text=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/&amp;t=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9&amp;body=https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/&amp;title=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9%20https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/en/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%8E%A921%E7%82%B9/&amp;title=%e5%bc%ba%e5%8c%96%e5%ad%a6%e4%b9%a0%e7%8e%a921%e7%82%b9" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/en/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">Xiaohan Wang</a></h5>
+      <h6 class="card-subtitle">Ph.D. Student of School of Automation</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/en/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/en/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

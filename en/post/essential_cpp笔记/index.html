@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Xiaohan Wang">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="@[toc] 参考与指针 均常用于函数需要传入被修改值时使用，指针与c用法相同而参考（reference)用&amp;表达，如下面的函数用于交换两个值参考">
+
+  
+  <link rel="alternate" hreflang="zh" href="https://leidawt.github.io/post/essential_cpp%E7%AC%94%E8%AE%B0/">
+  
+  <link rel="alternate" hreflang="en-us" href="https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/en/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/">
+  <meta property="og:title" content="essential_cpp笔记 | Academic">
+  <meta property="og:description" content="@[toc] 参考与指针 均常用于函数需要传入被修改值时使用，指针与c用法相同而参考（reference)用&amp;表达，如下面的函数用于交换两个值参考"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:circle]">
+  <meta property="twitter:image" content="img/map[gravatar:%!s(bool=false) shape:circle]"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-11-02T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2018-11-02T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/"
+  },
+  "headline": "essential_cpp笔记",
+  
+  "datePublished": "2018-11-02T12:00:00+08:00",
+  "dateModified": "2018-11-02T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Xiaohan Wang"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "@[toc] 参考与指针 均常用于函数需要传入被修改值时使用，指针与c用法相同而参考（reference)用\u0026amp;表达，如下面的函数用于交换两个值参考"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>essential_cpp笔记 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#featured"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/courses/"><span>Courses</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">English</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>English</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/post/essential_cpp%E7%AC%94%E8%AE%B0/">
+            <span>中文 (简体)</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>essential_cpp笔记</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/en/authors/admin/">Xiaohan Wang</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Nov 2, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>@[toc]</p>
+<h3 id="参考与指针">参考与指针</h3>
+<p>均常用于函数需要传入被修改值时使用，指针与c用法相同而参考（reference)用&amp;表达，如下面的函数用于交换两个值参考指向的是被代指对象，而不再拷贝。</p>
+<pre><code class="language-cpp">void swap(int &amp;val1, int &amp;val2) {
+		int temp = val1;
+		val1 = val2;
+		val2 = temp;
+	}
+</code></pre>
+<p>相比c风格用指针实现，都达到了传地址的目的，仅写法不同（不必同指针一样用* 和 -&gt;了。</p>
+<h3 id="堆栈-new-delete">堆栈 new delete</h3>
+<p>这是cpp的动态内存部分，开辟和回收内存。注意配对使用。</p>
+<pre><code class="language-cpp">	int *pi;
+	pi = new int;//申请
+	delete pi;//释放
+
+	pi = new int[10];//申请
+	delete[] pi;//释放
+</code></pre>
+<h3 id="函数的高级参数写法和应用">函数的高级参数写法和应用</h3>
+<pre><code class="language-cpp">/*
+ex1:给函数添加一个可选的默认关闭的输出流参数
+*/
+void fun1(ofstream *ofil = 0) {
+	if (ofil) {
+		(*ofil) &lt;&lt; &quot;hello\n&quot;;
+	}
+}
+ofstream outfile(&quot;data.txt&quot;);
+fun1(&amp;outfile);//传入
+fun1();//默认
+</code></pre>
+<h3 id="重载函数">重载函数</h3>
+<p>同函数名，不同函数参数类型
+如</p>
+<pre><code class="language-cpp">void disp(char ch);
+void disp(const string&amp;);
+</code></pre>
+<h3 id="模板函数">模板函数</h3>
+<p>提供类型泛型抽象，时常与重载联用</p>
+<pre><code class="language-cpp">//声明一个模板函数
+//const强调这里的引用不会改变传入值
+template &lt;typename eleType&gt;
+void disp(const string &amp;msg, const vector&lt;eleType&gt; &amp;vec) {
+	cout &lt;&lt; msg &lt;&lt;endl;
+	for (unsigned int i = 0; i &lt; vec.size(); i++) {
+		eleType temp = vec[i];
+		cout &lt;&lt; temp &lt;&lt;endl;
+	}
+}
+//测试
+	vector &lt;int&gt; a;
+	a.push_back(1);
+	a.push_back(2);
+	a.push_back(3);
+	vector &lt;string&gt; b;
+	b.push_back(&quot;hello&quot;);
+	b.push_back(&quot;world&quot;);
+	disp(&quot;a:&quot;,a);
+	disp(&quot;b:&quot;,b);
+</code></pre>
+<h3 id="函数指针">函数指针</h3>
+<p>典型形式如</p>
+<pre><code class="language-cpp">const vector&lt;int&gt;* (*fun)(int);
+//这个指针用于指向具有const vector&lt;int&gt;*返回值，有一个int参数的函数
+fun=the_fun;//将指针指向the_fun()函数
+//应用：
+int fun1(int i) {
+	return i+1;
+}
+int fun2(int i) {
+	return i+2;
+}
+//构建以指向fun1类型的函数指针为成员的数组，并初始化
+int(*fun_array[])(int) = {
+	fun1,fun2
+};
+//这里enum的使用避免记忆fun1 fun2的数组下标
+enum fun_names {
+	n_fun1,n_fun2
+};
+//调用
+cout&lt;&lt;fun_array[n_fun1](1);
+</code></pre>
+<h3 id="迭代器初步">迭代器初步</h3>
+<p>iterator 通常可理解为泛型指针，在构建泛型算法中用处很大。</p>
+<pre><code class="language-cpp">string strs[] = { &quot;hello&quot;,&quot;world&quot; };
+vector&lt;string&gt; vec(strs,strs+2);//利用上面的数组构建向量
+vector&lt;string&gt;::iterator iter = vec.begin();//构建一个iterator
+while (iter != vec.end()) {
+	cout &lt;&lt; *iter &lt;&lt; endl;
+	iter++;
+}
+</code></pre>
+<h3 id="函数对象function-object">函数对象（function object）</h3>
+<p>是一个程序设计的对象允许被当作普通函数来调用的特性
+c++预置了一些</p>
+<pre><code class="language-cpp">equal_to&lt;type&gt;() 结果为(param1 == param2)
+not_equal_to&lt;type&gt;() 结果为(param1 != param2)
+less&lt;type&gt;() 结果为 (param1 &lt; param2)
+greater&lt;type&gt;() 结果为(param1 &gt; param2)
+less_equal&lt;type&gt;() 结果为 (param1 &lt;= param2)
+greater_equal&lt;type&gt;() 结果为 (param1 &gt;= param2)
+logical_not&lt;type&gt;() 结果为 (!param1)
+logical_and&lt;type&gt;() 结果为 (param1 &amp;&amp; param2)
+logical_or&lt;type&gt;() 结果为 (param1 || param2)
+</code></pre>
+<p>可如下使用</p>
+<pre><code class="language-cpp">int a[] = { 7,8,1,2,4,5,10,23,23 };
+vector&lt;int&gt; vec(a, a + 9);
+//用函数对象做比较函数传入排序算法
+sort(vec.begin(), vec.end(), greater&lt;int&gt;());
+//遍历打印（use c++11新特性）
+for (int &amp;i : vec)
+		cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+</code></pre>
+<h3 id="function-adapter">Function Adapter</h3>
+<p>用于组合（combine）、变换（transform）、操作（manipulate）函数对象、特定参数值、或者特定函数。
+STL提供了一些，如</p>
+<pre><code class="language-cpp">bind2nd(less&lt;int&gt;,val)
+//将val 绑定在less的第二个元素上，使得less与val比较
+</code></pre>
+<h3 id="泛型算法实现样例">泛型算法实现样例</h3>
+<p>以实现泛型的过滤器为例，引入的迭代器起到泛型指针作用，避免对vector int[]等重载函数造成的重复实现，导入的函数指针扩展了过滤逻辑的灵活性</p>
+<pre><code class="language-cpp">//泛型过滤器，接收一对迭代器指向输入
+//接收一个比较函数和一个比较值
+//接收一个输出迭代器
+template&lt;typename Iter,typename ele&gt;
+void filter(Iter first, Iter last,Iter out, ele val, bool(*perd)(ele, ele)) {
+	while (first != last) {
+		if (perd(*first, val)) {
+			cout &lt;&lt; *first &lt;&lt; &quot; &quot;;
+			*out++ = *first;
+		}
+		first++;
+	}
+	cout &lt;&lt; endl;
+}
+//比较函数
+bool myless(int a, int b) {
+	return a &lt; b ? true : false;
+}
+//准备测试数据
+const int ele_num = 9;
+int a[] = { 7,8,1,2,4,5,10,23,23 };//数据
+int a1[ele_num] = { 0 };//接收结果数组
+vector&lt;int&gt; vec(a, a + ele_num);//初始化向量
+vector&lt;int&gt; vec1(ele_num);//接收向量
+filter(vec.begin(),vec.end(),vec1.begin(), 5, myless);//调用
+for (int &amp;i : vec1)//遍历打印
+	cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+cout &lt;&lt; endl;
+filter(a, a + ele_num, a1, 10, myless);//调用
+for (int &amp;i : a1)//遍历打印
+	cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+</code></pre>
+<h3 id="map简介">MAP简介</h3>
+<pre><code class="language-cpp">map&lt;string, int&gt; wordlist;
+string word;
+//这里cin在收到类型不满足string时返回0使得while退出
+//通过输入ctrl+z 回车后退出
+while (cin &gt;&gt; word)
+	wordlist[word]++;//对输入的内容归类统计
+for (auto &amp;i : wordlist)//遍历打印，这里i auto为一个pair
+	cout &lt;&lt; &quot;str= &quot;&lt;&lt;i.first&lt;&lt;&quot; num= &quot;&lt;&lt;i.second &lt;&lt; endl;
+//wordlist.find(&quot;xxx&quot;);检索
+//wordlist.count(&quot;xxx&quot;);统计个数
+</code></pre>
+<h3 id="类">类</h3>
+<h4 id="基本">基本</h4>
+<p>下面的例子展示类基础语法： 构造 解构 成员 方法 静态成员 静态方法</p>
+<pre><code class="language-cpp">//通常下面的类声明放到h文件中
+class Test {
+public:
+	//公开接口和属性
+	int a = 0;
+	//静态成员，可在所有类实例里共享
+	static int static_member;
+	//类函数声明
+	void print() const;
+	//末尾const声明为一const 成员函数，
+	//const 关键字只能放在函数声明的尾部，大概是因为其它地方都已经被占用了
+	//a. const对象只能访问const成员函数
+	//b. const对象的成员是不可修改的,然而const对象通过指针维护的对象却是可以修改的.
+	//c. const成员函数不可以修改对象的数据
+	//d. 然而加上mutable修饰符的数据成员,对于任何情况下通过任何手段都可修改
+	void input_data(int*);
+	void print_buf();
+	static void print_hello_world();//声明一个静态方法
+	//一组构造函数，因为短，习惯上实现和声明都写类里
+	//无参数构造函数，以 Test xxx;实例化时使用
+	Test() {};
+	//一般构造函数
+	Test(int num) {
+		a = num;
+		buf = new int[a];//申请一块内存,长度a
+	}
+	//一般构造函数
+	Test(int num1, int num2) {
+		a = num1;
+		b = num2;
+	}
+	//特殊构造函数，处理Test a=b;的初始化方式
+	Test(const Test &amp;rhs);
+	//解构函数，在类生命周期结束时调用
+	~Test() {
+		delete[] buf;//释放内存
+	}
+
+private:
+	//私有
+	int b = 0;
+	int * buf;
+};
+//下面这些实现放cpp文件中
+//这里的是类方法实现，Test::用于指明其属的类
+Test::Test(const Test &amp; rhs) {
+	//默认的逐一copy方式不会分配新的heap空间，要手工处理下
+	a = rhs.a;
+	b = rhs.b;
+	buf = new int[a];
+	for (int i = 0; i &lt; rhs.a; ++i) {
+		buf[i] = rhs.buf[i];
+	}
+}
+void Test::print() const{
+	cout &lt;&lt; &quot;a=:&quot; &lt;&lt; a &lt;&lt;&quot; b=&quot; &lt;&lt; b &lt;&lt;endl;
+}
+void Test::input_data(int *data){
+	for (int i = 0; i &lt; a; ++i)
+		buf[i] = data[i];
+}
+void Test::print_buf(){
+	for (int i = 0; i &lt; a; ++i)
+		cout &lt;&lt; buf[i] &lt;&lt; &quot; &quot;;
+	cout &lt;&lt; endl;
+}
+//静态函数实现时不需要重复添加static关键字
+void Test::print_hello_world(){
+	cout &lt;&lt; &quot;hello world&quot; &lt;&lt; endl;
+}
+//可在此处初始化，不可在函数中进行
+int Test::static_member = 1;
+
+//main
+int buf[] = { 1,2,3 };
+Test t0(3);
+t0.print();
+t0.input_data(buf);
+Test t1 = t0;
+t1.print();
+t0.print_buf();
+t1.print_buf();
+Test::print_hello_world();//使用静态函数，类似java static method
+cout &lt;&lt; Test::static_member &lt;&lt; endl;//访问
+</code></pre>
+<h4 id="运算符重映射">运算符重映射</h4>
+<p>注：全部的符号重载方法 <a href="http://www.runoob.com/cplusplus/cpp-overloading.html">http://www.runoob.com/cplusplus/cpp-overloading.html</a></p>
+<pre><code class="language-cpp">class TestOpOrid {
+public:
+	int num;
+	TestOpOrid() {
+		num = 0;
+	}
+	TestOpOrid(int n) {
+		num = n;
+	}
+	//重载加，定义为返回num成员相加的新对象
+	TestOpOrid operator+ (const TestOpOrid&amp; rhs) {
+		TestOpOrid t;
+		t.num = this-&gt;num + rhs.num;
+		return t;
+	}
+	//重载==为判断内部num相等
+	bool operator== (const TestOpOrid&amp; rhs) {
+		return this-&gt;num == rhs.num;
+	}
+};
+//mian
+TestOpOrid a(1), b(2);
+cout &lt;&lt; &quot;a==b &quot; &lt;&lt; (a == b) &lt;&lt; endl;
+TestOpOrid c = a + 1;
+cout &lt;&lt; &quot;c==b &quot; &lt;&lt; (c == b) &lt;&lt; endl;
+return 0;
+</code></pre>
+<h4 id="面向对象">面向对象</h4>
+<p>c++ 以如下的语法支持面向对象</p>
+<pre><code class="language-cpp">
+//基础类
+class LibMat {
+public:
+	//定义virtual的方法就可重载了
+	virtual void print() const{
+		cout &lt;&lt; &quot;LibMat print&quot; &lt;&lt; endl;
+	}
+};
+//继承LibMat
+class Book : public LibMat {
+public:
+	//注意这里的传参是写作const 引用，否则常数输入会报错
+	//另可简单写作Book(const int a,const int b),对传值类型，这样更好
+	Book(const int &amp;a,const int &amp;b) {
+		this-&gt;a = a;
+		this-&gt;b = b;
+	}
+	virtual void print() const{
+		//可这样调用上层方法
+		LibMat::print();
+		cout &lt;&lt; &quot;Book print&quot; &lt;&lt; endl;
+	}
+	void print_member() {
+		cout &lt;&lt; a &lt;&lt;','&lt;&lt; b &lt;&lt; endl;
+	}
+protected:
+//此关键字表达此2个变量仅可在此派生类使用
+	int a, b;
+};
+//继承机制使得操作一套类相当便利
+void display(LibMat &amp; o) {
+	o.print();
+}
+
+//main
+LibMat l;
+Book book(1,1);
+book.print();
+book.print_member();
+display(l);
+display(book);
+</code></pre>
+<h3 id="模板类">模板类</h3>
+<p><strong>tamplete类的声明使用</strong>
+因编译的特化原因，通常的做法是将模板类实现直接写在头文件中。
+h文件</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+class BinaryTree {
+public:
+	BinaryTree();
+	~BinaryTree();
+	BTnode&lt;T&gt; *_root;
+};
+
+template &lt;typename T&gt;
+BinaryTree&lt;T&gt;::BinaryTree()
+{
+}
+
+template &lt;typename T&gt;
+BinaryTree&lt;T&gt;::~BinaryTree()
+{
+}
+</code></pre>
+<p><strong>tamplete 默认参数特性</strong>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/essential_cpp%E7%AC%94%E8%AE%B0/0_hu78f4c924b6322b8a3b21d69f8b5bdfd2_41913_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/essential_cpp%E7%AC%94%E8%AE%B0/0_hu78f4c924b6322b8a3b21d69f8b5bdfd2_41913_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="668" height="295">
+</a>
+
+
+
+</figure>
+
+调用：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/essential_cpp%E7%AC%94%E8%AE%B0/1_hu637be9402f432e06020f9b891bb15461_7136_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/essential_cpp%E7%AC%94%E8%AE%B0/1_hu637be9402f432e06020f9b891bb15461_7136_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="511" height="80">
+</a>
+
+
+
+</figure>
+</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/&amp;text=essential_cpp%e7%ac%94%e8%ae%b0" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/&amp;t=essential_cpp%e7%ac%94%e8%ae%b0" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=essential_cpp%e7%ac%94%e8%ae%b0&amp;body=https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/&amp;title=essential_cpp%e7%ac%94%e8%ae%b0" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=essential_cpp%e7%ac%94%e8%ae%b0%20https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/en/post/essential_cpp%E7%AC%94%E8%AE%B0/&amp;title=essential_cpp%e7%ac%94%e8%ae%b0" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/en/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">Xiaohan Wang</a></h5>
+      <h6 class="card-subtitle">Ph.D. Student of School of Automation</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/en/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/en/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

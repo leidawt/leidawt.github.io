@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Xiaohan Wang">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="简述 逻辑回归虽简单，但其思想颇有价值 Logistic Regression 更原本的翻译应为对数回归，因同义词的缘故，习惯性的称之为逻辑回归了。虽称其为回归，但实际上这个算法是">
+
+  
+  <link rel="alternate" hreflang="zh" href="https://leidawt.github.io/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/">
+  
+  <link rel="alternate" hreflang="en-us" href="https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/en/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/">
+  <meta property="og:title" content="numpy实现逻辑回归&amp;MNIST测试 | Academic">
+  <meta property="og:description" content="简述 逻辑回归虽简单，但其思想颇有价值 Logistic Regression 更原本的翻译应为对数回归，因同义词的缘故，习惯性的称之为逻辑回归了。虽称其为回归，但实际上这个算法是"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:circle]">
+  <meta property="twitter:image" content="img/map[gravatar:%!s(bool=false) shape:circle]"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-12-12T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2018-12-12T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/"
+  },
+  "headline": "numpy实现逻辑回归\u0026MNIST测试",
+  
+  "datePublished": "2018-12-12T12:00:00+08:00",
+  "dateModified": "2018-12-12T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Xiaohan Wang"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "简述 逻辑回归虽简单，但其思想颇有价值 Logistic Regression 更原本的翻译应为对数回归，因同义词的缘故，习惯性的称之为逻辑回归了。虽称其为回归，但实际上这个算法是"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>numpy实现逻辑回归&amp;MNIST测试 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/en/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#featured"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/en/courses/"><span>Courses</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">English</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>English</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/">
+            <span>中文 (简体)</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>numpy实现逻辑回归&amp;MNIST测试</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/en/authors/admin/">Xiaohan Wang</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 12, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h3 id="简述">简述</h3>
+<p>逻辑回归虽简单，但其思想颇有价值
+Logistic Regression 更原本的翻译应为对数回归，因同义词的缘故，习惯性的称之为逻辑回归了。虽称其为回归，但实际上这个算法是处理分类问题的。</p>
+<h3 id="why-logistic-regression">why Logistic Regression?</h3>
+<p>我们也可用线性模型进行分类预测，比如设y=wx+b 并判定y&gt;阈值为正类。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/0_hueb58ddb54c27f08ec7e0499148322879_55319_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/0_hueb58ddb54c27f08ec7e0499148322879_55319_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="433" height="159">
+</a>
+
+
+
+</figure>
+
+但是问题在于，若数据集中有很正类的样本，会极大的影响w权重向自身倾斜，这是不希望看到的，如下
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/1_hu72c71d86ea8d1390db81b00fb0f0d103_73424_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/1_hu72c71d86ea8d1390db81b00fb0f0d103_73424_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="497" height="153">
+</a>
+
+
+
+</figure>
+
+所以，思路便是引入非线性，对很正类的样本加以限制，这里用的是sigmoid函数，利用了其饱和特性。sigmoid函数最初来自18实际对人口增长的研究。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/2_hua6776a29a6c5aca9887810b39fce4aea_24279_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/2_hua6776a29a6c5aca9887810b39fce4aea_24279_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="312" height="184">
+</a>
+
+
+
+</figure>
+
+引入后变为这样
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/3_hud3043a1c095380c7863a0324c1207a07_20060_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/3_hud3043a1c095380c7863a0324c1207a07_20060_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="249" height="118">
+</a>
+
+
+
+</figure>
+
+实际上，这便是一个采用sigmoid激活函数的单层神经网络
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/4_hud3cb3fb3ff299d99f5178a9531669106_84631_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/4_hud3cb3fb3ff299d99f5178a9531669106_84631_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="890" height="461">
+</a>
+
+
+
+</figure>
+
+由于非线性的引入，整个函数不再是凸函数了，优化就只有进行迭代求解了。
+我们定义代价函数以便进行参数训练。通常有均方误差和交叉熵（极大似然）两种定义，下面分别叙述</p>
+<ol>
+<li>均方误差
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/5_hu5a5134165cd36c718a5e7bf304468f67_9498_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/5_hu5a5134165cd36c718a5e7bf304468f67_9498_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="348" height="87">
+</a>
+
+
+
+</figure>
+
+很朴素的想法，对数据集内每个样本点预测误差求和</li>
+<li>交叉熵（极大似然）
+交叉熵 与 极大似然 是两种截然不同的思路，但最终的形式是一致的，有些殊途同归的感觉。
+交叉熵优化的其实是其KL散度部分，其理解详见
+<a href="https://www.jianshu.com/p/43318a3dc715">https://www.jianshu.com/p/43318a3dc715</a>
+KL散度用于表达两个分布之间相似程度。其其思想简言之就是分布里概率越重的点越要像。
+交叉熵误差在分类问题效果远好于均方误差，我们易从概率论的极大似然方法推出其形式
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/6_hu66413731ebeb7f5ae0a0f37e41a73442_25665_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/6_hu66413731ebeb7f5ae0a0f37e41a73442_25665_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="686" height="44">
+</a>
+
+
+
+</figure>
+
+即预测函数取组参数w,b是，其在数据集上能正确表述所有样本点的可能性大小。优化目标自然是找最合适的w,b使得这个概率值最大化。通常还要取一下负对数，一是为了乘法变加法，二是从求max变成求min。
+Why better？
+原因可由其求导结果体现出来。
+<a href="https://blog.csdn.net/liweibin1994/article/details/79510237">https://blog.csdn.net/liweibin1994/article/details/79510237</a>
+简言之，均方误差的问题在于其对误差很大的点反而矫正意愿不强烈，如图（这个图来源于著名的Understanding the difﬁculty of training deep feedforward neural networks一文）
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/7_hu240bd6a9f165807da19dbefbfd187081_265273_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/7_hu240bd6a9f165807da19dbefbfd187081_265273_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="646" height="460">
+</a>
+
+
+
+</figure>
+</li>
+</ol>
+<h3 id="toy-set上实战">Toy set上实战</h3>
+<p>使用纯numpy实现</p>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy
+df = pd.read_csv('./ex2data1.txt')
+m = len(df)  # 数据总数
+pos = df[(df['y'] == 1)]
+neg = df[(df['y'] == 0)]
+x = np.mat(df.iloc[:, 0:-1])
+y = np.mat(df.iloc[:, -1]).T  # m*1 mat
+X = np.hstack((np.ones((m, 1)), x))  # m*n mat
+#theta = np.zeros((X.shape[1], 1))  # n*1 mat
+theta=np.array([0,0,0]).reshape(3,1)
+cost_history = []
+def sigmoid(x):
+    return 1.0 / (1 + np.exp(-x))
+
+def J(theta,X,y,mylambda=0):
+    theta=theta.reshape(3,1)
+    #print(theta.shape,X.shape,y.shape)
+    return -1*float((y.T*np.log(h(X,theta))+(1-y.T)*np.log(1-h(X,theta)))/m)+float(theta.T.dot(theta))*mylambda/(2*m)
+
+def h(X,theta):
+    return sigmoid(X.dot(theta))
+
+from scipy import optimize
+
+def opt():
+    global theta
+    result = optimize.fmin(J, x0=theta, args=(X, y,0.), maxiter=400, full_output=True)
+    theta=result[0]
+    print(theta)
+def plot():
+        fig = plt.figure()
+
+        plt.plot(pos.iloc[:, 0], pos.iloc[:, 1], 'k+', label='pos')
+        plt.plot(neg.iloc[:, 0], neg.iloc[:, 1], 'yo', label='neg')
+        # 画边界
+        x0 = [float(df.x0.min()), float(df.x0.max())]
+        x1 = [float(-1*theta[0]/theta[2] -
+                    theta[1]/theta[2]*each) for each in x0]
+        plt.plot(x0, x1)
+        plt.grid(True)
+        plt.show()
+opt()
+plot()
+</code></pre>
+<p>注意这里的优化调用了scipy 的现成算法，会快一些。数据见文末。若想获取非线性决策边界，一个简单的方法是对输入进行扩展。即x-&gt;[x,x某平方,交叉项&hellip;]然后一并喂给逻辑回归即可。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/8_hufcc0c4aaf8ecce00e8f441ba4d15b08d_24459_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/8_hufcc0c4aaf8ecce00e8f441ba4d15b08d_24459_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="410" height="250">
+</a>
+
+
+
+</figure>
+</p>
+<h3 id="二类分类-n类分类">二类分类-&gt;n类分类</h3>
+<p>多分类实现有两种常见思路，一是实现n个二分类器（集成学习的思想，打群架），二是把sigmoid函数换成其多分类版本softmax，其吐出的是对各个类的可能性数值，同时配合交叉熵为代价函数
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/9_hu9d0bfbc19c6f43823be4ececfcc33933_126416_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/9_hu9d0bfbc19c6f43823be4ececfcc33933_126416_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="812" height="528">
+</a>
+
+
+
+</figure>
+
+softmax实际的实现有一些trick，主要是保证其计算稳定而不会溢出。核心方法是都剪掉max(x)再计算exp使得不会溢出。
+此外，对于为什么使用softmax而不是其他函数的讨论可见：https://www.zhihu.com/question/40403377
+主要是 softmax+交叉熵的求导结果及其简洁</p>
+<h3 id="mnist测试">MNIST测试</h3>
+<p>这里采用对每个数字分别训练一个二分类器的方法，当时选了均方误差Loss，故训练困难，之后采用了L-BFGS-B优化器代替手写的简单梯度下降进行训练。
+<strong>关于L-BFGS-B算法</strong>
+<a href="http://www.hankcs.com/ml/l-bfgs.html">http://www.hankcs.com/ml/l-bfgs.html</a>
+<a href="https://www.zhihu.com/question/46441403">https://www.zhihu.com/question/46441403</a>
+通常的多层神经网络或一些复杂的模型均采用梯度下降及其各种改进方法。不会使用BFGS之类的拟牛顿法，主要有下面考虑
+神经网络优化问题有三个特点：大数据（样本多），高维问题（参数极多），非凸，BFGS这类利用二阶导信息的方法中计算成本高，易陷入鞍点的问题就比较显著了。
+牛顿和拟牛顿法在凸优化情形下，如果迭代点离全局最优很近时，收敛速率快于gd。
+<strong>code</strong></p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import scipy.io #Used to load the OCTAVE *.mat files
+import scipy.misc #Used to show matrix as an image
+import random #To pick random images to display
+import scipy
+from scipy import optimize
+from scipy.optimize import minimize
+from scipy.special import expit #Vectorized sigmoid function
+
+datafile = './ex3data1.mat'
+mat = scipy.io.loadmat( datafile )
+X, y = mat['X'], mat['y']
+y[y==10]=0 #原数据0 标记为10 这里改回0
+#Insert a column of 1's to X as usual
+X = np.insert(X,0,1,axis=1)# 插入1
+
+m = X.shape[0]  # 数据总数
+n = X.shape[1] #特征数，包括常数项
+theta=np.zeros((n,1))
+#theta=np.random.random(n)
+print(X.shape,y.shape,theta.shape,m,n)
+print(np.unique(y))
+
+def J(mytheta,myX,myy,mylambda=0):
+    #误差函数，返回float
+    mytheta=mytheta.reshape(n,1)#这个处理防止相乘报错。因为输入可能为(n,)而不是（n,1）
+    #print('J input theta x y',theta.shape,X.shape,y.shape)
+    a=myy.T.dot(np.log(h(mytheta,myX)))
+    b=(1-myy).T.dot(np.log(1-h(mytheta,myX)))
+    c=theta.T.dot(mytheta)*mylambda/(2*m)
+    #print(a.shape,b.shape,c.shape)
+    return float(-1/m*(a+b)+c)
+
+def h(mytheta,myX): #Logistic hypothesis function
+    #假设函数 返回（m,1）
+    res=expit(myX.dot(mytheta)).reshape(m,1)
+    #print('h theta X return',mytheta.shape,myX.shape,res.shape)
+    return res
+
+def grad(mytheta,myX,myy,mylambda = 0.):
+    #计算梯度向量，未考虑正则项 返回（n,）
+    #print('grad theta X y',mytheta.shape,myX.shape,myy.shape)
+    derta=h(mytheta,myX)-myy
+    #print(derta.shape)
+    res=(myX.T.dot(derta)).reshape(n)/m
+    return res
+
+def opt(mytheta,myX,myy,c,mylambda=0.):
+    #递归优化 c为类名（0-9）
+    #minimize的输入mytheta为(n,)其传给调用函数的形式也为(n,)
+    #这里传入(myy == c)*1是一个[0 0 0 1 1 ... ]向量
+    #maxiter最大迭代数，disp显示优化信息
+    #由于函数的复杂性，其不一定收敛的彻底，50次迭代已经很好，随仍可继续下降，但可能过拟合
+    #L-BFGS-B为优化的拟牛顿法，因为利用了二阶倒数信息，下降比较快。不传入自定义的grad会导致
+    #其使用数值方法计算grad，及其缓慢
+    res = minimize(J, mytheta, args=( myX, (myy == c)*1), method='L-BFGS-B',
+                       jac=grad, options={'maxiter':50,'disp':False})
+    #print(res)
+    #res.x 是优化好的theta值
+    return res.x
+
+
+#final_theta=opt(theta,X,y,1)
+#print(final_theta.shape)
+#print(X[495:505,:].dot(final_theta))
+#print(y[495:505,:])
+#对0-9分别训练，以预测值最大的类别作为最终预测
+thetas=np.zeros((10,n))#(10,401)
+for each in range(10):
+    thetas[each]=opt(theta,X,y,each)
+predict=thetas.dot(X.T)# (10,5000)
+#argmax函数对每一类求最大值index
+predict=predict.argmax(axis=0) #(5000,)
+#最后统计正确率
+print(np.mean((predict==y.reshape(m)))*100,'%')
+#产生的RuntimeWarning可能来自某些变量在优化中变0，导致log计算出错，会变为NaN，不影响最终结果
+</code></pre>
+<p>在我的低压cpu上6.33 s 就可在训练集获得96.84 %的正确率，可见表达力还是不错的，一是采用10个分类器的原因，二是MNIST本身确实简单</p>
+<h3 id="参考资料">参考资料</h3>
+<p>cs229
+李宏毅机器学习</p>
+<h3 id="data">DATA</h3>
+<p>链接: <a href="https://pan.baidu.com/s/1rxQM1HCICnAaUW3ih2GeYQ">https://pan.baidu.com/s/1rxQM1HCICnAaUW3ih2GeYQ</a> 提取码: ryj4</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/&amp;text=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/&amp;t=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95&amp;body=https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/&amp;title=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95%20https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/en/post/numpy%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92mnist%E6%B5%8B%E8%AF%95/&amp;title=numpy%e5%ae%9e%e7%8e%b0%e9%80%bb%e8%be%91%e5%9b%9e%e5%bd%92&amp;amp;MNIST%e6%b5%8b%e8%af%95" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/en/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">Xiaohan Wang</a></h5>
+      <h6 class="card-subtitle">Ph.D. Student of School of Automation</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/en/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/en/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
