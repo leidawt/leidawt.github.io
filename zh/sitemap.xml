@@ -877,6 +877,20 @@
   </url>
   
   <url>
+    <loc>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/"
+                />
+  </url>
+  
+  <url>
     <loc>https://leidawt.github.io/talk/</loc>
     <xhtml:link
                 rel="alternate"
