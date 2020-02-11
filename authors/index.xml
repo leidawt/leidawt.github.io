@@ -5,7 +5,7 @@
     <link>https://leidawt.github.io/authors/</link>
       <atom:link href="https://leidawt.github.io/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Tue, 04 Feb 2020 19:33:01 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Tue, 11 Feb 2020 12:00:00 +0800</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
       <title>Authors</title>
@@ -13,20 +13,20 @@
     </image>
     
     <item>
+      <title></title>
+      <link>https://leidawt.github.io/authors/admin/</link>
+      <pubDate>Tue, 11 Feb 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/authors/admin/</guid>
+      <description>&lt;p&gt;北理工在读博士生&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Pfrommer Bernd</title>
       <link>https://leidawt.github.io/authors/pfrommer-bernd/</link>
       <pubDate>Tue, 04 Feb 2020 19:33:01 +0800</pubDate>
       <guid>https://leidawt.github.io/authors/pfrommer-bernd/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://leidawt.github.io/authors/admin/</link>
-      <pubDate>Tue, 04 Feb 2020 17:37:04 +0800</pubDate>
-      <guid>https://leidawt.github.io/authors/admin/</guid>
-      <description>&lt;p&gt;北理工在读博士生&lt;/p&gt;
-</description>
     </item>
     
   </channel>

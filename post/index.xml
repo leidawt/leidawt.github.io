@@ -5,12 +5,325 @@
     <link>https://leidawt.github.io/post/</link>
       <atom:link href="https://leidawt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Tue, 04 Feb 2020 12:00:00 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Tue, 11 Feb 2020 12:00:00 +0800</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
       <title>Posts</title>
       <link>https://leidawt.github.io/post/</link>
     </image>
+    
+    <item>
+      <title>markdown博客迁移小工具</title>
+      <link>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Tue, 11 Feb 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</guid>
+      <description>&lt;h1 id=&#34;动机&#34;&gt;动机&lt;/h1&gt;
+&lt;p&gt;鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客里的外链插图到本地，同时做一下链接替换的工作。
+原理如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用CSDN编辑器导出博文的markdown
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/0_hu39335189b4879e84774a689c4b92e61f_7556_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/0_hu39335189b4879e84774a689c4b92e61f_7556_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;285&#34; height=&#34;206&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;将导出的markdown中的插图下载下来本地化，并进行url替换。
+即将原文的
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/1_huc13be872c845a5d5a95ed507b6d18653_13452_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/1_huc13be872c845a5d5a95ed507b6d18653_13452_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;507&#34; height=&#34;100&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+替换为需要的格式，比如hugo博客一般是如下格式：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/2_hu2ce8d6049c20f285ba839413d136d1e8_11814_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/2_hu2ce8d6049c20f285ba839413d136d1e8_11814_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;548&#34; height=&#34;101&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;实现&#34;&gt;实现&lt;/h1&gt;
+&lt;p&gt;实现很简单，就是正则匹配替换并使用urlretrieve下载图片。核心python脚本如下：
+blog_transformer.py&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#! py -3
+#!/usr/bin/env python3
+
+import re
+from urllib.request import urlretrieve
+import argparse
+import os
+import codecs
+
+
+class BlogTransformer:
+    def __init__(self, mode=&#39;hugo-academic&#39;):
+        &amp;quot;&amp;quot;&amp;quot;__init__ init class
+
+        Args:
+            mode (str, optional): REPLACE mode select. Defaults to &#39;hugo-academic&#39;.
+        &amp;quot;&amp;quot;&amp;quot;
+        self.MD_FILE = &#39;&#39;
+        self.SAVE_PATH = &#39;&#39;
+        self.REPLACE_MODE = &#39;&#39;
+        if mode == &#39;hugo-academic&#39;:
+            # https://sourcethemes.com/academic/docs/writing-markdown-latex/#images
+            # use format required by hugo
+            # 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
+
+
+  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+            self.REPLACE_MODE = &#39;{{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
+
+
+  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+}}&#39;
+        if mode == &#39;local-img-url&#39;:
+            # use standard markdown format
+            self.REPLACE_MODE = &#39;[]({0})&#39;
+
+    def _pic_download(self, url, path, file_name):
+        &amp;quot;&amp;quot;&amp;quot;_pic_download download picture
+
+        Args:
+            url (str): url
+            path (str): save path for the picture
+            file_name (str): name for the picture
+
+        Returns:
+            (save_name, file_type): -
+        &amp;quot;&amp;quot;&amp;quot;
+        file_type = &#39;&#39;
+        if &#39;.png&#39; in url:
+            file_type = &#39;.png&#39;
+        elif &#39;.jpg&#39; in url:
+            file_type = &#39;.jpg&#39;
+        elif &#39;.gif&#39; in url:
+            file_type = &#39;.gif&#39;
+        else:
+            # for some url without expicity file_type, use .png
+            file_type = &#39;.png&#39;
+        save_name = os.path.join(path, file_name+file_type)
+        print(&#39;saving to {}&#39;.format(save_name))
+
+        urlretrieve(url, save_name)
+        return save_name, file_type
+
+    def run(self, md_file, save_path=&#39;&#39;, save=True):
+        &amp;quot;&amp;quot;&amp;quot;run download every pic url and modified the markdown
+
+        Args:
+            md_file (str): input markdown string
+            save_path (str, optional): path to save the modified markdown, when set to default, use the same path as imput markdown file. Defaults to &#39;&#39;.
+            save (bool, optional): Save the modified markdown?. Defaults to True.
+
+        Raises:
+            ValueError: raise when there are errors in matching pic url, i.e. meet invalid regex match 
+
+        Returns:
+            str: modified markdown
+        &amp;quot;&amp;quot;&amp;quot;
+        self.MD_FILE = md_file
+        if save_path == &#39;&#39;:
+            # use the same dir as md_file
+            self.SAVE_PATH = os.path.dirname(os.path.abspath(self.MD_FILE))
+        else:
+            self.SAVE_PATH = save_path
+        # read markdown file into str
+        try:
+            with open(self.MD_FILE, &#39;r&#39;) as f:
+                md = f.read()
+        except:
+            # for &amp;quot;utf-8 with dom&amp;quot; format
+            with open(self.MD_FILE, &#39;r&#39;, encoding=&#39;utf-8-sig&#39;) as f:
+                md = f.read()
+        # findall all ![xxx](xxx) commands
+        url_commands = re.findall(r&amp;quot;!\[[\s\S]*?\]\(.+?\)&amp;quot;, md)
+        # download each img and change the ![xxx](xxx) commands to new REPLACE_MODE format
+        for id, each in enumerate(url_commands):
+            id = str(id)
+            url = re.findall(r&amp;quot;!\[[\s\S]*?\]\((.+?)\)&amp;quot;, each)
+            if url is not []:
+                url = url[0]
+                print(&amp;quot;Downloading: {}&amp;quot;.format(url))
+
+            else:
+                raise ValueError(&#39;Err in matching url in {}&#39;.format(each))
+            save_name, file_type = self._pic_download(
+                url, self.SAVE_PATH, id)
+            print(&#39;Done&#39;)
+            replace_str = self.REPLACE_MODE.format(id+file_type)
+            print(&#39;Replacing {} to {}&#39;.format(each, replace_str))
+            md = md.replace(each, replace_str)
+
+        # save the new markdown file
+        print(&#39;#&#39;*80)
+        print(&#39;Saving modifieded markdown file into {}&#39;.format(
+            os.path.join(self.SAVE_PATH, &#39;_&#39;+self.MD_FILE)))
+        if save:
+            with codecs.open(os.path.join(self.SAVE_PATH, &#39;_&#39;+self.MD_FILE), &amp;quot;w&amp;quot;, &amp;quot;utf-8&amp;quot;) as f:
+                f.write(md)
+        print(&#39;Done!&#39;)
+        return md
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+
+    parser = argparse.ArgumentParser()  # init
+    parser.add_argument(&#39;-f&#39;, help=&amp;quot;input markdown file&amp;quot;)
+    parser.add_argument(&#39;-d&#39;, help=&amp;quot;path to save pictures&amp;quot;, default=&#39;&#39;)
+    parser.add_argument(&#39;-m&#39;, help=&amp;quot;replace mode&amp;quot;, default=&#39;hugo-academic&#39;)
+    args = vars(parser.parse_args())
+
+    print(&#39;MD_FILE = {}&#39;.format(args[&#39;f&#39;]))
+    print(&#39;SAVE_PATH = {}&#39;.format(args[&#39;d&#39;]))
+    print(&#39;REPLACE_MODE = {}&#39;.format(args[&#39;m&#39;]))
+    print(&#39;#&#39;*80)
+
+    bt = BlogTransformer(args[&#39;m&#39;])
+    bt.run(args[&#39;f&#39;], args[&#39;d&#39;])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;完整代码可见
+&lt;a href=&#34;https://github.com/leidawt/blog_transformer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;github&lt;/a&gt;
+&lt;/p&gt;
+&lt;h1 id=&#34;安装使用&#34;&gt;安装使用&lt;/h1&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
+&lt;p&gt;git clone前述
+&lt;a href=&#34;https://github.com/leidawt/blog_transformer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;仓库&lt;/a&gt;
+，将路径加入环境变量以便bash或命令行能找到。&lt;/p&gt;
+&lt;h2 id=&#34;使用&#34;&gt;使用&lt;/h2&gt;
+&lt;p&gt;一般，执行下面命令即可，效果是在输入文件YorMarkdown.md的文件夹下导出替换过url的_YorMarkdown.md文件，并下载所有插图到本地，从0开始顺序编号。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;blog_transformer.py -f YorMarkdown.md
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;默认替换为hugo模式的url，亦可使用原生markdown格式：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;blog_transformer.py -f YorMarkdown.md -m local-img-url
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;另一个脚本pipline.py是个更进一步的自动化工具&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>借助Hugo和Academic主题在github</title>
@@ -715,238 +1028,6 @@ setup(
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo pip3 install ./dist/foo-1.0-py3-none-any.whl
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;则会安装到/usr/local/lib/python3.6/dist-packages中去，使用 pip3 show &amp;lt;packange-name&amp;gt; 可以看到安装信息&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MATLAB实时脚本</title>
-      <link>https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/</link>
-      <pubDate>Fri, 27 Sep 2019 12:00:00 +0800</pubDate>
-      <guid>https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/</guid>
-      <description>&lt;p&gt;自matlab2016a版本以来，matlab多了创建实时脚本的功能。在未来版本中作为mupad的替代。其思想与mathcad相似，企图将文档与程序合二为一。就是在原有m文件上加了交互式图标，富文本功能和控件。格式为mlx。2016a以上版本都可打开，还可以输出为pdf等用于分享。
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/0_hu27f681999735b173cb5907a42a446b48_170865_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/0_hu27f681999735b173cb5907a42a446b48_170865_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1366&#34; height=&#34;736&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-创建实时脚本很简单，help里有详细记述，这里记录下实时脚本的功能和技巧。
-首先是交互式输入公式的能力，如下，有强大的公式录入功能，还支持latex
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/1_hu369e60186b8fe73b014217e040275d86_29168_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/1_hu369e60186b8fe73b014217e040275d86_29168_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;564&#34; height=&#34;131&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/2_huac6b23cfe542179cac310134a88f01b9_2204_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/2_huac6b23cfe542179cac310134a88f01b9_2204_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;156&#34; height=&#34;74&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-其次，绘图结果可以进行交互式操作，并生成对应操作的代码。如下：
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/3_hu353d3c60fdcde3cffe6c74a6aa340faf_24902_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/3_hu353d3c60fdcde3cffe6c74a6aa340faf_24902_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;717&#34; height=&#34;439&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-还可以插入箭头，加网格，图例等，比用代码写要更方便快捷，只需之后操作生成的代码更新到code即可
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/4_hudd6a01a43ce52a9e40844e1d4ab50c60_112876_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/4_hudd6a01a43ce52a9e40844e1d4ab50c60_112876_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1366&#34; height=&#34;736&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-此外&lt;strong&gt;一个十分重要特性&lt;/strong&gt;是对公式结果的展示，比以前的pretty更加优秀的是，其可进行手写化展示。以后利用matlab进行符号推导更加舒服了。
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/5_hu83efc82b9e8fe3432f94d11d116980aa_3954_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/5_hu83efc82b9e8fe3432f94d11d116980aa_3954_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;196&#34; height=&#34;133&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-自2018a开始，又增加了控件功能，可嵌入代码之中，通过拖动和下拉菜单选项进行取值更改，之后会自动刷新和执行一遍程序。
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/6_hu07d3b9a6bab2b53b5432562364ee36fb_3140_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/6_hu07d3b9a6bab2b53b5432562364ee36fb_3140_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;259&#34; height=&#34;73&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-&lt;/p&gt;
 </description>
     </item>
     
@@ -11719,6 +11800,238 @@ K=acker(A,B,P)&lt;/p&gt;
     </item>
     
     <item>
+      <title>MATLAB实时脚本</title>
+      <link>https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Thu, 27 Sep 2018 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;自matlab2016a版本以来，matlab多了创建实时脚本的功能。在未来版本中作为mupad的替代。其思想与mathcad相似，企图将文档与程序合二为一。就是在原有m文件上加了交互式图标，富文本功能和控件。格式为mlx。2016a以上版本都可打开，还可以输出为pdf等用于分享。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/0_hu27f681999735b173cb5907a42a446b48_170865_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/0_hu27f681999735b173cb5907a42a446b48_170865_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1366&#34; height=&#34;736&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+创建实时脚本很简单，help里有详细记述，这里记录下实时脚本的功能和技巧。
+首先是交互式输入公式的能力，如下，有强大的公式录入功能，还支持latex
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/1_hu369e60186b8fe73b014217e040275d86_29168_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/1_hu369e60186b8fe73b014217e040275d86_29168_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;564&#34; height=&#34;131&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/2_huac6b23cfe542179cac310134a88f01b9_2204_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/2_huac6b23cfe542179cac310134a88f01b9_2204_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;156&#34; height=&#34;74&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其次，绘图结果可以进行交互式操作，并生成对应操作的代码。如下：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/3_hu353d3c60fdcde3cffe6c74a6aa340faf_24902_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/3_hu353d3c60fdcde3cffe6c74a6aa340faf_24902_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;717&#34; height=&#34;439&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+还可以插入箭头，加网格，图例等，比用代码写要更方便快捷，只需之后操作生成的代码更新到code即可
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/4_hudd6a01a43ce52a9e40844e1d4ab50c60_112876_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/4_hudd6a01a43ce52a9e40844e1d4ab50c60_112876_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1366&#34; height=&#34;736&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+此外&lt;strong&gt;一个十分重要特性&lt;/strong&gt;是对公式结果的展示，比以前的pretty更加优秀的是，其可进行手写化展示。以后利用matlab进行符号推导更加舒服了。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/5_hu83efc82b9e8fe3432f94d11d116980aa_3954_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/5_hu83efc82b9e8fe3432f94d11d116980aa_3954_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;196&#34; height=&#34;133&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+自2018a开始，又增加了控件功能，可嵌入代码之中，通过拖动和下拉菜单选项进行取值更改，之后会自动刷新和执行一遍程序。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/6_hu07d3b9a6bab2b53b5432562364ee36fb_3140_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E5%AE%9E%E6%97%B6%E8%84%9A%E6%9C%AC/6_hu07d3b9a6bab2b53b5432562364ee36fb_3140_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;259&#34; height=&#34;73&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>python笔记</title>
       <link>https://leidawt.github.io/post/python%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 26 Sep 2018 12:00:00 +0800</pubDate>
@@ -14406,319 +14719,6 @@ py -3 autoftp.py %1
 pause
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;然后直接将目标文件夹拖到这个bat上就可以实现自动上传了&#34;&gt;然后直接将目标文件夹拖到这个bat上就可以实现自动上传了！&lt;/h3&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>markdown博客迁移小工具</title>
-      <link>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</guid>
-      <description>&lt;h1 id=&#34;动机&#34;&gt;动机&lt;/h1&gt;
-&lt;p&gt;鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客里的外链插图到本地，同时做一下链接替换的工作。
-原理如下：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;使用CSDN编辑器导出博文的markdown
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/0_hu39335189b4879e84774a689c4b92e61f_7556_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/0_hu39335189b4879e84774a689c4b92e61f_7556_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;285&#34; height=&#34;206&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-&lt;/li&gt;
-&lt;li&gt;将导出的markdown中的插图下载下来本地化，并进行url替换。
-即将原文的
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/1_huc13be872c845a5d5a95ed507b6d18653_13452_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/1_huc13be872c845a5d5a95ed507b6d18653_13452_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;507&#34; height=&#34;100&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-替换为需要的格式，比如hugo博客一般是如下格式：
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/2_hu2ce8d6049c20f285ba839413d136d1e8_11814_2000x2000_fit_lanczos_2.png&#34; &gt;
-
-
-  &lt;img data-src=&#34;https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/2_hu2ce8d6049c20f285ba839413d136d1e8_11814_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;548&#34; height=&#34;101&#34;&gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&#34;实现&#34;&gt;实现&lt;/h1&gt;
-&lt;p&gt;实现很简单，就是正则匹配替换并使用urlretrieve下载图片。核心python脚本如下：
-blog_transformer.py&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#! py -3
-#!/usr/bin/env python3
-
-import re
-from urllib.request import urlretrieve
-import argparse
-import os
-import codecs
-
-
-class BlogTransformer:
-    def __init__(self, mode=&#39;hugo-academic&#39;):
-        &amp;quot;&amp;quot;&amp;quot;__init__ init class
-
-        Args:
-            mode (str, optional): REPLACE mode select. Defaults to &#39;hugo-academic&#39;.
-        &amp;quot;&amp;quot;&amp;quot;
-        self.MD_FILE = &#39;&#39;
-        self.SAVE_PATH = &#39;&#39;
-        self.REPLACE_MODE = &#39;&#39;
-        if mode == &#39;hugo-academic&#39;:
-            # https://sourcethemes.com/academic/docs/writing-markdown-latex/#images
-            # use format required by hugo
-            # 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
-
-
-  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-            self.REPLACE_MODE = &#39;{{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
-
-
-  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-}}&#39;
-        if mode == &#39;local-img-url&#39;:
-            # use standard markdown format
-            self.REPLACE_MODE = &#39;[]({0})&#39;
-
-    def _pic_download(self, url, path, file_name):
-        &amp;quot;&amp;quot;&amp;quot;_pic_download download picture
-
-        Args:
-            url (str): url
-            path (str): save path for the picture
-            file_name (str): name for the picture
-
-        Returns:
-            (save_name, file_type): -
-        &amp;quot;&amp;quot;&amp;quot;
-        file_type = &#39;&#39;
-        if &#39;.png&#39; in url:
-            file_type = &#39;.png&#39;
-        elif &#39;.jpg&#39; in url:
-            file_type = &#39;.jpg&#39;
-        elif &#39;.gif&#39; in url:
-            file_type = &#39;.gif&#39;
-        else:
-            # for some url without expicity file_type, use .png
-            file_type = &#39;.png&#39;
-        save_name = os.path.join(path, file_name+file_type)
-        print(&#39;saving to {}&#39;.format(save_name))
-
-        urlretrieve(url, save_name)
-        return save_name, file_type
-
-    def run(self, md_file, save_path=&#39;&#39;, save=True):
-        &amp;quot;&amp;quot;&amp;quot;run download every pic url and modified the markdown
-
-        Args:
-            md_file (str): input markdown string
-            save_path (str, optional): path to save the modified markdown, when set to default, use the same path as imput markdown file. Defaults to &#39;&#39;.
-            save (bool, optional): Save the modified markdown?. Defaults to True.
-
-        Raises:
-            ValueError: raise when there are errors in matching pic url, i.e. meet invalid regex match 
-
-        Returns:
-            str: modified markdown
-        &amp;quot;&amp;quot;&amp;quot;
-        self.MD_FILE = md_file
-        if save_path == &#39;&#39;:
-            # use the same dir as md_file
-            self.SAVE_PATH = os.path.dirname(os.path.abspath(self.MD_FILE))
-        else:
-            self.SAVE_PATH = save_path
-        # read markdown file into str
-        try:
-            with open(self.MD_FILE, &#39;r&#39;) as f:
-                md = f.read()
-        except:
-            # for &amp;quot;utf-8 with dom&amp;quot; format
-            with open(self.MD_FILE, &#39;r&#39;, encoding=&#39;utf-8-sig&#39;) as f:
-                md = f.read()
-        # findall all ![xxx](xxx) commands
-        url_commands = re.findall(r&amp;quot;!\[[\s\S]*?\]\(.+?\)&amp;quot;, md)
-        # download each img and change the ![xxx](xxx) commands to new REPLACE_MODE format
-        for id, each in enumerate(url_commands):
-            id = str(id)
-            url = re.findall(r&amp;quot;!\[[\s\S]*?\]\((.+?)\)&amp;quot;, each)
-            if url is not []:
-                url = url[0]
-                print(&amp;quot;Downloading: {}&amp;quot;.format(url))
-
-            else:
-                raise ValueError(&#39;Err in matching url in {}&#39;.format(each))
-            save_name, file_type = self._pic_download(
-                url, self.SAVE_PATH, id)
-            print(&#39;Done&#39;)
-            replace_str = self.REPLACE_MODE.format(id+file_type)
-            print(&#39;Replacing {} to {}&#39;.format(each, replace_str))
-            md = md.replace(each, replace_str)
-
-        # save the new markdown file
-        print(&#39;#&#39;*80)
-        print(&#39;Saving modifieded markdown file into {}&#39;.format(
-            os.path.join(self.SAVE_PATH, &#39;_&#39;+self.MD_FILE)))
-        if save:
-            with codecs.open(os.path.join(self.SAVE_PATH, &#39;_&#39;+self.MD_FILE), &amp;quot;w&amp;quot;, &amp;quot;utf-8&amp;quot;) as f:
-                f.write(md)
-        print(&#39;Done!&#39;)
-        return md
-
-
-if __name__ == &amp;quot;__main__&amp;quot;:
-
-    parser = argparse.ArgumentParser()  # init
-    parser.add_argument(&#39;-f&#39;, help=&amp;quot;input markdown file&amp;quot;)
-    parser.add_argument(&#39;-d&#39;, help=&amp;quot;path to save pictures&amp;quot;, default=&#39;&#39;)
-    parser.add_argument(&#39;-m&#39;, help=&amp;quot;replace mode&amp;quot;, default=&#39;hugo-academic&#39;)
-    args = vars(parser.parse_args())
-
-    print(&#39;MD_FILE = {}&#39;.format(args[&#39;f&#39;]))
-    print(&#39;SAVE_PATH = {}&#39;.format(args[&#39;d&#39;]))
-    print(&#39;REPLACE_MODE = {}&#39;.format(args[&#39;m&#39;]))
-    print(&#39;#&#39;*80)
-
-    bt = BlogTransformer(args[&#39;m&#39;])
-    bt.run(args[&#39;f&#39;], args[&#39;d&#39;])
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;完整代码可见
-&lt;a href=&#34;https://github.com/leidawt/blog_transformer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;github&lt;/a&gt;
-&lt;/p&gt;
-&lt;h1 id=&#34;安装使用&#34;&gt;安装使用&lt;/h1&gt;
-&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
-&lt;p&gt;git clone前述
-&lt;a href=&#34;https://github.com/leidawt/blog_transformer&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;仓库&lt;/a&gt;
-，将路径加入环境变量以便bash或命令行能找到。&lt;/p&gt;
-&lt;h2 id=&#34;使用&#34;&gt;使用&lt;/h2&gt;
-&lt;p&gt;一般，执行下面命令即可，效果是在输入文件YorMarkdown.md的文件夹下导出替换过url的_YorMarkdown.md文件，并下载所有插图到本地，从0开始顺序编号。&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;blog_transformer.py -f YorMarkdown.md
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;默认替换为hugo模式的url，亦可使用原生markdown格式：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;blog_transformer.py -f YorMarkdown.md -m local-img-url
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;另一个脚本pipline.py是个更进一步的自动化工具&lt;/p&gt;
 </description>
     </item>
     
