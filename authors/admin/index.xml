@@ -17,7 +17,14 @@
       <link>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</link>
       <pubDate>Tue, 11 Feb 2020 12:00:00 +0800</pubDate>
       <guid>https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/</guid>
-      <description>&lt;h1 id=&#34;动机&#34;&gt;动机&lt;/h1&gt;
+      <description>&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#安装&#34;&gt;安装&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#使用&#34;&gt;使用&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;h1 id=&#34;动机&#34;&gt;动机&lt;/h1&gt;
 &lt;p&gt;鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客里的外链插图到本地，同时做一下链接替换的工作。
 原理如下：&lt;/p&gt;
 &lt;ol&gt;
@@ -145,62 +152,7 @@ class BlogTransformer:
         if mode == &#39;hugo-academic&#39;:
             # https://sourcethemes.com/academic/docs/writing-markdown-latex/#images
             # use format required by hugo
-            # 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
-
-
-  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-
-            self.REPLACE_MODE = &#39;{{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure&gt;
-
-
-  &lt;a data-fancybox=&#34;&#34; href=&#34;%7b0%7d&#34; &gt;
-
-
-  &lt;img src=&#34;%7b0%7d&#34; alt=&#34;&#34;  &gt;
-&lt;/a&gt;
-
-
-
-&lt;/figure&gt;
-}}&#39;
+            self.REPLACE_MODE = &amp;quot;{ { { {&amp;lt;figure src = &amp;quot;{0}&amp;quot; title = &amp;quot;&amp;quot; lightbox = &amp;quot;true&amp;quot;&amp;gt;} } } }&amp;quot;
         if mode == &#39;local-img-url&#39;:
             # use standard markdown format
             self.REPLACE_MODE = &#39;[]({0})&#39;

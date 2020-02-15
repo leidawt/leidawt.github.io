@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客">
+  <meta name="description" content="Table of Contents 安装 使用 动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载mar">
 
   
   <link rel="alternate" hreflang="zh" href="https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/">
@@ -67,10 +67,8 @@
     
       
       
-        
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css" crossorigin="anonymous" title="hl-dark" disabled>
       
     
 
@@ -273,7 +271,7 @@
   <meta property="og:site_name" content="Academic">
   <meta property="og:url" content="https://leidawt.github.io/en/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/">
   <meta property="og:title" content="markdown博客迁移小工具 | Academic">
-  <meta property="og:description" content="动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客"><meta property="og:image" content="https://leidawt.github.io/en/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/featured.jpg">
+  <meta property="og:description" content="Table of Contents 安装 使用 动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载mar"><meta property="og:image" content="https://leidawt.github.io/en/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/featured.jpg">
   <meta property="twitter:image" content="https://leidawt.github.io/en/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/featured.jpg"><meta property="og:locale" content="en-us">
   
     
@@ -329,7 +327,7 @@
       "url": "img/https://leidawt.github.io/"
     }
   },
-  "description": "动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客"
+  "description": "Table of Contents 安装 使用 动机 鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载mar"
 }
 </script>
 
@@ -746,7 +744,14 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h1 id="动机">动机</h1>
+      <h2>Table of Contents</h2>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装">安装</a></li>
+    <li><a href="#使用">使用</a></li>
+  </ul>
+</nav>
+<h1 id="动机">动机</h1>
 <p>鉴于CSDN博客的自动化备份工具基本都挂了，为了简单的备份csdn的markdown博客，编写此小工具，主要用于下载markdown博客里的外链插图到本地，同时做一下链接替换的工作。
 原理如下：</p>
 <ol>
@@ -874,62 +879,7 @@ class BlogTransformer:
         if mode == 'hugo-academic':
             # https://sourcethemes.com/academic/docs/writing-markdown-latex/#images
             # use format required by hugo
-            # 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<figure>
-
-
-  <a data-fancybox="" href="%7b0%7d" >
-
-
-  <img src="%7b0%7d" alt=""  >
-</a>
-
-
-
-</figure>
-
-            self.REPLACE_MODE = '{{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<figure>
-
-
-  <a data-fancybox="" href="%7b0%7d" >
-
-
-  <img src="%7b0%7d" alt=""  >
-</a>
-
-
-
-</figure>
-}}'
+            self.REPLACE_MODE = &quot;{ { { {&lt;figure src = &quot;{0}&quot; title = &quot;&quot; lightbox = &quot;true&quot;&gt;} } } }&quot;
         if mode == 'local-img-url':
             # use standard markdown format
             self.REPLACE_MODE = '[]({0})'
@@ -1275,7 +1225,15 @@ if __name__ == &quot;__main__&quot;:
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/python.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/cpp.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/bash.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/java.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/javascript.min.js"></script>
         
       
 
