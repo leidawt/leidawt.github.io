@@ -49,7 +49,7 @@
   
   <url>
     <loc>https://leidawt.github.io/authors/admin/</loc>
-    <lastmod>2020-02-11T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -64,7 +64,7 @@
   
   <url>
     <loc>https://leidawt.github.io/</loc>
-    <lastmod>2020-02-11T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -79,7 +79,7 @@
   
   <url>
     <loc>https://leidawt.github.io/authors/</loc>
-    <lastmod>2020-02-11T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -89,6 +89,36 @@
                 rel="alternate"
                 hreflang="zh"
                 href="https://leidawt.github.io/authors/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://leidawt.github.io/post/</loc>
+    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/</loc>
+    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/"
                 />
   </url>
   
@@ -104,21 +134,6 @@
                 rel="alternate"
                 hreflang="zh"
                 href="https://leidawt.github.io/post/markdown%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E5%B0%8F%E5%B7%A5%E5%85%B7/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://leidawt.github.io/post/</loc>
-    <lastmod>2020-02-11T12:00:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://leidawt.github.io/en/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://leidawt.github.io/post/"
                 />
   </url>
   

@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="王笑涵">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="目录 0.1绝对误差（简称误差）： 0.2相对误差 2.1 简单线性函数 2.2 复杂函数 误差分析在 0. 绝对误差与相对误差 一般的，称$x^*$为准确值$x$的一个">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/css/all.min.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/">
+  <meta property="og:title" content="误差、方差、协方差的传播 | Academic">
+  <meta property="og:description" content="目录 0.1绝对误差（简称误差）： 0.2相对误差 2.1 简单线性函数 2.2 复杂函数 误差分析在 0. 绝对误差与相对误差 一般的，称$x^*$为准确值$x$的一个"><meta property="og:image" content="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/featured.jpg">
+  <meta property="twitter:image" content="https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/featured.jpg"><meta property="og:locale" content="zh-Hans">
+  
+    
+      <meta property="article:published_time" content="2020-02-16T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-02-16T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/"
+  },
+  "headline": "误差、方差、协方差的传播",
+  
+  "image": [
+    "https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/featured.jpg"
+  ],
+  
+  "datePublished": "2020-02-16T12:00:00+08:00",
+  "dateModified": "2020-02-16T12:00:00+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "王笑涵"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://leidawt.github.io/"
+    }
+  },
+  "description": "目录 0.1绝对误差（简称误差）： 0.2相对误差 2.1 简单线性函数 2.2 复杂函数 误差分析在 0. 绝对误差与相对误差 一般的，称$x^*$为准确值$x$的一个"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>误差、方差、协方差的传播 | Academic</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i><span class="d-none d-lg-inline">中文 (简体)</span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item i18n-active font-weight-bold">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+  <h1>误差、方差、协方差的传播</h1>
+
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/admin/">王笑涵</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Feb 16, 2020
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 405px;">
+  <div style="position: relative">
+    <img src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/featured_huf5c1b39318b2af07208b6040cde5b6a1_34943_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    <span class="article-header-caption">Center</span>
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2>目录</h2>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#01绝对误差简称误差">0.1绝对误差（简称误差）：</a></li>
+    <li><a href="#02相对误差">0.2相对误差</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-简单线性函数">2.1 简单线性函数</a></li>
+    <li><a href="#22-复杂函数">2.2 复杂函数</a></li>
+  </ul>
+</nav>
+<p>误差分析在</p>
+<h1 id="0-绝对误差与相对误差">0. 绝对误差与相对误差</h1>
+<p>一般的，称$x^*$为准确值$x$的一个近似值，可定义以下两种常用误差:</p>
+<h2 id="01绝对误差简称误差">0.1绝对误差（简称误差）：</h2>
+<p>绝对误差（简称误差）: $e(x^*)=x-x^*$
+为方便起见，取其一上界$\epsilon$使满足$|x-x^*|\le\epsilon$（这个上界不唯一），由此我们最常见的误差写法就可写成$x=x^*\pm\epsilon$，即准确值$x$必在区间$[x^*-\epsilon,x^*+\epsilon]$内。</p>
+<h2 id="02相对误差">0.2相对误差</h2>
+<p>考虑真值本身的数量大小，相对误差是衡量精度的更好指标，定义为：
+$e_r(x^*)=\frac{x-x^*}{x}$，相似的，我们亦可取一个上界为$\epsilon_r$，称之为相对误差限。</p>
+<h1 id="1-误差的传播">1. 误差的传播</h1>
+<p>误差的传播系指分析在形如$y=f(x_1,x_2,&hellip;,x_n)$的关系中，参量误差对变量误差的影响有多大。误差的传播与函数的微分紧密相关，本质是在利用当$\Delta x$不大时，$\Delta y\approx \frac{\partial f}{\partial x}\Delta x$。
+若$f$在$(x^*_1,&hellip;x^*_n)$可微，则不难得到:
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/0_hu7e0a0bd6aceb03323c68ed280585d147_22603_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/0_hu7e0a0bd6aceb03323c68ed280585d147_22603_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="487" height="199">
+</a>
+
+
+
+</figure>
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/1_hu1d448bfe7f8eed94910ce75619ba3419_23107_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/1_hu1d448bfe7f8eed94910ce75619ba3419_23107_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="517" height="189">
+</a>
+
+
+
+</figure>
+
+这实际上就是一阶泰勒展开。多变量泰勒公式为：
+$f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&hellip;$
+移项，令$\bf a$为$(x^*_1,&hellip;x^*_n)$并带入$e(x^*)=x-x^*$，$e(y^*)=y-y^*$即可得误差公式。
+按照上面的式子求导，可给出最常见 和 差 积 商 误差公式：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/2_hua837eb46c25ea777fbff31183e7d7e00_44268_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/2_hua837eb46c25ea777fbff31183e7d7e00_44268_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="394" height="312">
+</a>
+
+
+
+</figure>
+
+相应的，误差限可如下给出：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/3_hu9ac4f27cdb5cc94e3878ae1489d19a22_14466_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/3_hu9ac4f27cdb5cc94e3878ae1489d19a22_14466_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="371" height="167">
+</a>
+
+
+
+</figure>
+</p>
+<h1 id="2-方差传播">2. 方差传播</h1>
+<p>仍考虑形如$y=f(x_1,x_2,&hellip;,x_n)$的关系，方差传播既是通过$(x_1,x_2,&hellip;,x_n)$的不确定度分析$y$的不确定度。该问题有时也称为方差的合成。</p>
+<h2 id="21-简单线性函数">2.1 简单线性函数</h2>
+<p>对于简单的函数关系（如加减等），这个方差传播既可用“随机变量函数的分布”这一手段予以求解。即已知随机变量 X 及它的分布，如何求其函数$Y=g(X)$的分布。这是本科概率统计课程的经典内容，不再赘述，通过累次积分可处理形如$Z=X+Y$这类简单形式的概率密度，之后便可求均值方差等所有统计量。</p>
+<h2 id="22-复杂函数">2.2 复杂函数</h2>
+<p>对绝大多数函数，尤其是非线性函数，一般只能寻求其期望和方差的近似求法。这里解决问题的工具依旧是泰勒展开。
+<strong>先考虑简单的一维情形</strong>：设随机变量$X$，其期望和方差分别为$\mu,\sigma^2$，变量$Y=g(X)$是其函数。则有：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/4_hu1e1c37310bbfa8c622a2f6fc98a1a72a_7040_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/4_hu1e1c37310bbfa8c622a2f6fc98a1a72a_7040_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="226" height="78">
+</a>
+
+
+
+</figure>
+
+证明此关系只需将$Y$在$\mu$处局部线性化即可。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/5_hue365e4c476766ba89d97ee1cfe28f28c_100462_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/5_hue365e4c476766ba89d97ee1cfe28f28c_100462_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="759" height="357">
+</a>
+
+
+
+</figure>
+
+相似的，方差公式的证明可进行一阶展开后得到。虽避免了求积分，但此处导数往往也得不到解析解，可通过数值差分近似导数得到（一般倾向于使用中心差分公式）。</p>
+<p><strong>再看二维情形</strong>。一维到二维是一个质变，从两个变量开始，变量相关性和协方差的概念被引入。设随机变量向量$[X,Y]^T$中的变量$X,Y$的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma _y^2$，并设二元函数$Z=g(X,Y)$。则仍仿照上面单变量的方法，将$Z$在自变量期望处进行局部线性化然后两边同取期望/方差即可，只不过换为了多变量的泰勒展开。
+<strong>注： 多变量泰勒展开</strong>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/6_hu783b44c9411b91d63ef85783acd20e02_55550_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/6_hu783b44c9411b91d63ef85783acd20e02_55550_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="927" height="200">
+</a>
+
+
+
+</figure>
+
+更常见的是向量形式：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/7_hu2dcc5b5a17ce912aee20e509e708b254_66174_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/7_hu2dcc5b5a17ce912aee20e509e708b254_66174_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="967" height="256">
+</a>
+
+
+
+</figure>
+
+最后结果是：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/8_hu845f43a4b842d03d0620d15a59b2ad10_21303_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/8_hu845f43a4b842d03d0620d15a59b2ad10_21303_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="672" height="73">
+</a>
+
+
+
+</figure>
+
+可以看到依赖于变量的协方差。
+<strong>除了上面直接将函数局部线性化的方法，亦可以使用类似“自底向下”的方法，从方差原始定义入手得到上面的结果。</strong>
+仍设随机变量$X$及其一组观测${X_1,X_2,&hellip;X_n},Y$及其一组观测${Y_1,Y_2,&hellip;Y_n}$，他们的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma <em>y^2$，二元函数$Z=g(X,Y)$。
+则按方差定义$$\sigma_Z=\frac{1}{n-1}\sum</em>{i=1}^{n}{(Z_i-\bar Z)^2}$$</p>
+<p>通过对$Z=g(X,Y)$在期望处求一阶泰勒展开，可知$$Z_i-\bar Z=(X_i-\bar X)\frac{\partial g}{\partial X}+(Y_i-\bar Y)\frac{\partial g}{\partial Y}$$带回上式，并带入协方差定义：$$cov(X,Y)=\frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar X)(Y_i-\bar Y)$$</p>
+<p>可化简得：</p>
+<p>$$\sigma_Z^2=\frac{1}{n-1}\sum_{i=1}^{n}[(X_i-\bar X)\frac{\partial g}{\partial X}+(Y_i-\bar Y)\frac{\partial g}{\partial Y}]^2$$</p>
+<p>$$=\sigma_x^2(\frac{\partial g}{\partial X})^2+\sigma_y^2(\frac{\partial g}{\partial Y})^2+2cov(X,Y)\frac{\partial g}{\partial X}\frac{\partial g}{\partial Y}$$</p>
+<p>写成向量形式即为：
+$$\sigma_Z^2=J\Sigma J^T$$</p>
+<p>其中$J=[\frac{\partial g}{\partial X},\frac{\partial g}{\partial Y}]$为Jacobian matrix,
+中间$\Sigma$是协方差矩阵
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/9_huffff8603c890d2639800aa6f9afa8d85_3002_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/9_huffff8603c890d2639800aa6f9afa8d85_3002_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="231" height="70">
+</a>
+
+
+
+</figure>
+
+一些计算实例：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/10_hua3c42e9a618f555d3b1fdd6fc2884634_65754_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/10_hua3c42e9a618f555d3b1fdd6fc2884634_65754_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="664" height="650">
+</a>
+
+
+
+</figure>
+
+对于线性函数和二次函数, 由于其二阶以上各阶导数为0, 近似计算公式与严密计算公式等价。对于非线性更强的函数，由于我们是以期望为中心展开的，$X_i$很多时候并不在展开点$\bar X$“附近”，会有不小的误差，可适时地考虑使用蒙特卡洛模拟暴力计算得到更优的结果。
+一个常被用于测试的强非线性函数是$Z=Xe^Y$，图像长这样：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/11_huc29a1c4e5507235a5697d7e7c0c2404b_91357_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/11_huc29a1c4e5507235a5697d7e7c0c2404b_91357_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="521" height="526">
+</a>
+
+
+
+</figure>
+</p>
+<h1 id="3-协方差传播">3. 协方差传播</h1>
+<p>当上面问题中的函数值域亦是多维的，方差传播就升格为协方差传播。
+<strong>先看线性情形</strong>，设多维随机变量X:
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/12_hu8083942534391644d8f77a083f0be443_57019_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/12_hu8083942534391644d8f77a083f0be443_57019_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="525" height="118">
+</a>
+
+
+
+</figure>
+
+设$Z=[k_1,k_2,&hellip;,k_n]X+k_0$为$X$的一线性函数，根据前面方差传播的知识可知有：
+$$E(Z)=K\mu_x+k_0 ; D_{ZZ}=KD_{XX}K^T$$</p>
+<p>将其中的$Z$扩展到多维，即设$Z=[z_1,z_2,&hellip;,z_t]^T$，其中每个$z_i$均是$X$的线性函数（$z_i=[k_{i,1},&hellip;,k_{i,n}]X_i$）
+那么对:
+$$Z=KX+K_0$$</p>
+<p>其中$K$为$t<em>n$矩阵，$K_0$为$t</em>1$矩阵，依旧有相同的结论：
+$$E(Z)=K\mu_x+k_0 ; D_{ZZ}=KD_{XX}K^T$$</p>
+<p>只不过这里$D_{ZZ}$升格为了$t*t$矩阵，称之为协方差传播。
+若另有Y：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/13_hub5014713607248ded676a8ab4f5be6fe_67979_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/13_hub5014713607248ded676a8ab4f5be6fe_67979_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="625" height="124">
+</a>
+
+
+
+</figure>
+
+并有关于$Y$的函数$W=FY+F_0$，则相似的可获知一系列关系常用协方差传播律：
+$D_{ZZ}=KD_{XX}K^T$
+$D_{WW}=FD_{YY}F^T$
+$D_{ZW}=KD_{XY}F^T$
+$D_{WZ}=FD_{YX}K^T$</p>
+<h1 id="4-参考文献">4. 参考文献</h1>
+<p><a href="https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf">https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf</a>
+<a href="https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html">https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html</a>
+<a href="https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html">https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html</a>
+<a href="https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html">https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html</a>
+概率论与数理统计教程(茆诗松)</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/&amp;text=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/&amp;t=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad&amp;body=https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/&amp;title=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad%20https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/&amp;title=%e8%af%af%e5%b7%ae%e3%80%81%e6%96%b9%e5%b7%ae%e3%80%81%e5%8d%8f%e6%96%b9%e5%b7%ae%e7%9a%84%e4%bc%a0%e6%92%ad" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/">王笑涵</a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">My research interests include robotics, control.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.4/mermaid.min.js" integrity="sha256-JEqEejGt4tR35L0a1zodzsV0/PJ6GIf7J4yDtywdrH8=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/python.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/cpp.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/bash.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/java.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/javascript.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0630fec5958cb075a5a38f042b3ddde6.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2020 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
