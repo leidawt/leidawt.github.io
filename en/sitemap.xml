@@ -49,7 +49,7 @@
   
   <url>
     <loc>https://leidawt.github.io/en/authors/admin/</loc>
-    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-28T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -64,7 +64,7 @@
   
   <url>
     <loc>https://leidawt.github.io/en/</loc>
-    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-28T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -79,7 +79,7 @@
   
   <url>
     <loc>https://leidawt.github.io/en/authors/</loc>
-    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-28T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -94,7 +94,7 @@
   
   <url>
     <loc>https://leidawt.github.io/en/post/</loc>
-    <lastmod>2020-02-16T12:00:00+08:00</lastmod>
+    <lastmod>2020-02-28T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -104,6 +104,21 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://leidawt.github.io/en/post/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://leidawt.github.io/en/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/</loc>
+    <lastmod>2020-02-28T12:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/"
                 />
   </url>
   

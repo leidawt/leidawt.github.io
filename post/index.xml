@@ -5,12 +5,1005 @@
     <link>https://leidawt.github.io/post/</link>
       <atom:link href="https://leidawt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Sun, 16 Feb 2020 12:00:00 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Fri, 28 Feb 2020 12:00:00 +0800</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
       <title>Posts</title>
       <link>https://leidawt.github.io/post/</link>
     </image>
+    
+    <item>
+      <title>【文献阅读】Probabilistic Terrain Mapping for Mobile Robots With Uncertain Localization</title>
+      <link>https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/</link>
+      <pubDate>Fri, 28 Feb 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-整体框架&#34;&gt;1. 整体框架&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-符号与坐标系定义&#34;&gt;2. 符号与坐标系定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-由观测更新地图&#34;&gt;3. 由观测更新地图&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-由运动更新地图&#34;&gt;4. 由运动更新地图&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-地图融合&#34;&gt;5. 地图融合&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-拓展到动态环境&#34;&gt;6. 拓展到动态环境&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#总结&#34;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/0_hu0faee507240453c4072e8724c2a3ead4_235830_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/0_hu0faee507240453c4072e8724c2a3ead4_235830_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;530&#34; height=&#34;349&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+“Probabilistic Terrain Mapping for Mobile Robots With Uncertain Localization”是ETH的四足机器人组的一个研究子项目，其动机是研究如何用机器人摄像机逐帧相对运动和3D点云观测对机器人的局部地面地形进行重构建模，用来做局部规划和四足里面的足迹落点控制。该文发在2018 RA-L上，有ROS代码。&lt;/p&gt;
+
+&lt;h1 id=&#34;1-整体框架&#34;&gt;1. 整体框架&lt;/h1&gt;
+
+&lt;p&gt;该文在他们先前工作“ROBOT-CENTRIC ELEVATION MAPPING WITH UNCERTAINTY ESTIMATES”上改进得到，局部地形评估有一个经典工作是2007年的“Real-time localization and elevation mapping within urban search and rescue scenarios”，发表在著名应用期刊Journal of Field Robotics上，写的很好。
+该文主要框架是
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/1_hu5185b6c8f3a8f9e0ba9af56ca111cca9_41953_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/1_hu5185b6c8f3a8f9e0ba9af56ca111cca9_41953_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;521&#34; height=&#34;221&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+一共三个模块，一是把观测信息融合到栅格地图，二是把机器人移动融合到栅格地图，即是把位姿估计不确定性体现到栅格地图里。最后是地图融合模块，这个模块的存在是因为第一二步处理的栅格地图是自定义的概率栅格地图，每个点（x,y）包含各自期望和方差，这一步把期望，置信上下界确定出来，导出我们常见的二维栅格地图（类似costmap）。&lt;/p&gt;
+
+&lt;h1 id=&#34;2-符号与坐标系定义&#34;&gt;2. 符号与坐标系定义&lt;/h1&gt;
+
+&lt;p&gt;
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/2_hucd3b234dcf779739306675868f7e2c6c_340254_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/2_hucd3b234dcf779739306675868f7e2c6c_340254_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1025&#34; height=&#34;354&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+如上定义4个坐标系$\mathbf{I,B,S,M}$，惯性系$\mathbf{I}$固定在真实世界地形上，机器人base系$\mathbf{B}$和传感器系$\mathbf{S}$固定连接。$\mathbf{I}$和$\mathbf{B}$之间关系有姿态估计确定：平移$r_{IB}$和旋转$\Phi _{IB}$，并由6维协方差阵表示不确定性：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/3_hucf3382c1027118fce57fa157a2583293_3320_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/3_hucf3382c1027118fce57fa157a2583293_3320_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;169&#34; height=&#34;26&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+为了后面好处理，这里的旋转拆分为两部分：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/4_hu298eab5a23112730fed823cc7e236afc_4523_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/4_hu298eab5a23112730fed823cc7e236afc_4523_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;227&#34; height=&#34;43&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+前者包含yaw变换，后面包含pitch和roll。
+最后看地图坐标系$\mathbf{M}$。$\Phi _{BM}$规定为：yaw方向随着$\mathbf{B}$转，pitch，roll方向和$\mathbf{I}$保持一致。而$r_{BM}$原文没有明确说明，不过按上下文推应该是某个固定值，这并无关系。&lt;/p&gt;
+
+&lt;h1 id=&#34;3-由观测更新地图&#34;&gt;3. 由观测更新地图&lt;/h1&gt;
+
+&lt;p&gt;传感器是realsense这类RGB-D相机的点云，观测结果用$_sr_{sp}$表示（传感器到P点距离sp在s坐标系下的表示）。地图M是2.5d栅格地图，即每个元素是用$(x_i,y_i,\tilde{p_i})表达的。其中$$\tilde{p} \sim \mathcal{N}(p,\sigma^2_p)$是$_sr_{sp}$映射到地图坐标系后的高。那么有：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/5_hu641f70e49b322c67968e41ae9b9c1bf1_3079_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/5_hu641f70e49b322c67968e41ae9b9c1bf1_3079_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;239&#34; height=&#34;38&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中P是映射阵：P=[0,0,1]。
+而方差$\sigma^2_p$稍微难求一点，涉及到方差传播（可见上一博客）：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/6_hu7ddf4497c74e1f6e9df73fd0f911543a_2668_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/6_hu7ddf4497c74e1f6e9df73fd0f911543a_2668_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;249&#34; height=&#34;44&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/7_hudf441c0963b03b5c6897409db43b4396_7878_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/7_hudf441c0963b03b5c6897409db43b4396_7878_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;275&#34; height=&#34;106&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+这个偏导数并非普通矩阵求导，我们处理的是参数化的旋转矩阵，其微分应用李代数解决。&lt;strong&gt;通过阅读文献《A Primer on the Differential Calculus of 3D Orientations》得知其推导方法&lt;/strong&gt;
+该文献推了一遍与旋转阵相关的所有式子，首先介绍其符号体系：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/8_hu591a693662ee7b0620ce76bfd3d68912_110102_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/8_hu591a693662ee7b0620ce76bfd3d68912_110102_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;488&#34; height=&#34;287&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/9_hu7a626b2f900db6fe55d46c05df0e0c36_157287_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/9_hu7a626b2f900db6fe55d46c05df0e0c36_157287_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;490&#34; height=&#34;514&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+注意，从后文可知这里映射C是广义的，也表示欧拉角或单位四元数参数化的旋转到其$\mathbb{R}^{3\times3}$矩阵表示的映射！！公式1 2 3是向量对应的反对称阵的三条小性质。略去中间大量内容直接看偏导数推导：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/10_hu11496aac82aa3af17ddfdae40681f9ef_54058_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/10_hu11496aac82aa3af17ddfdae40681f9ef_54058_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;416&#34; height=&#34;323&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+上面推导是拿出向量导数每一元素推的，每个元素都一样，这样写省纸。第五个等号是叉乘的反交换率
+上面推导用到的性质20,14,5,12在此摘录下来：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/11_hu2817773062dde943451a37eb13e7545c_20952_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/11_hu2817773062dde943451a37eb13e7545c_20952_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;408&#34; height=&#34;131&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+为简化书写定义的两个二元运算符（box add与box sub）
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/12_hu4592f67f67e5a72dd923ba3b2a44cfe0_13764_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/12_hu4592f67f67e5a72dd923ba3b2a44cfe0_13764_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;310&#34; height=&#34;105&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/13_huc0c832b49014e4b9eb890cce349fbe24_5255_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/13_huc0c832b49014e4b9eb890cce349fbe24_5255_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;328&#34; height=&#34;43&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+注：式5看做算子方程即可理解，并不是旋转矩阵
+最后是著名的罗氏公式：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/14_hu4551e83cc5a492e2fa9a69c481f071f6_17733_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/14_hu4551e83cc5a492e2fa9a69c481f071f6_17733_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;408&#34; height=&#34;136&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+至此解决了对上面雅克比矩阵的疑问，回到原文献，还有两个问题需要说明，一是$\Sigma_S$是相机误差模型，实际就是通过实验把深度相机测的点云在x,y,z三方向的误差测出来。二是$\Sigma_{\Phi_{IS}}$，这仅包含旋转估计的不确定性，而平移估计不确定性在后面的由运动更新的部分考虑。
+推出$(p,\sigma^2_p)$后，用经典的卡尔曼滤波做一下地图和观测的融合：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/15_hua281d43edce8d6dba82ceeab28898a9c_25045_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/15_hua281d43edce8d6dba82ceeab28898a9c_25045_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;517&#34; height=&#34;138&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+此处有个小细节，当相机看到一堵墙，导致一堆点摞在一起映射到同一(x,y)咋办？解决方法大概是，取最高的那个，剩下的扔了，这是仿照了《Real-time localization and elevation mapping within urban search and rescue scenarios》的做法。&lt;/p&gt;
+
+&lt;h1 id=&#34;4-由运动更新地图&#34;&gt;4. 由运动更新地图&lt;/h1&gt;
+
+&lt;p&gt;现在处理由于运动估计不准确导致的地图不确定性。由于两帧之间姿态估计肯定会有偏差，故测到的地图会越来越飘，这可以通过栅格地图元素x,y方向的方差体现。作者扩展经典栅格地图，对每一元素记录x,y和高度三个方差，当观测到点p得到其测量结果时，将协方差阵赋值为如下初值：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/16_hu752a08a2e104222511f6ba280e943f3b_6203_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/16_hu752a08a2e104222511f6ba280e943f3b_6203_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;275&#34; height=&#34;95&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+这是因为之前设定地图坐标系和base坐标系是随动的，观测精度是很高的，因此每次观测就可消除对应点的位置不确定性。$\sigma^2_{x,min}，\sigma^2_{y,min}$ 是两个小量，作者设为$(d/2)^2$其中d为栅格边长。
+下面推导两帧之间位姿变换的误差传播：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/17_hud957e933bdf0b9d8175035102e9a9cf3_212272_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/17_hud957e933bdf0b9d8175035102e9a9cf3_212272_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;663&#34; height=&#34;335&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/18_hu0af7bf66f925c8d2113f62c7d2ca02ce_71429_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/18_hu0af7bf66f925c8d2113f62c7d2ca02ce_71429_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;510&#34; height=&#34;209&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+（8）式给出点P位置在$M_1,M_2$俩参考系之间的传播。亦可等价写作：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/19_huc5c2cc702cd15375c64c8b1c5afcae5c_10942_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/19_huc5c2cc702cd15375c64c8b1c5afcae5c_10942_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;455&#34; height=&#34;77&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+这时作者提出可如下指定参考系$M_2$：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/20_hu18cb043a9bc6bcdd7b595774b5475e09_11984_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/20_hu18cb043a9bc6bcdd7b595774b5475e09_11984_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;507&#34; height=&#34;81&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+使得凑出如下性质：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/21_hu887634e3cb8c494e0e8116eb5e771813_9927_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/21_hu887634e3cb8c494e0e8116eb5e771813_9927_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;439&#34; height=&#34;73&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+也就是说$M_1,M_2$便重合了，于是可统一到一个固定的$M$系下。那么和之前一样，设不确定模型为高斯，研究协方差传播方程：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/22_hu28792936180d5f30c4913a792ef4539f_9702_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/22_hu28792936180d5f30c4913a792ef4539f_9702_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;522&#34; height=&#34;68&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中$\Sigma_P,\Sigma_\Phi$是由$\Sigma_{IB}$导出的，并不简单，详见原文附录。
+类似之前雅克比阵求法，可推出：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/23_hu700eb4368e74748fcace3c54fa036b99_26319_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/23_hu700eb4368e74748fcace3c54fa036b99_26319_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;502&#34; height=&#34;172&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;5-地图融合&#34;&gt;5. 地图融合&lt;/h1&gt;
+
+&lt;p&gt;也就是如下过程：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/24_hu999e7ac892a64948a2c625156a677fbc_7944_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/24_hu999e7ac892a64948a2c625156a677fbc_7944_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;396&#34; height=&#34;32&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+这块相对简单，对cell i，考虑其附近的cell j（附近指在对方$2\sigma$椭圆内），类似混合高斯，加权求和便可得cell i 的概率分布函数，然后置信上下界便好求了。
+这一步骤只在需要查询地图的时候执行，也就是说平时观测和融合都只需在$(\hat{h_i},\Sigma_{P_i})$这个图上维护即可，省了很多计算量，这个地图融合步骤有点观测器的意味。&lt;/p&gt;
+
+&lt;h1 id=&#34;6-拓展到动态环境&#34;&gt;6. 拓展到动态环境&lt;/h1&gt;
+
+&lt;p&gt;为处理环境动态变化，比如地上凳子忽然被撤走，作者搞了两个trick。
+第一是发现传感器测距值忽然变小（对应真实地面变高）超过一定阈值（采用马氏距离为依据），那么就人为给地图加噪，降低对地图的信任，让卡尔曼滤波器尽快信任传感器加速响应：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/25_hu28a38fb109342965401ed10ffd7064b1_2147_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/25_hu28a38fb109342965401ed10ffd7064b1_2147_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;153&#34; height=&#34;49&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+第二是遇到上面相反的情景时候（对应真实地面变低）：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/26_hu8dec875cf064013f237c0d31ba0b9940_105868_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/26_hu8dec875cf064013f237c0d31ba0b9940_105868_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;519&#34; height=&#34;267&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+提出一种可视化检查的方法。具体做法是是发现传感器测距值忽然变大（对应真实地面变低）超过一定程度时，就丢弃地图上对应老点，很巧妙。这俩trick同时使用，互补的，基本就可解决动态环境适应问题。
+最后作者的实验主要是在自己的四足上弄的，图画的很漂亮，很值得学习：
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/27_hu51b3904a9fe3928ad4a0d8311c7cb6c1_173596_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/27_hu51b3904a9fe3928ad4a0d8311c7cb6c1_173596_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1090&#34; height=&#34;363&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/28_hud11bbc39aeb1fb4aecf2dc05fc6927f5_124481_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/28_hud11bbc39aeb1fb4aecf2dc05fc6927f5_124481_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;532&#34; height=&#34;326&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+源代码可见&lt;a href=&#34;https://github.com/ANYbotics/elevation_mapping用了他们自己的写的一个ROS包https://github.com/anybotics/grid_map，这个包拓展了ROS里的costmap到一个多层的，方便把方差什么的放进去，并提供到costmap消息的转换。&#34;&gt;https://github.com/ANYbotics/elevation_mapping用了他们自己的写的一个ROS包https://github.com/anybotics/grid_map，这个包拓展了ROS里的costmap到一个多层的，方便把方差什么的放进去，并提供到costmap消息的转换。&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+
+&lt;p&gt;贴一下conclusion原文翻译：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;我们已经提出了一种新的海拔映射方法，该方法解决了在带有本体感受状态估计的移动机器人上经常发生的定位漂移问题。 提出的方法估计了以机器人为中心的坐标系中的高程图，使得将新测量结果集成到该图中的过程仅受范围传感器噪声以及可观察到的侧倾角和俯仰角的不确定性影响。 地图中的数据基于机器人移动时增量运动的不确定性进行更新 。这可以使机器人在任何时间点从其局部角度估计地形。 通过将方法拆分为数据收集（从距离测量和机器人运动中进行地图更新）和地图融合步骤，我们降低了映射过程的计算负担。这使得能够可靠地进行实时高程映射，而与视听定位方法无关。 我们将说明制图过程如何估计具有相应置信区间的地形剖面，并显示估计的分布如何与模拟和真实实验中的地面真实情况参考相匹配。当与腿式机器人一起使用时，这项工作的当前局限性是突出的。 在机器人采取许多步骤的情况下，由于定位的漂移，机器人下方的地形图不确定性增加，这给机器人的地形感知控制带来了困难。 在我们当前的工作中，我们通过面朝下的深度传感器，更准确的定位以及将立足点与地形图进行匹配以提供定位反馈来应对这一挑战。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;总的来看，在slam和机器人相关领域，搞清楚旋转矩阵很有必要，可参考：
+Diﬀerential Geometry and Lie Groups A Computational Perspective
+Diﬀerential Geometry and Lie Groups A Second Course
+State Estimation for Robotics&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>误差、方差、协方差的传播</title>
@@ -2450,9 +3443,33 @@ MCMC方法利用了MC链会收敛到确定分布的性质，即如果我们能�
       <link>https://leidawt.github.io/post/kalman-and-bayesian-filters-in-python-%E5%8D%A1%E5%B0%94%E6%9B%BC%E4%B8%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Fri, 07 Jun 2019 12:00:00 +0800</pubDate>
       <guid>https://leidawt.github.io/post/kalman-and-bayesian-filters-in-python-%E5%8D%A1%E5%B0%94%E6%9B%BC%E4%B8%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%AC%94%E8%AE%B0/</guid>
-      <description>&lt;p&gt;此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-g-h滤波器&#34;&gt;1.g-h滤波器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-离散贝叶斯滤波器&#34;&gt;2. 离散贝叶斯滤波器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-概率-高斯和贝叶斯&#34;&gt;3.概率，高斯和贝叶斯&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-一维卡尔曼滤波&#34;&gt;4. 一维卡尔曼滤波&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-多维高斯&#34;&gt;5.多维高斯&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-多维卡尔曼滤波&#34;&gt;6.多维卡尔曼滤波&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#7-卡尔曼滤波器数学细节&#34;&gt;7. 卡尔曼滤波器数学细节&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#8-面向实际问题的卡尔曼滤波器的设计&#34;&gt;8.面向实际问题的卡尔曼滤波器的设计&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#9-非线性滤波&#34;&gt;9.非线性滤波&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#9-无迹卡尔曼滤波器ukf&#34;&gt;9. 无迹卡尔曼滤波器UKF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#11-扩展卡尔曼滤波器ekf&#34;&gt;11. 扩展卡尔曼滤波器EKF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#12-粒子滤波器pf&#34;&gt;12. 粒子滤波器PF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#13-平滑器&#34;&gt;13. 平滑器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#14-自适应滤波&#34;&gt;14. 自适应滤波&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点
 @[TOC]&lt;/p&gt;
-&lt;h1 id=&#34;1g-h滤波器&#34;&gt;1.g-h滤波器&lt;/h1&gt;
+
+&lt;h1 id=&#34;1-g-h滤波器&#34;&gt;1.g-h滤波器&lt;/h1&gt;
+
 &lt;p&gt;又称Alpha beta filter，f-g filter，是一类融合观测和估计的滤波器中形式上最朴素的。原书表达不清晰，下为wiki的。g-h滤波器只考虑 x x&amp;rsquo; 作为状态变量
 
 
@@ -2551,7 +3568,9 @@ h的影响
 
 &lt;/figure&gt;
 &lt;/p&gt;
+
 &lt;h1 id=&#34;2-离散贝叶斯滤波器&#34;&gt;2. 离散贝叶斯滤波器&lt;/h1&gt;
+
 &lt;p&gt;这是卡尔曼滤波，例子滤波等一类滤波器的基本框架
 
 
@@ -2585,10 +3604,11 @@ h的影响
 &lt;/figure&gt;
 
 核心思想如下
-$$\begin{aligned} \bar {\mathbf x} &amp;amp;= \mathbf x \ast f_{\mathbf x}(\bullet), , &amp;amp;\text{Predict Step} \&lt;br&gt;
-\mathbf x &amp;amp;= |\mathcal L \cdot \bar{\mathbf x}|, , &amp;amp;\text{Update Step}\end{aligned}$$
+$$\begin{aligned} \bar {\mathbf x} &amp;amp;= \mathbf x \ast f_{\mathbf x}(\bullet)\, \, &amp;amp;\text{Predict Step} &lt;br /&gt;
+\mathbf x &amp;amp;= |\mathcal L \cdot \bar{\mathbf x}|\, \, &amp;amp;\text{Update Step}\end{aligned}$$
 $\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率与先验的乘积标准化以确保$x$是一个和为1的概率分布。
 流程伪代码如下：&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;初始化&lt;/strong&gt;
 初始化我们对状态的信念。
 &lt;strong&gt;预测&lt;/strong&gt;
@@ -2598,10 +3618,12 @@ $\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率�
 获取测量并给一个对其精度的信念
 计算测量值对每个状态匹配的程度（likelihood）
 用这种可能性更新状态信念&lt;/p&gt;
+
 &lt;p&gt;这种形式的算法有时也叫预测校正。
 &lt;strong&gt;例子：&lt;/strong&gt;
 背景陈述：假设追踪狗在走廊里的位置，为了方便，离散化为10个位置，其中三个位置由门，其他位置没有。我们对狗的行为一无所知，故采用平坦先验，即认为狗在任意位置出现等可能。不过我们能获得狗身上声呐传感器的数据，故可以知道狗是否在有门的位置。
 先看主函数逻辑：&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def discrete_bayes_sim(prior, kernel, measurements, z_prob, hallway):
     posterior = np.array([.1]*10)
     priors, posteriors = [], []
@@ -2621,11 +3643,14 @@ z_prob = 0.75
 priors, posteriors = discrete_bayes_sim(prior, kernel, zs, z_prob, hallway)
 interact(animate_discrete_bayes, step=IntSlider(value=12, max=len(zs)*2));
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;predict函数根据上次位置预测结果为先验进行预测，预测方法是假设其以kernel（）的概率向左或向右移动1个位置。为了计算方便，是通过卷积实现的，是个小trick
-convolve(np.roll(pdf, offset), kernel, mode=&#39;wrap&amp;rsquo;)
+convolve(np.roll(pdf, offset), kernel, mode=&amp;lsquo;wrap&amp;rsquo;)
 此步骤实际是全概率公式的应用：$$P(X_i^t) = \sum_j P(X_j^{t-1})  P(x_i | x_j)$$&lt;/p&gt;
+
 &lt;p&gt;得到新的prior 后，计算观测的likelihood（对每个点）。
 这个玩意在不同具体任务中计算方式不同，本问题中算法很朴素：&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;  try:
       scale = z_prob / (1. - z_prob)
   except ZeroDivisionError:
@@ -2635,10 +3660,12 @@ convolve(np.roll(pdf, offset), kernel, mode=&#39;wrap&amp;rsquo;)
   likelihood[hall==z] *= scale
   return likelihood
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;z_prob 表示相信传感器的程度。例子中何为1表示完全相信，故当z=1时强烈加大在三个有门位置的likelihood，z=0时表示一定没门，强烈加大其余位置likelihood。
 最后的update步骤实为应用下面的贝叶斯公式产生新息，其将likelihood和prior相乘并归一化
 $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 其中p(x)即prior，p(z|x)即算得的likelihood。分母仅仅是个norm项，顾不必计算，只需归一化一下即可。&lt;/p&gt;
+
 &lt;p&gt;最后运行起来如下：
 
 
@@ -2675,31 +3702,42 @@ $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 此方法几大缺陷：
 1.此filter是多峰的（multimodal），不能给出唯一确定的答案，不过这在很多场景下反而不是问题
 2.需要直接测量状态变化&lt;/p&gt;
-&lt;h1 id=&#34;3概率高斯和贝叶斯&#34;&gt;3.概率，高斯和贝叶斯&lt;/h1&gt;
+
+&lt;h1 id=&#34;3-概率-高斯和贝叶斯&#34;&gt;3.概率，高斯和贝叶斯&lt;/h1&gt;
+
 &lt;p&gt;俩高斯分布相乘:&lt;/p&gt;
-&lt;p&gt;$$\begin{aligned}\mu &amp;amp;=\frac{\sigma_1^2\mu_2 + \sigma_2^2\mu_1}{\sigma_1^2+\sigma_2^2}\&lt;br&gt;
+
+&lt;p&gt;$$\begin{aligned}\mu &amp;amp;=\frac{\sigma_1^2\mu_2 + \sigma_2^2\mu_1}{\sigma_1^2+\sigma_2^2}&lt;br /&gt;
 \sigma^2 &amp;amp;=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}
 \end{aligned}$$&lt;/p&gt;
+
 &lt;p&gt;俩高斯分布相加&lt;/p&gt;
-&lt;p&gt;$$\begin{gathered}\mu = \mu_1 + \mu_2 \&lt;br&gt;
+
+&lt;p&gt;$$\begin{gathered}\mu = \mu_1 + \mu_2 &lt;br /&gt;
 \sigma^2 = \sigma^2_1 + \sigma^2_2
 \end{gathered}$$&lt;/p&gt;
+
 &lt;p&gt;在前一章的离散分布情形下，我们使用了 element-wise成来updata后验分布，计算比较麻烦，如果分布写作高斯分布形式，即可用上面的公式大大简单计算。&lt;/p&gt;
+
 &lt;h1 id=&#34;4-一维卡尔曼滤波&#34;&gt;4. 一维卡尔曼滤波&lt;/h1&gt;
+
 &lt;p&gt;背景问题描述：狗位置预测，传感器返回狗位置，带高斯噪声。
 我们以高斯建模传感器观测，套用离散贝叶斯滤波器的基本形式如下&lt;/p&gt;
+
 &lt;p&gt;$$\begin{array}{l|l|c}
-\text{discrete Bayes} &amp;amp; \text{Gaussian} &amp;amp; \text{Step}\&lt;br&gt;
+\text{discrete Bayes} &amp;amp; \text{Gaussian} &amp;amp; \text{Step}&lt;br /&gt;
 \hline
 \bar {\mathbf x} = \mathbf x \ast f(\mathbf x) &amp;amp;
-\bar {x}&lt;em&gt;\mathcal{N} =  x&lt;/em&gt;\mathcal{N} , \oplus , f_{x_\mathcal{N}}(\bullet) &amp;amp;
-\text{Predict} \&lt;br&gt;
-\mathbf x = |\mathcal L \bar{\mathbf x}| &amp;amp; x_\mathcal{N} = L , \otimes , \bar{x}_\mathcal{N} &amp;amp; \text{Update}
+\bar {x}&lt;em&gt;\mathcal{N} =  x&lt;/em&gt;\mathcal{N} \, \oplus \, f&lt;em&gt;{x&lt;/em&gt;\mathcal{N}}(\bullet) &amp;amp;
+\text{Predict} &lt;br /&gt;
+\mathbf x = |\mathcal L \bar{\mathbf x}| &amp;amp; x&lt;em&gt;\mathcal{N} = L \, \otimes \, \bar{x}&lt;/em&gt;\mathcal{N} &amp;amp; \text{Update}
 \end{array}$$&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;具体predict方法&lt;/strong&gt;
-$$ \begin{aligned}\bar{x}&lt;em&gt;k &amp;amp;= x&lt;/em&gt;{k-1} + v_k \Delta t \&lt;br&gt;
-&amp;amp;= x_{k-1} + f_x\end{aligned}$$
-其中$f_x,x$均为高斯分布。编程上用python的具名数组做了一下，比较规范，还改了repr魔法方法&lt;/p&gt;
+$$ \begin{aligned}\bar{x}&lt;em&gt;k &amp;amp;= x&lt;/em&gt;{k-1} + v&lt;em&gt;k \Delta t &lt;br /&gt;
+ &amp;amp;= x&lt;/em&gt;{k-1} + f_x\end{aligned}$$
+ 其中$f_x,x$均为高斯分布。编程上用python的具名数组做了一下，比较规范，还改了repr魔法方法&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from collections import namedtuple
 gaussian = namedtuple(&#39;Gaussian&#39;, [&#39;mean&#39;, &#39;var&#39;])
 gaussian.__repr__ = lambda s: &#39;?(μ={:.3f}, ?²={:.3f})&#39;.format(s[0], s[1])
@@ -2712,13 +3750,15 @@ g1.mean, g1[0], g1[1], g1.var
 def predict(pos, movement):
     return gaussian(pos.mean + movement.mean, pos.var + movement.var)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;&lt;strong&gt;具体update方法&lt;/strong&gt;
 likelihood是给定当前状态下测量的概率，此处likelihood就是我们的measurement，也用高斯表示。
 $$\begin{aligned}
-\mathcal N(\mu, \sigma^2) &amp;amp;= | prior \cdot likelihood |\&lt;br&gt;
-&amp;amp;= | \mathcal{N}(\bar\mu, \bar\sigma^2)\cdot \mathcal{N}(\mu_z, \sigma_z^2) |\&lt;br&gt;
+\mathcal N(\mu, \sigma^2) &amp;amp;= | prior \cdot likelihood |&lt;br /&gt;
+&amp;amp;= | \mathcal{N}(\bar\mu, \bar\sigma^2)\cdot \mathcal{N}(\mu_z, \sigma_z^2) |&lt;br /&gt;
 &amp;amp;= \mathcal N(\frac{\bar\sigma^2 \mu_z + \sigma_z^2 \bar\mu}{\bar\sigma^2 + \sigma_z^2},\frac{\bar\sigma^2\sigma_z^2}{\bar\sigma^2 + \sigma_z^2})
 \end{aligned}$$&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def gaussian_multiply(g1, g2):
     mean = (g1.var * g2.mean + g2.var * g1.mean) / (g1.var + g2.var)
     variance = (g1.var * g2.var) / (g1.var + g2.var)
@@ -2728,7 +3768,9 @@ def update(prior, likelihood):
     posterior = gaussian_multiply(likelihood, prior)
     return posterior
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;人工制造一个观测序列zs，在zs上构建卡尔曼滤波器&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# perform Kalman filter on measurement z
 for z in zs:    
     prior = predict(x, process_model)
@@ -2737,6 +3779,7 @@ for z in zs:
 
     kf_internal.print_gh(prior, x, z)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;
 
 
@@ -2771,39 +3814,58 @@ for z in zs:
 开始方差很大是因为设的初始系统方差很大，可以看到收敛非常快。
 以上程序就是一维卡尔曼的实现，下面将其数学表达转换为更传统的表达方式，不过此形式下贝叶斯滤波的意思不再那么明显：
 We see that the filter works. Now let&amp;rsquo;s go back to the math to understand what is happening. The posterior $x$ is computed as the likelihood times the prior ($\mathcal L \bar x$), where both are Gaussians.&lt;/p&gt;
+
 &lt;p&gt;Therefore the mean of the posterior is given by:&lt;/p&gt;
+
 &lt;p&gt;$$
-\mu=\frac{\bar\sigma^2, \mu_z + \sigma_z^2 , \bar\mu} {\bar\sigma^2 + \sigma_z^2}
+\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2}
 $$&lt;/p&gt;
+
 &lt;p&gt;I use the subscript $z$ to denote the measurement. We can rewrite this as:&lt;/p&gt;
+
 &lt;p&gt;$$\mu = \left( \frac{\bar\sigma^2}{\bar\sigma^2 + \sigma_z^2}\right) \mu_z + \left(\frac{\sigma_z^2}{\bar\sigma^2 + \sigma_z^2}\right)\bar\mu$$&lt;/p&gt;
+
 &lt;p&gt;In this form it is easy to see that we are scaling the measurement and the prior by weights:&lt;/p&gt;
+
 &lt;p&gt;$$\mu = W_1 \mu_z + W_2 \bar\mu$$&lt;/p&gt;
+
 &lt;p&gt;The weights sum to one because the denominator is a normalization term. We introduce a new term, $K=W_1$, giving us:&lt;/p&gt;
+
 &lt;p&gt;$$\begin{aligned}
-\mu &amp;amp;= K \mu_z + (1-K) \bar\mu\&lt;br&gt;
+\mu &amp;amp;= K \mu_z + (1-K) \bar\mu&lt;br /&gt;
 &amp;amp;= \bar\mu + K(\mu_z - \bar\mu)
 \end{aligned}$$&lt;/p&gt;
+
 &lt;p&gt;where&lt;/p&gt;
+
 &lt;p&gt;$$K = \frac {\bar\sigma^2}{\bar\sigma^2 + \sigma_z^2}$$&lt;/p&gt;
+
 &lt;p&gt;$K$ is the &lt;em&gt;Kalman gain&lt;/em&gt;. It&amp;rsquo;s the crux of the Kalman filter. It is a scaling term that chooses a value partway between $\mu_z$ and $\bar\mu$.&lt;/p&gt;
+
 &lt;p&gt;Let&amp;rsquo;s work a few examples. If the measurement is nine times more accurate than the prior, then $\bar\sigma^2 = 9\sigma_z^2$, and&lt;/p&gt;
+
 &lt;p&gt;$$\begin{aligned}
-\mu&amp;amp;=\frac{9 \sigma_z^2 \mu_z + \sigma_z^2, \bar\mu} {9 \sigma_z^2 + \sigma_\mathtt{z}^2} \&lt;br&gt;
+\mu&amp;amp;=\frac{9 \sigma_z^2 \mu_z + \sigma_z^2\, \bar\mu} {9 \sigma&lt;em&gt;z^2 + \sigma&lt;/em&gt;\mathtt{z}^2} &lt;br /&gt;
 &amp;amp;= \left(\frac{9}{10}\right) \mu_z + \left(\frac{1}{10}\right) \bar\mu
 \end{aligned}
 $$&lt;/p&gt;
+
 &lt;p&gt;Hence $K = \frac 9 {10}$, and to form the posterior we take nine tenths of the measurement and one tenth of the prior.&lt;/p&gt;
+
 &lt;p&gt;If the measurement and prior are equally accurate, then $\bar\sigma^2 = \sigma_z^2$ and&lt;/p&gt;
+
 &lt;p&gt;$$\begin{gathered}
-\mu=\frac{\sigma_z^2,  (\bar\mu + \mu_z)}{2\sigma_\mathtt{z}^2} \&lt;br&gt;
+\mu=\frac{\sigma&lt;em&gt;z^2\,  (\bar\mu + \mu_z)}{2\sigma&lt;/em&gt;\mathtt{z}^2} &lt;br /&gt;
 = \left(\frac{1}{2}\right)\bar\mu + \left(\frac{1}{2}\right)\mu_z
 \end{gathered}$$&lt;/p&gt;
+
 &lt;p&gt;which is the average of the two means. It makes intuitive sense to take the average of two equally accurate values.&lt;/p&gt;
+
 &lt;p&gt;We can also express the variance in terms of the Kalman gain:&lt;/p&gt;
+
 &lt;p&gt;$$\begin{aligned}
-\sigma^2 &amp;amp;= \frac{\bar\sigma^2 \sigma_z^2 } {\bar\sigma^2 + \sigma_z^2} \&lt;br&gt;
-&amp;amp;= K\sigma_z^2 \&lt;br&gt;
+\sigma^2 &amp;amp;= \frac{\bar\sigma^2 \sigma_z^2 } {\bar\sigma^2 + \sigma_z^2} &lt;br /&gt;
+&amp;amp;= K\sigma_z^2 &lt;br /&gt;
 &amp;amp;= (1-K)\bar\sigma^2
 \end{aligned}$$
 
@@ -2838,6 +3900,7 @@ $$&lt;/p&gt;
 &lt;/figure&gt;
 
 按此推导的等价实现如下：&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def update(prior, measurement):
     x, P = prior        # mean and variance of prior
     z, R = measurement  # mean and variance of measurement
@@ -2856,85 +3919,107 @@ def predict(posterior, movement):
     P = P + Q
     return gaussian(x, P)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;：&lt;/p&gt;
+
 &lt;p&gt;&lt;u&gt;Predict&lt;/u&gt;&lt;/p&gt;
-&lt;p&gt;$$\begin{array}{|l|l|l|}\&lt;br&gt;
-\hline\&lt;br&gt;
-\text{Equation} &amp;amp; \text{Implementation} &amp;amp; \text{Kalman Form}\&lt;br&gt;
-\hline\&lt;br&gt;
-\bar x = x + f_x &amp;amp; \bar\mu = \mu + \mu_{f_x} &amp;amp; \bar x = x + dx\&lt;br&gt;
-&amp;amp; \bar\sigma^2 = \sigma^2 + \sigma_{f_x}^2 &amp;amp; \bar P = P + Q\&lt;br&gt;
-\hline\&lt;br&gt;
-\end{array}$$&lt;/p&gt;
+
+&lt;p&gt;$\begin{array}{|l|l|l|}
+\hline
+\text{Equation} &amp;amp; \text{Implementation} &amp;amp; \text{Kalman Form}&lt;br /&gt;
+\hline
+ \bar x = x + f&lt;em&gt;x &amp;amp; \bar\mu = \mu + \mu&lt;/em&gt;{f&lt;em&gt;x} &amp;amp; \bar x = x + dx&lt;br /&gt;
+&amp;amp; \bar\sigma^2 = \sigma^2 + \sigma&lt;/em&gt;{f_x}^2 &amp;amp; \bar P = P + Q&lt;br /&gt;
+\hline
+\end{array}$&lt;/p&gt;
+
 &lt;p&gt;&lt;u&gt;Update&lt;/u&gt;&lt;/p&gt;
-&lt;p&gt;$$\begin{array}{|l|l|l|}
+
+&lt;p&gt;$\begin{array}{|l|l|l|}
 \hline
-\text{Equation} &amp;amp; \text{Implementation}&amp;amp; \text{Kalman Form}\&lt;br&gt;
+\text{Equation} &amp;amp; \text{Implementation}&amp;amp; \text{Kalman Form}&lt;br /&gt;
 \hline
-x = | \mathcal L\bar x| &amp;amp; y = z - \bar\mu &amp;amp; y = z - \bar x\&lt;br&gt;
-&amp;amp; K = \frac {\bar\sigma^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; K = \frac {\bar P}{\bar P+R}\&lt;br&gt;
-&amp;amp; \mu = \bar \mu + Ky &amp;amp; x = \bar x + Ky\&lt;br&gt;
-&amp;amp; \sigma^2 = \frac {\bar\sigma^2 \sigma_z^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; P = (1-K)\bar P\&lt;br&gt;
+ x = | \mathcal L\bar x| &amp;amp; y = z - \bar\mu &amp;amp; y = z - \bar x&lt;br /&gt;
+ &amp;amp; K = \frac {\bar\sigma^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; K = \frac {\bar P}{\bar P+R}&lt;br /&gt;
+ &amp;amp; \mu = \bar \mu + Ky &amp;amp; x = \bar x + Ky&lt;br /&gt;
+ &amp;amp; \sigma^2 = \frac {\bar\sigma^2 \sigma_z^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; P = (1-K)\bar P&lt;br /&gt;
 \hline
-\end{array}$$&lt;/p&gt;
+\end{array}$&lt;/p&gt;
+
 &lt;p&gt;其他小问题：
 1.此方法难以处理非线性
 2.在面临受限的硬件时，可以直接将K设为其最后的收敛值来简化计算。&lt;/p&gt;
-&lt;h1 id=&#34;5多维高斯&#34;&gt;5.多维高斯&lt;/h1&gt;
+
+&lt;h1 id=&#34;5-多维高斯&#34;&gt;5.多维高斯&lt;/h1&gt;
+
 &lt;p&gt;$$
-f(\mathbf{x},, \mu,,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}
+f(\mathbf{x},\, \mu,\,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}\, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}
 $$
 由于其协方差矩阵包含变量关系的信息，因此对预测是有帮助的
 多维高斯相乘：
 $$\begin{aligned}
-\mu &amp;amp;= \Sigma_2(\Sigma_1 + \Sigma_2)^{-1}\mu_1 + \Sigma_1(\Sigma_1 + \Sigma_2)^{-1}\mu_2 \&lt;br&gt;
+\mu &amp;amp;= \Sigma_2(\Sigma_1 + \Sigma_2)^{-1}\mu_1 + \Sigma_1(\Sigma_1 + \Sigma_2)^{-1}\mu_2 &lt;br /&gt;
 \Sigma &amp;amp;= \Sigma_1(\Sigma_1+\Sigma_2)^{-1}\Sigma_2
 \end{aligned}$$&lt;/p&gt;
-&lt;h1 id=&#34;6多维卡尔曼滤波&#34;&gt;6.多维卡尔曼滤波&lt;/h1&gt;
+
+&lt;h1 id=&#34;6-多维卡尔曼滤波&#34;&gt;6.多维卡尔曼滤波&lt;/h1&gt;
+
 &lt;p&gt;算法：&lt;/p&gt;
+
 &lt;p&gt;&lt;u&gt;&lt;strong&gt;Predict&lt;/strong&gt;&lt;/u&gt;&lt;/p&gt;
+
 &lt;p&gt;$\begin{array}{|l|l|l|}
 \hline
-\text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}\&lt;br&gt;
-&amp;amp; \text{(Kalman form)} &amp;amp; \&lt;br&gt;
+\text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}&lt;br /&gt;
+&amp;amp; \text{(Kalman form)} &amp;amp; &lt;br /&gt;
 \hline
-\bar \mu = \mu + \mu_{f_x} &amp;amp; \bar x = x + dx &amp;amp; \bar{\mathbf x} = \mathbf{Fx} + \mathbf{Bu}\&lt;br&gt;
-\bar\sigma^2 = \sigma_x^2 + \sigma_{f_x}^2 &amp;amp; \bar P = P + Q &amp;amp; \bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q \&lt;br&gt;
+\bar \mu = \mu + \mu_{f_x} &amp;amp; \bar x = x + dx &amp;amp; \bar{\mathbf x} = \mathbf{Fx} + \mathbf{Bu}&lt;br /&gt;
+\bar\sigma^2 = \sigma&lt;em&gt;x^2 + \sigma&lt;/em&gt;{f_x}^2 &amp;amp; \bar P = P + Q &amp;amp; \bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q &lt;br /&gt;
 \hline
 \end{array}$&lt;/p&gt;
-&lt;p&gt;$\mathbf x,, \mathbf P$ 是状态均值和方差&lt;/p&gt;
+
+&lt;p&gt;$\mathbf x,\, \mathbf P$ 是状态均值和方差&lt;/p&gt;
+
 &lt;p&gt;$\mathbf F$ 是状态转移矩阵&lt;/p&gt;
+
 &lt;p&gt;$\mathbf Q$ 过程方差&lt;/p&gt;
+
 &lt;p&gt;$\mathbf B$ ， $\mathbf u$ 输入矩阵和输入，新加入的&lt;/p&gt;
+
 &lt;p&gt;&lt;u&gt;&lt;strong&gt;Update&lt;/strong&gt;&lt;/u&gt;&lt;/p&gt;
+
 &lt;p&gt;$\begin{array}{|l|l|l|}
 \hline
-\text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}\&lt;br&gt;
-&amp;amp; \text{(Kalman form)} &amp;amp; \&lt;br&gt;
+\text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}&lt;br /&gt;
+&amp;amp; \text{(Kalman form)} &amp;amp; &lt;br /&gt;
 \hline
-&amp;amp; y = z - \bar x &amp;amp; \mathbf y = \mathbf z - \mathbf{H\bar x} \&lt;br&gt;
+&amp;amp; y = z - \bar x &amp;amp; \mathbf y = \mathbf z - \mathbf{H\bar x} &lt;br /&gt;
 &amp;amp; K = \frac{\bar P}{\bar P+R}&amp;amp;
-\mathbf K = \mathbf{\bar{P}H}^\mathsf T (\mathbf{H\bar{P}H}^\mathsf T + \mathbf R)^{-1} \&lt;br&gt;
-\mu=\frac{\bar\sigma^2, \mu_z + \sigma_z^2 , \bar\mu} {\bar\sigma^2 + \sigma_z^2} &amp;amp; x = \bar x + Ky &amp;amp; \mathbf x = \bar{\mathbf x} + \mathbf{Ky} \&lt;br&gt;
+\mathbf K = \mathbf{\bar{P}H}^\mathsf T (\mathbf{H\bar{P}H}^\mathsf T + \mathbf R)^{-1} &lt;br /&gt;
+\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2} &amp;amp; x = \bar x + Ky &amp;amp; \mathbf x = \bar{\mathbf x} + \mathbf{Ky} &lt;br /&gt;
 \sigma^2 = \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2} &amp;amp; P = (1-K)\bar P &amp;amp;
-\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar{P}} \&lt;br&gt;
+\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar{P}} &lt;br /&gt;
 \hline
 \end{array}$&lt;/p&gt;
+
 &lt;p&gt;$\mathbf H$ 观测函数&lt;/p&gt;
-&lt;p&gt;$\mathbf z,, \mathbf R$ 是测量均值和测量方差&lt;/p&gt;
+
+&lt;p&gt;$\mathbf z,\, \mathbf R$ 是测量均值和测量方差&lt;/p&gt;
+
 &lt;p&gt;$\mathbf y$ ， $\mathbf K$ 残差，卡尔曼增益&lt;/p&gt;
-&lt;p&gt;与单变量相比，只是引入了矩阵，其他都一样：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用高斯函数来表示我们对状态和误差的估计&lt;/li&gt;
-&lt;li&gt;使用高斯函数表示测量值及其误差&lt;/li&gt;
-&lt;li&gt;使用高斯函数表示过程模型&lt;/li&gt;
-&lt;li&gt;使用过程模型预测下一个状态(先验)&lt;/li&gt;
-&lt;li&gt;在测量值和先验值之间形成一个估计
+
+&lt;p&gt;与单变量相比，只是引入了矩阵，其他都一样：
+- 使用高斯函数来表示我们对状态和误差的估计
+- 使用高斯函数表示测量值及其误差
+- 使用高斯函数表示过程模型
+- 使用过程模型预测下一个状态(先验)
+- 在测量值和先验值之间形成一个估计
 &lt;strong&gt;注：细节的一些直观理解&lt;/strong&gt;
-在predict步中，状态方差以$\mathbf{\bar P} = \mathbf{FPF}^\mathsf T + \mathbf Q$方式计算得到，而不是简单P+Q，这是因为要映射到相同空间才能运算。$\mathbf{FPF}^\mathsf T$将P从t-1状态空间映射变换到t的状态空间。&lt;/li&gt;
-&lt;/ul&gt;
+在predict步中，状态方差以$\mathbf{\bar P} = \mathbf{FPF}^\mathsf T + \mathbf Q$方式计算得到，而不是简单P+Q，这是因为要映射到相同空间才能运算。$\mathbf{FPF}^\mathsf T$将P从t-1状态空间映射变换到t的状态空间。&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;下面以之前的狗追踪问题举例说明&lt;/strong&gt;
 这次试用位置和速度作为状态变量，其中位置可测，作为观测变量，速度作为隐变量，假设做匀速直线运动，并估测了初试位置和过程方差，如下，过程方差Q还未确定&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.kalman import predict
 
 x = np.array([10.0, 4.5])
@@ -2944,6 +4029,7 @@ F = np.array([[1, dt], [0, 1]])
 # Q is the process noise
 x, P = predict(x=x, P=P, F=F, Q=0)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;预测结果如下：
 
 
@@ -2979,6 +4065,7 @@ x, P = predict(x=x, P=P, F=F, Q=0)
 可以看到随着 predict的进行，不确定在增加，同时速度与位置的相关性在增加。
 过程噪声设计：
 Q是表示系统受外界的干扰的，具体细节在下章讨论，现在先使用库函数计算&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.common import Q_discrete_white_noise
 Q = Q_discrete_white_noise(dim=2, dt=1., var=2.35)
 print(Q)
@@ -2987,33 +4074,42 @@ print(Q)
  [1.175 2.35 ]]
  &#39;&#39;&#39;
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;最后，我们加上控制项，这可以让我们得以控制对象。$\Delta\mathbf x = \mathbf{Bu}$，至此，完整的预测方程已经确定，次例子是无控的，故设u=0$$\mathbf{\bar x} = \mathbf{Fx} + \mathbf{Bu}$$
 之后来看updata步：
 为了求观测和预测之间的残差，需要一个观测函数（矩阵）H将状态空间映射到观测空间。本例中为[1,0]，最后设置好观测方差R，整个滤波器就完全确定好了&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.kalman import update
 H = np.array([[1., 0.]])
 R = np.array([[5.]])
 z = 1.
 x, P = update(x, P, z, R, H)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;h1 id=&#34;7-卡尔曼滤波器数学细节&#34;&gt;7. 卡尔曼滤波器数学细节&lt;/h1&gt;
+
 &lt;p&gt;&lt;strong&gt;动态系统的状态空间表达&lt;/strong&gt;
 一般建立系统微分方程后很容易得到连续状态方程$\dot{\mathbf x} = \mathbf{Ax} + \mathbf{Bu} + w$（w是噪声），接下来的问题是要离散化为$\mathbf x_k = \mathbf {Fx}_{k-1}$以让计算机得以运行。离散化实际上就是在解微分方程组，方法很多，工程上常用数值方法。如van Loan&amp;rsquo;s方法可求 $\mathbf F_k$ 并同时得到 $\mathbf Q_k$
 &lt;strong&gt;过程噪声Q的确定&lt;/strong&gt;
 相似的，我们也需要对噪声w离散化以确定Q，具体要看我们对噪声的假设，典型的有连续白噪声模型和分段白噪声模型，各有利弊，实践上通过实验来确定。其具体计算可调用如下：&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.common import Q_continuous_white_noise
 from filterpy.common import Q_discrete_white_noise
 
 Q = Q_continuous_white_noise(dim=2, dt=1, spectral_density=1)
 Q = Q_discrete_white_noise(2, var=1.)
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;Q可以被简化。当时间步t很小的时候，我们大可以只保留最高阶状态变量对应的值，而将其他设为0。如
 $$\mathbf Q=\begin{bmatrix}0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;\sigma^2\end{bmatrix}$$
 对 $x=\begin{bmatrix}x &amp;amp; \dot x &amp;amp; \ddot{x} &amp;amp; y &amp;amp; \dot{y} &amp;amp; \ddot{y}\end{bmatrix}^\mathsf{T}$  Q 将为 6x6，这时可以保留$\ddot{x}$ ， $\ddot{y}$ ，其他都设为0.&lt;/p&gt;
+
 &lt;p&gt;$\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar P}$&lt;strong&gt;的计算稳定性问题&lt;/strong&gt;
 由于浮点数的精度损失，此式子在计算的时候可能使得P不再对称，由于P是协方差矩阵，其应该是严格对称的，这会导致滤波器发散等一系列错误。因此实际上使用了Joseph 方程计算P。$$\mathbf P = (\mathbf I-\mathbf {KH})\mathbf{\bar P}(\mathbf I-\mathbf{KH})^\mathsf T + \mathbf{KRK}^\mathsf T$$
 此方法不仅能解决因为浮点不对称引起的滤波器不稳定，亦可一定程度上解决因模型不精确和非高斯噪声等实际环境引起的滤波器发散问题。&lt;/p&gt;
-&lt;h1 id=&#34;8面向实际问题的卡尔曼滤波器的设计&#34;&gt;8.面向实际问题的卡尔曼滤波器的设计&lt;/h1&gt;
+
+&lt;h1 id=&#34;8-面向实际问题的卡尔曼滤波器的设计&#34;&gt;8.面向实际问题的卡尔曼滤波器的设计&lt;/h1&gt;
+
 &lt;p&gt;以过滤来自有噪声传感器的(x,y)为例（人工数据，匀速直线运动）。显然可取状态变量和转移矩阵
 $$\mathbf x =
 \begin{bmatrix}x &amp;amp; \dot x &amp;amp; y &amp;amp; \dot y\end{bmatrix}^\mathsf T$$
@@ -3024,16 +4120,17 @@ $$
 确定观测矩阵：由于我们传感器返回$\begin{bmatrix}x &amp;amp; y\end{bmatrix}^\mathsf T$ ，且单位为英尺，故设:
 $$\mathbf H =
 \begin{bmatrix}
-\frac{1}{0.3048} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \&lt;br&gt;
+\frac{1}{0.3048} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &lt;br /&gt;
 0 &amp;amp; 0 &amp;amp; \frac{1}{0.3048} &amp;amp; 0
 \end{bmatrix}
 $$
 观测噪声矩阵：认为x,y独立，假设高斯噪声，设：
-$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp;amp; \sigma_y\sigma_x \ \sigma_x\sigma_y &amp;amp; \sigma_{y}^2\end{bmatrix}
+$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp;amp; \sigma_y\sigma_x \ \sigma_x\sigma&lt;em&gt;y &amp;amp; \sigma&lt;/em&gt;{y}^2\end{bmatrix}
 = \begin{bmatrix}5&amp;amp;0\0&amp;amp;5\end{bmatrix}$$
 最后设置下初始值，注意P初值习惯上给的较大。
-$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, ,
+$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, \,
 \mathbf P = \begin{bmatrix}500&amp;amp;0&amp;amp;0&amp;amp;0\0&amp;amp;500&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;500&amp;amp;0\0&amp;amp;0&amp;amp;0&amp;amp;500\end{bmatrix}$$&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.stats import plot_covariance_ellipse
 from kf_book.book_plots import plot_filter
 
@@ -3084,6 +4181,7 @@ plt.legend(loc=2)
 plt.xlim(0, 20);                     
                                                           
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;效果尚可
 
 
@@ -3191,21 +4289,21 @@ $$D_e= \sqrt{(\mathbf x-\mathbf y)^\mathsf T (\mathbf x-\mathbf y)}$$
 若S是对角阵，马氏距离可简化为：
 $$D_m = \sqrt{\sum_{i-1}^N \frac{(x_i - \mu_i)^2}{\sigma_i}}$$
 就是欧氏距离加了个方差做因子。
-**滤波器性能评估**
-真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Normalized Estimated Error Squared（NEES）
+&lt;strong&gt;滤波器性能评估&lt;/strong&gt;
+真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。
+1. Normalized Estimated Error Squared（NEES）
 这是当能获取状态变量ground-truth时的最佳选择。
-$$\tilde{\mathbf x} = \mathbf x - \hat{\mathbf x} \ \epsilon = \tilde{\mathbf x}^\mathsf T\mathbf P^{-1}\tilde{\mathbf x}$$&lt;/li&gt;
-&lt;/ol&gt;
+$$\tilde{\mathbf x} = \mathbf x - \hat{\mathbf x} \ \epsilon = \tilde{\mathbf x}^\mathsf T\mathbf P^{-1}\tilde{\mathbf x}$$&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.stats import NEES
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;事实上这是一个假设检验方法。我们认定当NEES的均值&amp;lt;状态变量维度时是一个好的滤波器。
 2. 似然函数
 当无法获得ground-truth的时候，可计算似然，即观测符合当前模型假设的程度。
 $$\begin{aligned}
-\mathbf y &amp;amp;= \mathbf z - \mathbf{H \bar x}\&lt;br&gt;
-\mathbf S &amp;amp;= \mathbf{H\bar{P}H}^\mathsf T + \mathbf R\&lt;br&gt;
+\mathbf y &amp;amp;= \mathbf z - \mathbf{H \bar x}&lt;br /&gt;
+\mathbf S &amp;amp;= \mathbf{H\bar{P}H}^\mathsf T + \mathbf R&lt;br /&gt;
 \mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf y^\mathsf T\mathbf S^{-1}\mathbf y]
 \end{aligned}
 $$
@@ -3241,14 +4339,15 @@ $$
 
 &lt;/figure&gt;
 &lt;/p&gt;
-&lt;h1 id=&#34;9非线性滤波&#34;&gt;9.非线性滤波&lt;/h1&gt;
+
+&lt;h1 id=&#34;9-非线性滤波&#34;&gt;9.非线性滤波&lt;/h1&gt;
+
 &lt;p&gt;原始的卡尔曼滤波器是线性的，我们生活在非线性的世界，需要一些非线性的技术。
 &lt;strong&gt;非线性&lt;/strong&gt;
-数学上的&lt;strong&gt;线性&lt;/strong&gt;要求以下两点：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;additivity: $f(x+y) = f(x) + f(y)$&lt;/li&gt;
-&lt;li&gt;homogeneity: $f(ax) = af(x)$&lt;/li&gt;
-&lt;/ul&gt;
+数学上的&lt;strong&gt;线性&lt;/strong&gt;要求以下两点：
+* additivity: $f(x+y) = f(x) + f(y)$
+* homogeneity: $f(ax) = af(x)$&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;非线性的效果&lt;/strong&gt;
 考虑一个有噪声雷达跟踪系统，它向我们报告物体距离50km，方位90度，那么我们直觉上可能认为其绝对坐标应该是（50，0）。我们设距离方差为0.4，角度方差为0.35，并采样3000点如下，计算3000点的均值标记为星。
 
@@ -3316,30 +4415,32 @@ $$
 &lt;/figure&gt;
 
 UKF,EKF,例子滤波 是几种处理非线性滤波的有效手段，尤其UKF和粒子滤波器在实践中取得了非常好的效果。&lt;/p&gt;
+
 &lt;h1 id=&#34;9-无迹卡尔曼滤波器ukf&#34;&gt;9. 无迹卡尔曼滤波器UKF&lt;/h1&gt;
+
 &lt;p&gt;该技术与1997年提出，相对于EKF等算是比较新的。有趣的是其名称中的unscented一词并没有任何含义，而是源于发明者开的玩笑。。。
 上一章的例子使我们了解到由于非线性函数的存在，新状态已经难以解析的计算得到，因此需要引入采样方法进行数值求解。单纯使用大量随机采样（蒙特卡洛思路）是最朴素的方法，效果不错，能很好的近似原分布经过非线性函数后的均值和方差，但考虑到这个采样在每个时间步update中都要进行，计算量实在太大。更好的方法是使用加权采样。选择的采样点称之为sigma points，记为$\boldsymbol{\chi}$。当我们通过一些采样方法得到$\boldsymbol{\chi}$后，并可进行如下的计算
 $$\boldsymbol{\mathcal{Y}} = f(\boldsymbol{\chi})$$
 将$\boldsymbol{\chi}$通过非线性函数计算其对应的映射之后，计算均值和方差作为新的估计，拿到这些估计值后我们便可与标准的线性卡尔曼滤波方法接轨了。故UKF方法的精髓就是以加权采样近似估计状态在非线性变换之后的均值方差，借助于较好的采样算法，这个估计一般是不错的，故此方法可以在非线性系统中取得较好的性能。
 &lt;strong&gt;具体算法&lt;/strong&gt;
 $$\begin{array}{l|l}
-\textrm{Kalman Filter} &amp;amp; \textrm{Unscented Kalman Filter} \&lt;br&gt;
+\textrm{Kalman Filter} &amp;amp; \textrm{Unscented Kalman Filter} &lt;br /&gt;
 \hline
-&amp;amp; \boldsymbol{\mathcal Y} = f(\boldsymbol\chi) \&lt;br&gt;
+&amp;amp; \boldsymbol{\mathcal Y} = f(\boldsymbol\chi) &lt;br /&gt;
 \mathbf{\bar x} = \mathbf{Fx} &amp;amp;
-\mathbf{\bar x} = \sum w^m\boldsymbol{\mathcal Y}  \&lt;br&gt;
+\mathbf{\bar x} = \sum w^m\boldsymbol{\mathcal Y}  &lt;br /&gt;
 \mathbf{\bar P} = \mathbf{FPF}^\mathsf T+\mathbf Q  &amp;amp;
-\mathbf{\bar P} = \sum w^c({\boldsymbol{\mathcal Y} - \mathbf{\bar x})(\boldsymbol{\mathcal Y} - \mathbf{\bar x})^\mathsf T}+\mathbf Q \&lt;br&gt;
+\mathbf{\bar P} = \sum w^c({\boldsymbol{\mathcal Y} - \mathbf{\bar x})(\boldsymbol{\mathcal Y} - \mathbf{\bar x})^\mathsf T}+\mathbf Q &lt;br /&gt;
 \hline
-&amp;amp; \boldsymbol{\mathcal Z} =  h(\boldsymbol{\mathcal{Y}}) \&lt;br&gt;
-&amp;amp; \boldsymbol\mu_z = \sum w^m\boldsymbol{\mathcal{Z}} \&lt;br&gt;
+&amp;amp; \boldsymbol{\mathcal Z} =  h(\boldsymbol{\mathcal{Y}}) &lt;br /&gt;
+&amp;amp; \boldsymbol\mu_z = \sum w^m\boldsymbol{\mathcal{Z}} &lt;br /&gt;
 \mathbf y = \mathbf z - \mathbf{Hx} &amp;amp;
-\mathbf y = \mathbf z - \boldsymbol\mu_z \&lt;br&gt;
+\mathbf y = \mathbf z - \boldsymbol\mu_z &lt;br /&gt;
 \mathbf S = \mathbf{H\bar PH}^\mathsf{T} + \mathbf R &amp;amp;
 \mathbf P_z = \sum w^c{(\boldsymbol{\mathcal Z}-\boldsymbol\mu_z)(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}} + \mathbf R \
 \mathbf K = \mathbf{\bar PH}^\mathsf T \mathbf S^{-1} &amp;amp;
-\mathbf K = \left[\sum w^c(\boldsymbol{\mathcal Y}-\bar{\mathbf x})(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}\right] \mathbf P_z^{-1} \&lt;br&gt;
-\mathbf x = \mathbf{\bar x} + \mathbf{Ky} &amp;amp; \mathbf x = \mathbf{\bar x} + \mathbf{Ky}\&lt;br&gt;
+\mathbf K = \left[\sum w^c(\boldsymbol{\mathcal Y}-\bar{\mathbf x})(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}\right] \mathbf P_z^{-1} &lt;br /&gt;
+\mathbf x = \mathbf{\bar x} + \mathbf{Ky} &amp;amp; \mathbf x = \mathbf{\bar x} + \mathbf{Ky}&lt;br /&gt;
 \mathbf P = (\mathbf{I}-\mathbf{KH})\mathbf{\bar P} &amp;amp; \mathbf P = \bar{\mathbf P} - \mathbf{KP_z}\mathbf{K}^\mathsf{T}
 \end{array}$$
 可以看到仅是进行一些调整，其他完全符合卡尔曼滤波的思想。
@@ -3349,18 +4450,18 @@ $$\begin{array}{l|l}
 为了方便我们记$\lambda = \alpha^2(n+\kappa)-n$
 先看点的位置如何得到：
 首先一个特殊的采样点是
-$$ \mathcal{X}&lt;em&gt;0 = \mu$$
+$$ \mathcal{X}_0 = \mu$$
 之后其余点的计算
 $$
 \boldsymbol{\chi}&lt;em&gt;i = \begin{cases}
-\mu + \left[ \sqrt{(n+\lambda)\Sigma}\right ]&lt;/em&gt;{i}&amp;amp; \text{for i=1 .. n} \&lt;br&gt;
-\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]&lt;/em&gt;{i-n} &amp;amp;\text{for i=(n+1) .. 2n}\end{cases}
+\mu + \left[ \sqrt{(n+\lambda)\Sigma}\right ]&lt;/em&gt;{i}&amp;amp; \text{for i=1 .. n} &lt;br /&gt;
+\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]_{i-n} &amp;amp;\text{for i=(n+1) .. 2n}\end{cases}
 $$
 其中n是状态向量x的维数，$\Sigma$是协方差矩阵P。+-的形式保证了对称性。下标$i$表示取矩阵的第$i$列。此式子通俗理解是以$\mu$为中心，扩散$\Sigma$的一个系数大小的的值。这里的矩阵开方是个很神奇的东西，其定义不唯一，此处使用如下定义：若$\Sigma = \mathbf{SS}^\mathsf T$则 $S = \sqrt{\Sigma}$。具体的，使用$\mathbf S = \text{cholesky}(\mathbf P)$ 作为$\mathbf P$的开方。其中cholesky是cholesky分解。
 之后看权重的计算：
-$$W^m_0 = \frac{\lambda}{n+\lambda} \&lt;br&gt;
-W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta \&lt;br&gt;
-W^m_i = W^c_i = \frac{1}{2(n+\lambda)};;;i=1..2n$$
+$$W^m_0 = \frac{\lambda}{n+\lambda} &lt;br /&gt;
+W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta &lt;br /&gt;
+W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$
 此方法的采样结形如下图：
 
 
@@ -3436,9 +4537,11 @@ $$\mathbf{\bar x} = \begin{bmatrix} 1 &amp;amp; \Delta t &amp;amp; 0 \ 0&amp;amp
 $$
 但本例中的观测函数就是非线性的了：
 $$\text{r} = \sqrt{(x_\text{ac} - x_\text{radar})^2 + (y_\text{ac} - y_\mathtt{radar})^2}$$&lt;/p&gt;
+
 &lt;p&gt;$$\epsilon = \tan^{-1}{\frac{y_\mathtt{ac} - y_\text{radar}}{x_\text{ac} - x_\text{radar}}}$$
 代码实现如下：
 首先创造仿真环境：飞机和雷达站&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from numpy.linalg import norm
 from math import atan2
 
@@ -3484,7 +4587,9 @@ class ACSim(object):
         self.pos += dx     
         return self.pos
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;之后便可实现借助filterpy库实现UKF：&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def f_radar(x, dt):
     &amp;quot;&amp;quot;&amp;quot; state transition function for a constant velocity 
     aircraft with state vector [x, velocity, altitude]&#39;&amp;quot;&amp;quot;&amp;quot;
@@ -3535,11 +4640,12 @@ for _ in time:
     xs.append(kf.x)   
 plot_radar(xs, time)    
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;&lt;strong&gt;最后，呈现一个较复杂的例子&lt;/strong&gt;
 此例子处理机器人定位问题。我们有一个机器人，它需要用传感器感知地标来定位和导航。
 机器人模型采用经典的自行车模型来建模。
-$$\begin{aligned} \bar x &amp;amp;= x - R\sin(\theta) + R\sin(\theta + \beta) \&lt;br&gt;
-\bar y &amp;amp;= y + R\cos(\theta) - R\cos(\theta + \beta) \&lt;br&gt;
+$$\begin{aligned} \bar x &amp;amp;= x - R\sin(\theta) + R\sin(\theta + \beta) &lt;br /&gt;
+\bar y &amp;amp;= y + R\cos(\theta) - R\cos(\theta + \beta) &lt;br /&gt;
 \bar \theta &amp;amp;= \theta + \beta
 \end{aligned}
 $$
@@ -3548,9 +4654,9 @@ $$
 选定控制变量$\mathbf{u} = \begin{bmatrix}v &amp;amp; \alpha\end{bmatrix}^\mathsf{T}$（α是前轮转向角）
 明确地标p的观测函数：
 $$\begin{aligned}
-\mathbf{z}&amp;amp; = h(\mathbf x, \mathbf P) &amp;amp;+ \mathcal{N}(0, R)\&lt;br&gt;
+\mathbf{z}&amp;amp; = h(\mathbf x, \mathbf P) &amp;amp;+ \mathcal{N}(0, R)&lt;br /&gt;
 &amp;amp;= \begin{bmatrix}
-\sqrt{(p_x - x)^2 + (p_y - y)^2} \&lt;br&gt;
+\sqrt{(p_x - x)^2 + (p_y - y)^2} &lt;br /&gt;
 \tan^{-1}(\frac{p_y - y}{p_x - x}) - \theta
 \end{bmatrix} &amp;amp;+ \mathcal{N}(0, R)
 \end{aligned}$$
@@ -3624,36 +4730,35 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 &lt;/figure&gt;
 &lt;/p&gt;
+
 &lt;h1 id=&#34;11-扩展卡尔曼滤波器ekf&#34;&gt;11. 扩展卡尔曼滤波器EKF&lt;/h1&gt;
+
 &lt;p&gt;EKF算法在卡尔曼发表线性卡尔曼滤波器后很快被提出，其应对非线性的能力相对较差，同时理论比较繁琐，故暂略&lt;/p&gt;
+
 &lt;h1 id=&#34;12-粒子滤波器pf&#34;&gt;12. 粒子滤波器PF&lt;/h1&gt;
+
 &lt;p&gt;之前的技术不能处理多目标，强非线性，强非高斯噪声，无过程模型的场景，这些场景下可以使用PF。
-粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;随机产生一群粒子
+粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：
+1. 随机产生一群粒子
 粒子可以有位置、方向 和/或 任何其他需要估计的状态变量。
 每一个粒子都有一个权值(概率)，表示它与系统实际状态匹配的可能性。
 用相同的权重初始化每个对象。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;预测粒子的下一个状态
-根据你对真实系统行为的预测来移动粒子。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;更新
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;预测粒子的下一个状态
+根据你对真实系统行为的预测来移动粒子。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;更新
 根据测量结果更新颗粒的权重。
-与测量值紧密相称的粒子的权重要高于与测量值不匹配的粒子。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;重采样
-抛弃非常不可能的粒子，用更可能的粒子的拷贝替换它们。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;计算估计
-（可选）计算一组粒子的加权平均值和协方差，得到状态估计。&lt;/p&gt;
-&lt;/li&gt;
+与测量值紧密相称的粒子的权重要高于与测量值不匹配的粒子。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;重采样
+抛弃非常不可能的粒子，用更可能的粒子的拷贝替换它们。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;计算估计
+（可选）计算一组粒子的加权平均值和协方差，得到状态估计。&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
+
 &lt;p&gt;以车辆追踪问题为例，我们选定（x,y,θ）为粒子的变量
 初始化阶段，随机初始化粒子状态，基于1/N的均等权重
 预测阶段我们让例子有噪声地按控制变量移动
@@ -3694,17 +4799,20 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 重采样不是每次更新都进行的，没有新息注入时重采样并无意义。我们使用一下指标决定何时进行重采样：
 $$\hat{N}_\text{eff} = \frac{1}{\sum w^2}$$（w是粒子权重）
 重采样在此值小于每一给定的阈值（比如N/2，其中N为粒子数）后进行。此值是对当前有用粒子数量的估计。这种策略称Sampling Importance Resampling (SIR)。&lt;/p&gt;
+
 &lt;p&gt;在上面的预测和更新两步中我们按输入u移动例子，并使用观测更新其对应权重，这种方法的理论依据正是著名的重要性采样（统计学通用方法，也被openai用在PPO中用于构建off-policy learning）：
 使用重要性采样可以更换采样分布，将无法计算的
-$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x), dx$$
+$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x)\, dx$$
 转为
-$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x), ,  \cdot ,  \frac{\pi(x)}{q(x)}, dx$$
+$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x)\, \,  \cdot \,  \frac{\pi(x)}{q(x)}\, dx$$
 在上面的机器人追踪问题中，分布π即机器人状态的分布，这是不一定对的（因为是推断的结果），而q分布即新获得的测量的分布，可以认为是准确的。因此自然的利用重要性采样公式换到q上采样会得到更精准的值。在具体实施中，我们计算的是$\mu = \sum\limits_{i=1}^N x^iw^i$，即加权平均，其中权重w就是重要性采样公式中的π/q。
-**粒子滤波中不同的重采样方法**
+&lt;strong&gt;粒子滤波中不同的重采样方法&lt;/strong&gt;
 重采样在粒子滤波中起到防止粒子退化的作用，有重要意义。除了上面的采样方法，还有残差重采样（Residual Resampling），分层重采样（Stratified Resampling），系统重采样（Systematic Resampling）。作者认为其中比较好的是系统重采样，这在采样量小的时候比较明显（所谓好指采样结果符合权重的程度好坏，好的采样应该很好符合权重规定的比例关系），但个人感觉在点稍多的时候这并不是个问题。不过系统重采样有O(N)的复杂度，这比上面的O(Nlog(N))好。
-**总结**
+&lt;strong&gt;总结&lt;/strong&gt;
 在线性和高斯噪声的假设下，卡尔曼滤波是最优估计，而粒子滤波则可处理非线性和无模型系统，不需要高斯和线性假设。但是粒子滤波的性能分析，稳定性分析都很困难，计算量也大，不过这也是处理和非线性有关问题时经常见到的。KF，UKF，EKF已经在工业上获得了很多实时在线应用的机会。随着计算成本的不断下降，未来粒子滤波类可能也会有不错的应用。&lt;/p&gt;
+
 &lt;h1 id=&#34;13-平滑器&#34;&gt;13. 平滑器&lt;/h1&gt;
+
 &lt;p&gt;卡尔曼滤波器是在线滤波方法，之利用历史信息，而对于离线滤波场景，使用平滑器可扩展到使用整个序列信息进行滤波，效果会更好。
 &lt;strong&gt;固定区间平滑（Fixed-Interval Smoothing）&lt;/strong&gt;
 这类平滑器在接受到一个完整的区间后一并进行估计操作。RTS是这类中最主要的方法。RTS先运行标准卡尔曼滤波，得到所有的估计值X和对应系统协方差P。之后用X和P，按下面算法从第K步预测到第1步（即反向预测）：
@@ -3714,8 +4822,8 @@ $$\begin{aligned}
 \end{aligned}$$
 更新：
 $$\begin{aligned}
-\mathbf{K}_k &amp;amp;= \mathbf{P}_k\mathbf{F}^\mathsf{T}\mathbf{P}^{-1} \&lt;br&gt;
-\mathbf{x}_k &amp;amp;= \mathbf{x}_k + \mathbf{K}&lt;em&gt;k(\mathbf{x}&lt;/em&gt;{k+1} - \mathbf{Fx}_k) \&lt;br&gt;
+\mathbf{K}_k &amp;amp;= \mathbf{P}_k\mathbf{F}^\mathsf{T}\mathbf{P}^{-1} &lt;br /&gt;
+\mathbf{x}_k &amp;amp;= \mathbf{x}_k + \mathbf{K}&lt;em&gt;k(\mathbf{x}&lt;/em&gt;{k+1} - \mathbf{Fx}_k) &lt;br /&gt;
 \mathbf{P}_k &amp;amp;= \mathbf{P}_k + \mathbf{K}&lt;em&gt;k(\mathbf{P}&lt;/em&gt;{k+1} - \mathbf{P})\mathbf{K}_k^\mathsf{T}
 \end{aligned}$$
 效果显著：
@@ -3750,7 +4858,9 @@ $$\begin{aligned}
 
 &lt;/figure&gt;
 &lt;/p&gt;
+
 &lt;h1 id=&#34;14-自适应滤波&#34;&gt;14. 自适应滤波&lt;/h1&gt;
+
 &lt;p&gt;Adaptive Filtering旨在处理模型不匹配的情况，其检查到有当前过程模型无法描述的动态行为时可以自适应的调整。（回想在之前非自适应的滤波器中，我们只能增大Q以权衡模型的问题，但大的Q会使我们的滤波器不再进行最优估计）
 我们建立一个ManeuveringTarget类来产生人工数据。ManeuveringTarget模拟了二维平面的小车，可以接受转向和加减速指令。另外设计个模拟传感器，吐出加噪声后的（x，y）。给一个转向的数据实例如下：
 
@@ -3948,7 +5058,7 @@ $$\begin{aligned}
 &lt;/figure&gt;
 
 此外，还可计算$std = \sqrt{\mathbf{HPH}^\mathsf{T} + \mathbf{R}}$ 之后采用如下策略改变Q：当残差&amp;gt;std的某一倍数时，增大Q
-**自适应思路2：渐消记忆滤波器（Fading memory filters）**
+&lt;strong&gt;自适应思路2：渐消记忆滤波器（Fading memory filters）&lt;/strong&gt;
 此类方法优势不被归类为自适应滤波方法。此方法的关注点在卡尔曼滤波器的记忆性上。标准卡尔曼滤波使用了1~k-1的所有信息，但这可能导致过大的“惯性”，我们加入一个微小的修改，将原方法中$\bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q$更改为$\tilde{\mathbf P} = \alpha^2\mathbf{FPF}^\mathsf T + \mathbf Q$。其中α&amp;gt;1，但通常很接近1，比如1.02。这样做的考虑是若我们增加估计误差协方差，滤波器对估计的不确定性就会增加，因此它给测量增加了权重，从而减小了滤波器的惯性。此法的改动微乎其微，实现很方便，值得一试，虽然效果不是很惊艳。
 
 
@@ -3981,10 +5091,12 @@ $$\begin{aligned}
 
 &lt;/figure&gt;
 
-**自适应思路3：多模型估计**
+&lt;strong&gt;自适应思路3：多模型估计&lt;/strong&gt;
 这是一种集成（ensemble ）的思路。最朴素的想法是搞一把模型，然后看情况切换，当然也可进行UKF,KF的集成或对不同的状态变量使用不同的模型或算法。
 我们很容易实现的方法是对残差进行阈值判断，以此来切换模型，但这种硬切换显然会导致估计结果不连续的跳跃。因此，我们采用多模型自适应估计技术（MMAE），该方法按模型likelihoods给出融合结果。其中似然函数已在前述章节有过讨论：$\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf{y}^\mathsf{T}\mathbf{S}^{-1}\mathbf{y}]$，其中y是残差，S是系统不确定性。之后按$p_k^i = \frac{\mathcal{L}_k^ip_{k-1}^i}{\sum\limits_{j=1}^N \mathcal{L}_k^jp_{k-1}^j}$分配即可。此方法的一个缺陷是算法可能收敛到只信任某一最可能算法上去，这需要被注意，可以通过重新初始化选择权重进行修正。&lt;/p&gt;
+
 &lt;p&gt;此外还有交互式多模型技术 IMM（Interacting Multiple Model），利用贝叶斯方法在多个模型间转移，但为了交互，其要求模型必需有相同的维数，这是个比较大的限制。&lt;/p&gt;
+
 &lt;p&gt;完。&lt;/p&gt;
 </description>
     </item>
