@@ -5,12 +5,540 @@
     <link>https://leidawt.github.io/post/</link>
       <atom:link href="https://leidawt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Fri, 28 Feb 2020 12:00:00 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Wed, 22 Jul 2020 12:00:00 +0800</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=false) shape:circle]</url>
       <title>Posts</title>
       <link>https://leidawt.github.io/post/</link>
     </image>
+    
+    <item>
+      <title>MATLAB马氏链分析工具</title>
+      <link>https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Wed, 22 Jul 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#基本性质&#34;&gt;基本性质&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#平稳分布&#34;&gt;平稳分布&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#混合时间-mixing-time&#34;&gt;混合时间（mixing time）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#matlab马氏链工具包&#34;&gt;MATLAB马氏链工具包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#参考&#34;&gt;参考&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;本文整理下齐次有限状态离散时间马氏链的相关基础内容并及MATLAB中提供的与之相关的性质。&lt;/p&gt;
+
+&lt;h1 id=&#34;基本性质&#34;&gt;基本性质&lt;/h1&gt;
+
+&lt;p&gt;为进行状态分类，先引入一组重要性质和定义
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/0_hu99f1f5a39783246484db51d764860374_571554_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/0_hu99f1f5a39783246484db51d764860374_571554_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1806&#34; height=&#34;606&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/1_hu399f96a518bf96a29b61a2d60de66ce3_800000_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/1_hu399f96a518bf96a29b61a2d60de66ce3_800000_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1794&#34; height=&#34;517&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/2_hu670ef5c6b4b975b50bdfb41db41f56ad_198004_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/2_hu670ef5c6b4b975b50bdfb41db41f56ad_198004_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1772&#34; height=&#34;195&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/3_hu23066222fef01dc772c596bab0d460ad_567285_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/3_hu23066222fef01dc772c596bab0d460ad_567285_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1765&#34; height=&#34;374&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/4_hu125d9e989e071bd385db2066b9445be0_340117_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/4_hu125d9e989e071bd385db2066b9445be0_340117_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1769&#34; height=&#34;292&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/5_hu78de3ec4df5b3f4d8a15592dce8192e4_537097_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/5_hu78de3ec4df5b3f4d8a15592dce8192e4_537097_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1786&#34; height=&#34;593&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/6_hud9610a6eb89ca3c363b630976561224d_273715_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/6_hud9610a6eb89ca3c363b630976561224d_273715_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1814&#34; height=&#34;319&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/7_hu335a45ba3447ebbc028423955e7b2ead_17649_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/7_hu335a45ba3447ebbc028423955e7b2ead_17649_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;573&#34; height=&#34;193&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;h1 id=&#34;平稳分布&#34;&gt;平稳分布&lt;/h1&gt;
+
+&lt;p&gt;
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/8_huda95fc1aba01f654adbc0c2cd1871779_216148_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/8_huda95fc1aba01f654adbc0c2cd1871779_216148_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1797&#34; height=&#34;185&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+式子7-94为平衡方程：$\pi=\pi*P$
+不可约且正常返的马氏链一定存在平稳分布，更一般的，只要马氏链存在一个闭的不可约子集，并且该集合中的状态均是正常返的，则存在平稳分布。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/9_huae3691953b82fa612f1d3201757a778c_555124_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/9_huae3691953b82fa612f1d3201757a778c_555124_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1786&#34; height=&#34;399&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;混合时间-mixing-time&#34;&gt;混合时间（mixing time）&lt;/h1&gt;
+
+&lt;p&gt;在概率论中，马尔可夫链的混合时间是马尔可夫链“接近”其稳态分布的所需时间。
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/10_hu3f866ac070948a2bf3ad0ace8dfe4fc3_2418_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/10_hu3f866ac070948a2bf3ad0ace8dfe4fc3_2418_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;249&#34; height=&#34;26&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+对于遍历链，任何初始分布都以第二大特征值模量（SLEM）$\mu$确定的速率收敛到平稳分布。 谱间隙$1-\mu$，提供了一种可视化的测量方法，具有较大的间隙（较小的SLEM圆），可产生更快的收敛。matlab中估计mixing time的式子是：
+$$tMix=-\frac{1}{\log{\mu}}$$&lt;/p&gt;
+
+&lt;h1 id=&#34;matlab马氏链工具包&#34;&gt;MATLAB马氏链工具包&lt;/h1&gt;
+
+&lt;p&gt;MATLAB在Econometrics Toolbox中提供&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-chain-models.html&#34;&gt;dtmc&lt;/a&gt;类，可绘制状态转移图、判断遍历性等等
+1. 生成马氏链
+直接输入一步状态转移矩阵即可
+    &lt;code&gt;
+    P = [ 0   0  1/2 1/4 1/4  0   0 ;
+          0   0  1/3  0  2/3  0   0 ;
+          0   0   0   0   0  1/3 2/3;
+          0   0   0   0   0  1/2 1/2;
+          0   0   0   0   0  3/4 1/4;
+         1/2 1/2  0   0   0   0   0 ;
+         1/4 3/4  0   0   0   0   0 ];
+    mc = dtmc(P);
+&lt;/code&gt;
+2. 状态类的判断
+    通过绘制状态转移图即可判断马氏链中state类型：
+    &lt;code&gt;
+    graphplot(mc,&#39;ColorNodes&#39;,true);
+&lt;/code&gt;
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/11_hucd85d9f9bff8127188d3957cf208774d_30319_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/11_hucd85d9f9bff8127188d3957cf208774d_30319_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;560&#34; height=&#34;420&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;可约性、遍历性&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tfRed = isreducible(mc)
+tfErg = isergodic(mc)
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;周期性
+周期性可以状态分布概率直观的看出来&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;X1 = redistribute(mc,20);
+figure;
+distplot(mc,X1);
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/12_hu0bed8b498a8045ba2ff7cb56e597ef7e_27913_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/12_hu0bed8b498a8045ba2ff7cb56e597ef7e_27913_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;560&#34; height=&#34;420&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;平稳分布及混合时间
+直接调用下面命令即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[xFix,tMix] = asymptotics(mc)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为观察收敛速度，可绘制特征图&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;figure;
+eigplot(mc);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/13_hu5ca8f8abe2c0b6f2004513ca225e55b4_31522_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/13_hu5ca8f8abe2c0b6f2004513ca225e55b4_31522_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;560&#34; height=&#34;420&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中粉色阴影表示最大特征值和第二大特征值之间的gap，越大则收敛越快（mixing time越小），若存在周期=k，则半径为1的圆上会有k个点，即存在k个模为1的特征值。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&#34;&gt;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&lt;/a&gt;
+《随机过程及其应用》第二版 陆大金&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>【文献阅读】Probabilistic Terrain Mapping for Mobile Robots With Uncertain Localization</title>
