@@ -1,0 +1,1497 @@
+<!DOCTYPE html><html lang="zh-Hans" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 4.8.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="目录 USB摄像头使用与矫正 Tagslam安装 ROS多工作空间覆盖导致部分工作空间环境变量不生效问题 Tagslam配置 Tagslam实验 Tag">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/">
+  <meta property="og:title" content="TagSlam光学定位系统部署与调试 | Academic">
+  <meta property="og:description" content="目录 USB摄像头使用与矫正 Tagslam安装 ROS多工作空间覆盖导致部分工作空间环境变量不生效问题 Tagslam配置 Tagslam实验 Tag"><meta property="og:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh-Hans">
+  
+    
+      <meta property="article:published_time" content="2020-11-14T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-11-14T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/"
+  },
+  "headline": "TagSlam光学定位系统部署与调试",
+  
+  "datePublished": "2020-11-14T12:00:00+08:00",
+  "dateModified": "2020-11-14T12:00:00+08:00",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "目录 USB摄像头使用与矫正 Tagslam安装 ROS多工作空间覆盖导致部分工作空间环境变量不生效问题 Tagslam配置 Tagslam实验 Tag"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>TagSlam光学定位系统部署与调试 | Academic</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class=" ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="搜索"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>浅色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>深色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>自动</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link " data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i></a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item dropdown-item-active">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>TagSlam光学定位系统部署与调试</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  
+  <span ><a href="/authors/admin/"></a></span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Nov 14, 2020
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+<p><h2>目录</h2>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#usb摄像头使用与矫正">USB摄像头使用与矫正</a></li>
+<li><a href="#tagslam安装">Tagslam安装</a></li>
+<li><a href="#ros多工作空间覆盖导致部分工作空间环境变量不生效问题">ROS多工作空间覆盖导致部分工作空间环境变量不生效问题</a></li>
+<li><a href="#tagslam配置">Tagslam配置</a></li>
+<li><a href="#tagslam实验">Tagslam实验</a></li>
+</ul>
+</nav></p>
+
+<p>TagSlam是以AprilTag为前端构建的SLAM定位系统，得益于AprilTag技术能提供高精锚点，这一系统具有很高的定位精度。本文记录在ROS中使用TagSlam定位的方法</p>
+
+<h1 id="usb摄像头使用与矫正">USB摄像头使用与矫正</h1>
+
+<ol>
+<li>Ubuntu下查看USB摄像头设备
+Ref: <a href="http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/">http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/</a>
+可通过v4l2-ctl &ndash;list-devices命令来确认设备号</li>
+
+<li><p>摄像头接入ROS
+安装usb_cam包</p>
+
+<pre><code class="language-bash">sudo apt-get install ros-melodic-usb-cam
+</code></pre></li>
+</ol>
+
+<p><a href="http://wiki.ros.org/usb_cam#Parameters">http://wiki.ros.org/usb_cam#Parameters</a>
+软件包提供了实例launch文件usb_cam-test.launch，可从安装位置拷贝出来修改
+3. 校准</p>
+
+<pre><code class="language-bash">sudo apt install ros-melodic-camera-calibration
+</code></pre>
+
+<p>Ref: <a href="http://wiki.ros.org/camera_calibration">http://wiki.ros.org/camera_calibration</a>
+<a href="http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration">http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration</a>
+棋盘格板下载：
+<a href="http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;do=view&amp;target=check-108.pdf">http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;do=view&amp;target=check-108.pdf</a>
+开启摄像头节点后，执行下面命令开启校准程序</p>
+
+<pre><code class="language-bash">rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/usb_cam/image_raw camera:=/usb_cam
+</code></pre>
+
+<p>参数解释：
+&ndash;size &ndash;square表明所使用了棋盘格板类型
+image:=为相机图像消息（需rostopic list找出来对应一下，有时发布时会重映射）
+camera:=为相机命名空间（需rostopic list找出来对应一下，有时发布时会重映射）
+移动标定板收集不同视角图像后，点击校准计算，再点击commit将校准文件保存到~/.ros/camera_info/下</p>
+
+<h1 id="tagslam安装">Tagslam安装</h1>
+
+<p><a href="https://github.com/berndpfrommer/tagslam_root">https://github.com/berndpfrommer/tagslam_root</a>
+手册
+<a href="https://berndpfrommer.github.io/tagslam_web/getting_started/">https://berndpfrommer.github.io/tagslam_web/getting_started/</a>
+注意：tagslam项目使用最新的catkin build编译，而非catkin_make，catkin build是catkin_make下一代，不兼容，必须使用不同的工作空间。
+对于X86+ubuntu18.04，只需follow上面官网的安装流程即可，若在树莓派上安装，则需编译gtsam依赖库并修改部分源代码：
+<strong>附：修改后的源程序代码</strong>
+链接: <a href="https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA">https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA</a> 提取码: 16fa</p>
+
+<p>首先，由于tagslam系统依赖的gtsam库没有arm二进制包，我们需要手动编译安装它
+<a href="https://github.com/borglab/gtsam">https://github.com/borglab/gtsam</a>
+<a href="https://gtsam.org/">https://gtsam.org/</a>
+临时开辟一块虚拟内存以避免内存溢出
+<a href="https://blog.csdn.net/qq__590980/article/details/102556740">https://blog.csdn.net/qq__590980/article/details/102556740</a></p>
+
+<pre><code class="language-bash">sudo mkdir /swap 
+cd /swap
+sudo fallocate -l 2G swapfile
+sudo mkswap swapfile
+sudo swapon swapfile
+# check:
+free -h
+</code></pre>
+
+<p>重启后交换空间就会消失，届时直接删去swapfile文件即可
+编译gtsam（约需要4h）：</p>
+
+<pre><code class="language-bash">git clone https://github.com/borglab/gtsam.git
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j1
+make install
+</code></pre>
+
+<p>注意这里指定了编译类型为Release，以提高运行速度
+下面开始编译安装tagslam，直接使用修改好的源码src.zip，主要针对boost::irange函数在32位arm平台的错误调用进行了适应性修正</p>
+
+<pre><code class="language-bash">mkdir xxx/tagslam_root
+cd xxx/tagslam_root
+mv xxx/src.zip xxx/tagslam_root/
+unzip src.zip 
+rm src.zip
+catkin config -DCMAKE_BUILD_TYPE=Release
+catkin build -j1
+</code></pre>
+
+<p>编译约需要8h。
+注：若提示找不到Python.h则补充安装如下包即可（注意替换3.5为所使用的python版本）：</p>
+
+<pre><code class="language-bash">sudo apt-get install python3.5-dev
+</code></pre>
+
+<h1 id="ros多工作空间覆盖导致部分工作空间环境变量不生效问题">ROS多工作空间覆盖导致部分工作空间环境变量不生效问题</h1>
+
+<p>Ref: <a href="https://blog.csdn.net/qq_38441692/article/details/105936291">https://blog.csdn.net/qq_38441692/article/details/105936291</a>
+假设~/catkin_make是主工作空间（其他工作空间由本空间source）
+则修改~/catkin_make/devel/_setup_util.py：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/0_hu72240b20d4c5616f9a5ec5f92d2b3756_64164_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/0_hu72240b20d4c5616f9a5ec5f92d2b3756_64164_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1225" height="515">
+</a>
+
+
+
+</figure>
+
+更改完后再次编译下工作空间就能实现这个工作空间对其他工作空间进行统一管理了
+可以通过</p>
+
+<pre><code class="language-bash">echo $ROS_PACKAGE_PATH 
+</code></pre>
+
+<p>检查是否同时包含了两个工作空间</p>
+
+<h1 id="tagslam配置">Tagslam配置</h1>
+
+<p>基本思想
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/1_hu8d45ce88b0164570bc0d03b9a01cfd12_149500_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/1_hu8d45ce88b0164570bc0d03b9a01cfd12_149500_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1376" height="1012">
+</a>
+
+
+
+</figure>
+
+要使用该系统进行全局定位，首先需要确定相机参数（标定）。其次，在tagslam中所有tag应固定不动，它们相对于lab坐标系（名字其实无所谓）。我们只需指定某个tag相对lab坐标系的位姿即可，当相机同时看到两个以上tag时，其相对位姿会被自动测出并记录下来，非常方便。下面的配置中我指定tag0在lab坐标系远点，tag类型为边长8cm的36h11二维码，使用一只640*480的usb摄像头。
+1. 修改apriltag_detector_node.launch文件：
+找到工作空间中tagslam项目的launch文件地址（xxx/tagslam_root/src/tagslam/launch/）
+编辑apriltag_detector_node.launch文件，将最后的remap按相机节点的消息名称修改,
+如：
+<remap from="~image/compressed" to="/usb_cam/image_raw/compressed"/>
+找到工作空间中tagslam项目的example目录（tagslam_root/src/tagslam/example/），这是官方的demo，写好了一些配置文件，为方便，我们直接将其略加修改即可使用，不必另起炉灶。
+2. 编辑cameras.yaml文件：参考
+<a href="https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/">https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/</a>
+这个文件的作用是确定相机内参等信息。注意rostopic字段要填写上自己摄像头的消息名（和apriltag_detector_node.launch中的一致）
+3. 编辑tagslam.yaml文件：
+这个文件描述tagslam系统的主要选项，详见
+<a href="https://berndpfrommer.github.io/tagslam_web/input_files/">https://berndpfrommer.github.io/tagslam_web/input_files/</a>
+其中大部分不需调整，仅需注意一下几个选项：
+default_tag_size: 0.08
+size: 0.08
+这两个参数单位是米，要和使用的apriltag二维码尺寸相对应起来
+4. 最后我们准备需要使用的二维码：
+<a href="https://berndpfrommer.github.io/tagslam_web/making_tags/">https://berndpfrommer.github.io/tagslam_web/making_tags/</a>
+测试表明，对于640*480分辨率的摄像头，制作（打印）一些8cm的二维码就足以满足的检测需要
+注：2，3两步修改过的文件可在文末下载</p>
+
+<h1 id="tagslam实验">Tagslam实验</h1>
+
+<p>准备工作进行完毕后，先设一下模式：</p>
+
+<pre><code class="language-bash">rosparam set use_sim_time true
+</code></pre>
+
+<p>开启摄像头节点</p>
+
+<pre><code class="language-bash">roslaunch atmosbot_chassis my_cam.launch
+</code></pre>
+
+<p>然后依次开启两个launch</p>
+
+<pre><code class="language-bash">roslaunch tagslam tagslam.launch run_online:=true
+roslaunch tagslam apriltag_detector_node.launch
+</code></pre>
+
+<p>最后启动rviz看一下可视化效果</p>
+
+<pre><code class="language-bash">rviz -d `rospack find tagslam`/example/tagslam_example.rviz &amp;
+</code></pre>
+
+<p>方便起见，将这些命令写为launch文件保存到
+xxx/tagslam_root/src/tagslam/example/example_main.launch</p>
+
+<pre><code class="language-xml">&lt;launch&gt;
+    &lt;include file=&quot;$(find atmosbot_chassis)/launch/my_cam.launch&quot;&gt;
+    &lt;/include&gt;
+    &lt;include file=&quot;$(find tagslam)/launch/tagslam.launch&quot;&gt;
+        &lt;arg name=&quot;run_online&quot; value=&quot;true&quot;/&gt;
+    &lt;/include&gt;
+    &lt;include file=&quot;$(find tagslam)/launch/apriltag_detector_node.launch&quot;&gt;
+    &lt;/include&gt;
+    &lt;node name=&quot;tagslam_example_rviz&quot; pkg=&quot;rviz&quot; type=&quot;rviz&quot; args=&quot;-d $(find tagslam)/example/tagslam_example.rviz&quot; required=&quot;true&quot; /&gt;
+&lt;/launch&gt;
+</code></pre>
+
+<p>调用时直接运行</p>
+
+<pre><code class="language-bash">roslaunch tagslam example_main.launch
+</code></pre>
+
+<p>即可。
+最后附上配置文件：
+链接: <a href="https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA">https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA</a> 提取码: wev2</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/&amp;text=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/&amp;t=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95&amp;body=https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/&amp;title=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95%20https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/&amp;title=TagSlam%e5%85%89%e5%ad%a6%e5%ae%9a%e4%bd%8d%e7%b3%bb%e7%bb%9f%e9%83%a8%e7%bd%b2%e4%b8%8e%e8%b0%83%e8%af%95" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://leidawt.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt=""></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/"></a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">研究兴趣主要包括生产系统工程、最优控制.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/python.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/cpp.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/bash.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/java.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/javascript.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲",
+        'slides' : "演示文稿"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2021
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

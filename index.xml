@@ -5,7 +5,7 @@
     <link>https://leidawt.github.io/</link>
       <atom:link href="https://leidawt.github.io/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2020</copyright><lastBuildDate>Wed, 22 Jul 2020 12:00:00 +0800</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>zh-Hans</language><copyright>Copyright © wxh 2021</copyright><lastBuildDate>Mon, 14 Dec 2020 12:00:00 +0800</lastBuildDate>
     <image>
       <url>https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
@@ -51,6 +51,1060 @@
 &lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
 &lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
 &lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>使用Docker镜像训练YOLOv4</title>
+      <link>https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/</link>
+      <pubDate>Mon, 14 Dec 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#镜像制作&#34;&gt;镜像制作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#准备数据集和配置文件&#34;&gt;准备数据集和配置文件&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#训练&#34;&gt;训练&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#推理&#34;&gt;推理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;最近做横向需要用YOLOv4迁移训练一个模型，但简单搜索居然没有发现特别好用的Docker镜像，故自制了一个darknet版YOLOv4的Docker镜像，本文记录镜像制作及使用镜像训练YOLOv4的方法。&lt;/p&gt;
+
+&lt;h1 id=&#34;镜像制作&#34;&gt;镜像制作&lt;/h1&gt;
+
+&lt;p&gt;Ref: &lt;a href=&#34;https://github.com/alexeyab/darknet&#34;&gt;https://github.com/alexeyab/darknet&lt;/a&gt;
+&lt;strong&gt;注：制作好的镜像已上传至docker hub，可直接拉取使用：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker pull leidawt/darknet-yolov4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;依赖环境：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 18.04&lt;/li&gt;
+&lt;li&gt;Docker &amp;gt;19.04&lt;/li&gt;
+&lt;li&gt;nvidia-container-toolkit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为建立镜像，编写如下Dockerfile脚本文件，以nvidia/cuda:10.1-cudnn7-deve为基础镜像开始构建：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM nvidia/cuda:10.1-cudnn7-devel #拉取cuda基础镜像
+COPY ./sources.list /etc/apt/ #更换国内apt源
+RUN echo &#39;debconf debconf/frontend select Noninteractive&#39; | debconf-set-selections #设置静默安装
+# 设置系统字符集以支持中文
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+# 安装darknet的必要依赖
+RUN echo &amp;quot;45.43.38.82 developer.download.nvidia.cn&amp;quot; &amp;gt;&amp;gt; /etc/hosts &amp;amp;&amp;amp; \
+    apt-get update &amp;amp;&amp;amp; \
+    apt-get upgrade -y &amp;amp;&amp;amp; \
+    apt-get install -y  build-essential libopencv-dev\
+    cmake python3-opencv python3-dev nano
+# 建立操作路径
+WORKDIR /training
+# 安装pip3并更换清华pip源
+COPY ./get-pip.py .
+RUN python3 get-pip.py &amp;amp;&amp;amp; rm get-pip.py &amp;amp;&amp;amp;  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U \
+    &amp;amp;&amp;amp; pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 
+# 建立操作路径，拷贝darknet程序源文件
+WORKDIR /training/darknet
+COPY ./darknet-master/ .
+# build在建立镜像后通过容器进行操作
+# RUN ./build.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：&lt;/strong&gt;
+链接: &lt;a href=&#34;https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw&#34;&gt;https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw&lt;/a&gt; 提取码: n8xx&lt;/p&gt;
+
+&lt;p&gt;执行镜像构建：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker build -t leidawt/darknet-yolov4 .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接下来启动一个带有GPU支持的临时容器对YOLOv4代码进行编译：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run --name temp_yolo --gpus all -it leidawt/darknet-yolov4 /bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入容器后执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /training/darknet
+./build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译成功后，按ctrl+D退出容器。
+commit容器变更到镜像，并删除临时容器:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker commit temp_yolo leidawt/darknet-yolov4:v1
+docker container rm temp_yolo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;至此训练镜像构建完毕。&lt;/p&gt;
+
+&lt;h1 id=&#34;准备数据集和配置文件&#34;&gt;准备数据集和配置文件&lt;/h1&gt;
+
+&lt;p&gt;YOLO的数据集构成结构如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/0_hu3cd84a75d9f8f0b28dd20b9889893b09_3949_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/0_hu3cd84a75d9f8f0b28dd20b9889893b09_3949_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;172&#34; height=&#34;178&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+每张数据图片对于一个同名的txt标注文件，标注文件格式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;object-class&amp;gt; &amp;lt;x_center&amp;gt; &amp;lt;y_center&amp;gt; &amp;lt;width&amp;gt; &amp;lt;height&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;object-class：所属类号，如 0，1，2，3
+x_center：边界框中心x坐标的相对值（x/imageWidth）
+y_center：边界框中心y坐标的相对值（y/imageHeight）
+width: 边界框宽度的相对值（w/imageWidth）
+height: 边界框高度的相对值（h/imageHeight）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0 0.5583817829457363 0.791343669250646 0.05644327860159183 0.07525770480212245
+0 0.40043604651162784 0.7761627906976746 0.058139534883721186 0.07751937984496159
+0 0.44597868217054265 0.8233204134366926 0.03439922480620154 0.029715762273901842
+0 0.47862001943634597 0.8276643990929705 0.03401360544217683 0.032798833819241854
+0 0.5117984693877551 0.829385325558795 0.03295068027210881 0.030976676384839644
+0 0.463283527696793 0.7846412374473598 0.030369290573372194 0.02166342727567212
+0 0.4949435131195335 0.7887917071590541 0.03112852283770652 0.02348558471007449
+0 0.48104956268221577 0.7448574667962422 0.035228377065111796 0.027939747327502415
+0 0.5184797133138971 0.7485017816650469 0.03841715257531586 0.026724975704567555
+0 0.4427842565597667 0.7414156138645934 0.04008746355685127 0.027939747327502575
+0 0.481277332361516 0.7006195335276968 0.056942419825072935 0.03057175251052797
+0 0.5403456025267249 0.7031503077421445 0.05694241982507282 0.025105280207320942
+0 0.4244108357628766 0.6958616780045351 0.05375364431486881 0.031988986070618744
+0 0.6153506324404762 0.6361607142857142 0.02162388392857141 0.044022817460317436
+0 0.619535900297619 0.5853174603174602 0.025809151785714354 0.051463293650793676
+0 0.6211635044642857 0.5298239087301586 0.02813430059523808 0.05270337301587307
+0 0.3597005208333333 0.6125992063492063 0.019996279761904805 0.04650297619047616
+0 0.3598167782738095 0.5639260912698412 0.023949032738095254 0.053323412698412655
+0 0.361328125 0.5132378472222221 0.026971726190476216 0.04991319444444445
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;做好数据集后，下一步准备所需的配置文件
+- obj.names（类名）:
+    形如：
+    &lt;code&gt;
+    button
+&lt;/code&gt;
+- test.txt（测试集路径索引）:
+    形如：
+    &lt;code&gt;
+    data/obj/73.jpg 
+    data/obj/28.jpg 
+    ...
+    data/obj/32.jpg
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;train.txt（训练集路径索引）:
+形如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;data/obj/34.jpg
+...
+data/obj/39.jpg 
+data/obj/50.jpg
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;obj.data（上述三个文件的索引）:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;classes = 1 
+    train  = data/train.txt 
+    valid  = data/test.txt 
+    names = data/obj.names
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;yolov4-custom.cfg （配置文件）
+从Github&lt;a href=&#34;https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg&#34;&gt;下载&lt;/a&gt;yolov4-custom.cfg文件，按&lt;a href=&#34;https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects&#34;&gt;此处&lt;/a&gt;说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：
+util_yolo_cfg_builder.py:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# -*- coding: utf-8 -*-
+import argparse
+    
+parser = argparse.ArgumentParser()  # 初始化解析器
+parser.add_argument(&amp;quot;--print&amp;quot;,
+                    action=&amp;quot;store_true&amp;quot;,
+                    default=False,
+                    help=&amp;quot;Print cfg&amp;quot;)
+    
+parser.add_argument(
+    &amp;quot;--classes&amp;quot;, help=&amp;quot;Number of classes in training data.&amp;quot;)
+# parser.add_argument(&amp;quot;--out&amp;quot;, help=&amp;quot;Path for result output&amp;quot;, default=&amp;quot;default&amp;quot;)
+args = vars(parser.parse_args())  # 从命令行读参数，解析到args
+classes = int(args[&amp;quot;classes&amp;quot;])
+    
+with open(&#39;./yolov4-custom.cfg&#39;, &#39;r&#39;) as f:
+    cfg = f.read()
+    
+cfg = cfg.replace(&amp;quot;max_batches = 500500&amp;quot;,
+                  &amp;quot;max_batches = {}&amp;quot;.format(classes*2000))
+cfg = cfg.replace(&amp;quot;steps=400000,450000&amp;quot;, &amp;quot;steps={},{}&amp;quot;.format(
+    int(classes*2000*0.8), int(classes*2000*0.9)))
+cfg = cfg.replace(&amp;quot;classes=80&amp;quot;, &amp;quot;classes={}&amp;quot;.format(classes))
+cfg = cfg.replace(&amp;quot;filters=255&amp;quot;, &amp;quot;filters={}&amp;quot;.format((classes + 5)*3))
+    
+if args[&amp;quot;print&amp;quot;]:
+    print(cfg)
+with open(&#39;./yolov4-custom.cfg&#39;, &#39;w&#39;) as f:
+    f.write(cfg)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;python util_yolo_cfg_builder.py --classes [类数]
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;准备预训练权重文件yolov4.conv.137
+下载：链接: &lt;a href=&#34;https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g&#34;&gt;https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g&lt;/a&gt; 提取码: g6en&lt;/p&gt;
+
+&lt;h1 id=&#34;训练&#34;&gt;训练&lt;/h1&gt;
+
+&lt;p&gt;启动镜像：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run --rm --gpus all -p 8888:8888 -v 【数据集和配置文件所在文件夹】:/my_cfgs -it leidawt/darknet-yolov4:v1 /bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&amp;ndash;gpus all指定所需使用的GPU。
+进入镜像后，执行下述命令把各文件拷贝到正确的路径：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /my_cfgs
+cp obj.names /training/darknet/data/ 
+cp test.txt /training/darknet/data/ 
+cp train.txt /training/darknet/data/ 
+cp obj.data /training/darknet/data/ 
+cp lgd.cfg /training/darknet/cfg/ 
+cp yolov4.conv.137 /training/darknet/ 
+mkdir -p /training/darknet/data/obj/ 
+mkdir -p /training/darknet/backup 
+cp data_dataset_yolo/* /training/darknet/data/obj/
+cd -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后，启动训练：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector train data/obj.data cfg/yolov4-custom.cfg.cfg yolov4.conv.137 -dont_show -mjpeg_port 8888 -map
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。
+训练参数文件将自动保存在../backup路径下。&lt;/p&gt;
+
+&lt;h1 id=&#34;推理&#34;&gt;推理&lt;/h1&gt;
+
+&lt;p&gt;单张图片推理：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&amp;lt;xxxxxx&amp;gt;.weights -dont_show data/obj/1.jpg   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该命令生成一个带预测框的predictions.jpg文件。
+批量图片推理：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&amp;lt;xxxxxx&amp;gt;.weights -ext_output -dont_show -out test_result.json &amp;lt; data/test.txt
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>TagSlam光学定位系统部署与调试</title>
+      <link>https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/</link>
+      <pubDate>Sat, 14 Nov 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#usb摄像头使用与矫正&#34;&gt;USB摄像头使用与矫正&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#tagslam安装&#34;&gt;Tagslam安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ros多工作空间覆盖导致部分工作空间环境变量不生效问题&#34;&gt;ROS多工作空间覆盖导致部分工作空间环境变量不生效问题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#tagslam配置&#34;&gt;Tagslam配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#tagslam实验&#34;&gt;Tagslam实验&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;TagSlam是以AprilTag为前端构建的SLAM定位系统，得益于AprilTag技术能提供高精锚点，这一系统具有很高的定位精度。本文记录在ROS中使用TagSlam定位的方法&lt;/p&gt;
+
+&lt;h1 id=&#34;usb摄像头使用与矫正&#34;&gt;USB摄像头使用与矫正&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Ubuntu下查看USB摄像头设备
+Ref: &lt;a href=&#34;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&#34;&gt;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&lt;/a&gt;
+可通过v4l2-ctl &amp;ndash;list-devices命令来确认设备号&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;摄像头接入ROS
+安装usb_cam包&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install ros-melodic-usb-cam
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://wiki.ros.org/usb_cam#Parameters&#34;&gt;http://wiki.ros.org/usb_cam#Parameters&lt;/a&gt;
+软件包提供了实例launch文件usb_cam-test.launch，可从安装位置拷贝出来修改
+3. 校准&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install ros-melodic-camera-calibration
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/camera_calibration&#34;&gt;http://wiki.ros.org/camera_calibration&lt;/a&gt;
+&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&lt;/a&gt;
+棋盘格板下载：
+&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&lt;/a&gt;
+开启摄像头节点后，执行下面命令开启校准程序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/usb_cam/image_raw camera:=/usb_cam
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参数解释：
+&amp;ndash;size &amp;ndash;square表明所使用了棋盘格板类型
+image:=为相机图像消息（需rostopic list找出来对应一下，有时发布时会重映射）
+camera:=为相机命名空间（需rostopic list找出来对应一下，有时发布时会重映射）
+移动标定板收集不同视角图像后，点击校准计算，再点击commit将校准文件保存到~/.ros/camera_info/下&lt;/p&gt;
+
+&lt;h1 id=&#34;tagslam安装&#34;&gt;Tagslam安装&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/berndpfrommer/tagslam_root&#34;&gt;https://github.com/berndpfrommer/tagslam_root&lt;/a&gt;
+手册
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/getting_started/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/getting_started/&lt;/a&gt;
+注意：tagslam项目使用最新的catkin build编译，而非catkin_make，catkin build是catkin_make下一代，不兼容，必须使用不同的工作空间。
+对于X86+ubuntu18.04，只需follow上面官网的安装流程即可，若在树莓派上安装，则需编译gtsam依赖库并修改部分源代码：
+&lt;strong&gt;附：修改后的源程序代码&lt;/strong&gt;
+链接: &lt;a href=&#34;https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA&#34;&gt;https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA&lt;/a&gt; 提取码: 16fa&lt;/p&gt;
+
+&lt;p&gt;首先，由于tagslam系统依赖的gtsam库没有arm二进制包，我们需要手动编译安装它
+&lt;a href=&#34;https://github.com/borglab/gtsam&#34;&gt;https://github.com/borglab/gtsam&lt;/a&gt;
+&lt;a href=&#34;https://gtsam.org/&#34;&gt;https://gtsam.org/&lt;/a&gt;
+临时开辟一块虚拟内存以避免内存溢出
+&lt;a href=&#34;https://blog.csdn.net/qq__590980/article/details/102556740&#34;&gt;https://blog.csdn.net/qq__590980/article/details/102556740&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo mkdir /swap 
+cd /swap
+sudo fallocate -l 2G swapfile
+sudo mkswap swapfile
+sudo swapon swapfile
+# check:
+free -h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重启后交换空间就会消失，届时直接删去swapfile文件即可
+编译gtsam（约需要4h）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/borglab/gtsam.git
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j1
+make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意这里指定了编译类型为Release，以提高运行速度
+下面开始编译安装tagslam，直接使用修改好的源码src.zip，主要针对boost::irange函数在32位arm平台的错误调用进行了适应性修正&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir xxx/tagslam_root
+cd xxx/tagslam_root
+mv xxx/src.zip xxx/tagslam_root/
+unzip src.zip 
+rm src.zip
+catkin config -DCMAKE_BUILD_TYPE=Release
+catkin build -j1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译约需要8h。
+注：若提示找不到Python.h则补充安装如下包即可（注意替换3.5为所使用的python版本）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install python3.5-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ros多工作空间覆盖导致部分工作空间环境变量不生效问题&#34;&gt;ROS多工作空间覆盖导致部分工作空间环境变量不生效问题&lt;/h1&gt;
+
+&lt;p&gt;Ref: &lt;a href=&#34;https://blog.csdn.net/qq_38441692/article/details/105936291&#34;&gt;https://blog.csdn.net/qq_38441692/article/details/105936291&lt;/a&gt;
+假设~/catkin_make是主工作空间（其他工作空间由本空间source）
+则修改~/catkin_make/devel/_setup_util.py：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/0_hu72240b20d4c5616f9a5ec5f92d2b3756_64164_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/0_hu72240b20d4c5616f9a5ec5f92d2b3756_64164_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1225&#34; height=&#34;515&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+更改完后再次编译下工作空间就能实现这个工作空间对其他工作空间进行统一管理了
+可以通过&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;echo $ROS_PACKAGE_PATH 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;检查是否同时包含了两个工作空间&lt;/p&gt;
+
+&lt;h1 id=&#34;tagslam配置&#34;&gt;Tagslam配置&lt;/h1&gt;
+
+&lt;p&gt;基本思想
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/1_hu8d45ce88b0164570bc0d03b9a01cfd12_149500_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/1_hu8d45ce88b0164570bc0d03b9a01cfd12_149500_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1376&#34; height=&#34;1012&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+要使用该系统进行全局定位，首先需要确定相机参数（标定）。其次，在tagslam中所有tag应固定不动，它们相对于lab坐标系（名字其实无所谓）。我们只需指定某个tag相对lab坐标系的位姿即可，当相机同时看到两个以上tag时，其相对位姿会被自动测出并记录下来，非常方便。下面的配置中我指定tag0在lab坐标系远点，tag类型为边长8cm的36h11二维码，使用一只640*480的usb摄像头。
+1. 修改apriltag_detector_node.launch文件：
+找到工作空间中tagslam项目的launch文件地址（xxx/tagslam_root/src/tagslam/launch/）
+编辑apriltag_detector_node.launch文件，将最后的remap按相机节点的消息名称修改,
+如：
+&lt;remap from=&#34;~image/compressed&#34; to=&#34;/usb_cam/image_raw/compressed&#34;/&gt;
+找到工作空间中tagslam项目的example目录（tagslam_root/src/tagslam/example/），这是官方的demo，写好了一些配置文件，为方便，我们直接将其略加修改即可使用，不必另起炉灶。
+2. 编辑cameras.yaml文件：参考
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&lt;/a&gt;
+这个文件的作用是确定相机内参等信息。注意rostopic字段要填写上自己摄像头的消息名（和apriltag_detector_node.launch中的一致）
+3. 编辑tagslam.yaml文件：
+这个文件描述tagslam系统的主要选项，详见
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/input_files/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/input_files/&lt;/a&gt;
+其中大部分不需调整，仅需注意一下几个选项：
+default_tag_size: 0.08
+size: 0.08
+这两个参数单位是米，要和使用的apriltag二维码尺寸相对应起来
+4. 最后我们准备需要使用的二维码：
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/making_tags/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/making_tags/&lt;/a&gt;
+测试表明，对于640*480分辨率的摄像头，制作（打印）一些8cm的二维码就足以满足的检测需要
+注：2，3两步修改过的文件可在文末下载&lt;/p&gt;
+
+&lt;h1 id=&#34;tagslam实验&#34;&gt;Tagslam实验&lt;/h1&gt;
+
+&lt;p&gt;准备工作进行完毕后，先设一下模式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosparam set use_sim_time true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开启摄像头节点&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;roslaunch atmosbot_chassis my_cam.launch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后依次开启两个launch&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;roslaunch tagslam tagslam.launch run_online:=true
+roslaunch tagslam apriltag_detector_node.launch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后启动rviz看一下可视化效果&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rviz -d `rospack find tagslam`/example/tagslam_example.rviz &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;方便起见，将这些命令写为launch文件保存到
+xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;launch&amp;gt;
+    &amp;lt;include file=&amp;quot;$(find atmosbot_chassis)/launch/my_cam.launch&amp;quot;&amp;gt;
+    &amp;lt;/include&amp;gt;
+    &amp;lt;include file=&amp;quot;$(find tagslam)/launch/tagslam.launch&amp;quot;&amp;gt;
+        &amp;lt;arg name=&amp;quot;run_online&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;
+    &amp;lt;/include&amp;gt;
+    &amp;lt;include file=&amp;quot;$(find tagslam)/launch/apriltag_detector_node.launch&amp;quot;&amp;gt;
+    &amp;lt;/include&amp;gt;
+    &amp;lt;node name=&amp;quot;tagslam_example_rviz&amp;quot; pkg=&amp;quot;rviz&amp;quot; type=&amp;quot;rviz&amp;quot; args=&amp;quot;-d $(find tagslam)/example/tagslam_example.rviz&amp;quot; required=&amp;quot;true&amp;quot; /&amp;gt;
+&amp;lt;/launch&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;调用时直接运行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;roslaunch tagslam example_main.launch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;即可。
+最后附上配置文件：
+链接: &lt;a href=&#34;https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA&#34;&gt;https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA&lt;/a&gt; 提取码: wev2&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>在STM32上运行ROS节点-rosserial-stm32开发及调试方法</title>
+      <link>https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 14 Nov 2020 12:00:00 +0800</pubDate>
+      <guid>https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#基本原理&#34;&gt;基本原理&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#安装&#34;&gt;安装&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#服务端-pc-树莓派等-安装&#34;&gt;服务端（PC，树莓派等）安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#嵌入式端安装配置-stm32模板工程的建立&#34;&gt;嵌入式端安装配置（stm32模板工程的建立）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ros节点编写&#34;&gt;ROS节点编写&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#联合调试&#34;&gt;联合调试&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#rosserial错误处理&#34;&gt;rosserial错误处理&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#开发ros-srv时error-service-topic-responded-with-an-error-service-cannot-process-request-service-handler-returned-none错误的处理方法&#34;&gt;开发ros srv时ERROR: service [/topic] responded with an error: service cannot process request: service handler returned None错误的处理方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#tried-to-publish-before-configured-topic-id-125错误的解决&#34;&gt;tried to publish before configured topic id 125错误的解决&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#printf打印浮点的方法&#34;&gt;Printf打印浮点的方法&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;近期接手了一些ROS机器人项目，这里将开发中遇到的问题和解决方法记录下来。
+本文简述借助rosserial在stm32系列中运行ROS节点的方法，stm32强大的外设资源为机器人底层设备控制带来了极大的便利&lt;/p&gt;
+
+&lt;h1 id=&#34;基本原理&#34;&gt;基本原理&lt;/h1&gt;
+
+&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/rosserial&#34;&gt;http://wiki.ros.org/rosserial&lt;/a&gt;
+简言之，rosserial提供一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。
+要使用rosserial，显然需要分别在嵌入式板卡和主控PC上部署，当前支持的板卡有：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/0_hu38e39383175405a20833bd79b4c50075_145833_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/0_hu38e39383175405a20833bd79b4c50075_145833_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;977&#34; height=&#34;480&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;安装&#34;&gt;安装&lt;/h1&gt;
+
+&lt;p&gt;由前所述，需要分别在服务端和嵌入式端安装：&lt;/p&gt;
+
+&lt;h2 id=&#34;服务端-pc-树莓派等-安装&#34;&gt;服务端（PC，树莓派等）安装&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install ros-melodic-rosserial
+sudo apt-get install ros-melodic-rosserial-arduino
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将库&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt; clone到catkin_ws/src
+这些软件包提供转发功能&lt;/p&gt;
+
+&lt;h2 id=&#34;嵌入式端安装配置-stm32模板工程的建立&#34;&gt;嵌入式端安装配置（stm32模板工程的建立）&lt;/h2&gt;
+
+&lt;p&gt;Rosserial在嵌入式端的文件有两部分，一是STM32Hardware.h 和ros.h，这两个文件涉及硬件底层串口的实现，另一部分是ros头文件组，这些文件和在ROS PC端调用的并无区别，官方提供脚本生成这些头文件，使用时只需拷入自己的嵌入式工程目录即可。
+因此，关键在于适应性的修改STM32Hardware.h 和ros.h使得rosserial能够调用嵌入式板卡的串口，对此，官方已经提供修改好的文件及样板工程：
+&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt;
+官方工程基于stm32 HAL库+cubeMX配置
+接下来在官方文件的基础上，在最新的STM32CubeIDE1.4.0上建立工程。
+&lt;strong&gt;注：关于STM32CubeIDE：近年，ST公司将STM32CubeMX进一步升级，集成到全新的STM32CubeIDE中，STM32CubeIDE是基于eclipse开发的完整且全面的集成环境&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如下是两个关于cubeMX工具和HAL库的极好教程，本文不再赘述：
+&lt;a href=&#34;http://www.mculover666.cn/posts/578764034/&#34;&gt;http://www.mculover666.cn/posts/578764034/&lt;/a&gt;
+&lt;a href=&#34;https://www.waveshare.net/study/portal.php?mod=list&amp;amp;catid=40&#34;&gt;https://www.waveshare.net/study/portal.php?mod=list&amp;amp;catid=40&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;此外，STM32CubeIDE默认的代码提示的触发条件比较严苛，可参考&lt;a href=&#34;https://blog.csdn.net/nopear6/article/details/106255311的方法调整STM32CubeIDE的代码补全策略，提高开发效率。&#34;&gt;https://blog.csdn.net/nopear6/article/details/106255311的方法调整STM32CubeIDE的代码补全策略，提高开发效率。&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面开始建立工程：Ref: &lt;a href=&#34;https://blog.csdn.net/qq_37416258/article/details/84844051&#34;&gt;https://blog.csdn.net/qq_37416258/article/details/84844051&lt;/a&gt;
+事实上，我们只需要开启并配置串口2即可，官方提供的文件使用串口2实现rosserial通信接口，注意开启串口DMA和中断。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/1_hua0aa621c9a63b2dec6c07fca8810f480_86122_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/1_hua0aa621c9a63b2dec6c07fca8810f480_86122_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1015&#34; height=&#34;784&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/2_hu256363043e242d2b5addd7592f7031e2_28104_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/2_hu256363043e242d2b5addd7592f7031e2_28104_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;779&#34; height=&#34;246&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/3_hu9aa527c0b7f7c03dd3891f2eb07f7950_30052_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/3_hu9aa527c0b7f7c03dd3891f2eb07f7950_30052_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;771&#34; height=&#34;279&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+注：上面引用的博客中，开启TIM2是没有必要的，后半部分也有过时的地方，如头文件的修改，详见本文文件夹下建立好的模板工程
+串口配置搞定后，我们进一步生成ros头文件并添加到stm32工程中，这些头文件用于提供自定义消息、ros标准消息的支持：
+在服务端：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun rosserial_stm32 make_libraries.py .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这将在当前目录生成Inc/文件夹，里面包含需所有头文件，将这些文件拷贝到工程即可，本文模板工程中放置于RosLibs文件夹
+&lt;strong&gt;注意，当PC端添加新包后，需再次执行以更新这些头文件&lt;/strong&gt;
+之后，在工程中建立User文件夹，将mainpp.h，mainpp.cpp拷入，后续自行编写的节点逻辑在此存放。最后，在工程main.c中调用即可。这里同时存在mainpp 和 main 两个“入口”的目的是方便C/C++混合编译。
+最后的最后，设置查找路径：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/4_hubb5614f39ba342502929e9057c6de732_100186_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/4_hubb5614f39ba342502929e9057c6de732_100186_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;915&#34; height=&#34;589&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/5_hu4a75a0e79a2af0cddf4e75098c08865c_100215_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/5_hu4a75a0e79a2af0cddf4e75098c08865c_100215_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;915&#34; height=&#34;589&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/6_hu4a75a0e79a2af0cddf4e75098c08865c_76982_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/6_hu4a75a0e79a2af0cddf4e75098c08865c_76982_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;915&#34; height=&#34;589&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;strong&gt;注：这里截图中使用了绝对路径，后续已修正为相对路径&lt;/strong&gt;
+&lt;strong&gt;附：模板工程下载&lt;/strong&gt;
+链接: &lt;a href=&#34;https://pan.baidu.com/s/1SNI_tKaFUS6zXoIS0GWRCw&#34;&gt;https://pan.baidu.com/s/1SNI_tKaFUS6zXoIS0GWRCw&lt;/a&gt; 提取码: exq5&lt;/p&gt;
+
+&lt;h1 id=&#34;ros节点编写&#34;&gt;ROS节点编写&lt;/h1&gt;
+
+&lt;p&gt;Ref: &lt;a href=&#34;https://sudonull.com/post/31955-Rosserial-STM32&#34;&gt;https://sudonull.com/post/31955-Rosserial-STM32&lt;/a&gt;
+官方例程：
+&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&#34;&gt;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&lt;/a&gt;
+为控制节点发送频率，我们借助cubeMX默认开启的sysTick定时器实现频率控制。
+Ref: &lt;a href=&#34;http://www.mculover666.cn/posts/4283984198/&#34;&gt;http://www.mculover666.cn/posts/4283984198/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;节点的逻辑在mainpp.c中实现，其中setup()函数放置初始化工作，loop()中编写周期性消息发送指令，如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;void loop(void)
+{
+    if (nh.connected()){
+        if(HAL_GetTick() - tickstart &amp;gt;= 10){
+            // 翻转LED，发布chatter消息，周期1000ms
+            HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_3);
+            str_msg.data = hello;
+            chatter.publish(&amp;amp;str_msg);
+            tickstart=HAL_GetTick();
+        }
+    }
+    nh.spinOnce();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;联合调试&#34;&gt;联合调试&lt;/h1&gt;
+
+&lt;p&gt;首先在PC端给权限，USB串口插上后，通常挂载在/dev/ttyUSB0，需要线给下777权限：
+sudo chmod 777 /dev/ttyUSB0
+也可直接添加用户组，一劳永逸：
+&lt;a href=&#34;https://blog.csdn.net/qq_32618327/article/details/106222196&#34;&gt;https://blog.csdn.net/qq_32618327/article/details/106222196&lt;/a&gt;
+启动服务端桥接节点：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun rosserial_python serial_node.py
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;rosserial错误处理&#34;&gt;rosserial错误处理&lt;/h1&gt;
+
+&lt;h2 id=&#34;开发ros-srv时error-service-topic-responded-with-an-error-service-cannot-process-request-service-handler-returned-none错误的处理方法&#34;&gt;开发ros srv时ERROR: service [/topic] responded with an error: service cannot process request: service handler returned None错误的处理方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ros-drivers/rosserial/pull/414&#34;&gt;https://github.com/ros-drivers/rosserial/pull/414&lt;/a&gt;
+where you find working ServiceClient.py (&lt;a href=&#34;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&#34;&gt;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&lt;/a&gt;)
+don&amp;rsquo;t forget to update the Arduino ros_lib after step 8
+Step 8.1 Delete Arduino/libraries/ros_lib
+Step 8.2 Install ros_lib again (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&lt;/a&gt;)
+Step 8.3 Make Headers agian (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&lt;/a&gt;)
+Step 8.4 Restart Arduino IDE( If it was Open)
+Step 9
+即：将现有ServiceClient.py替换为更老版本的，当前版本库的ServiceClient.py存在Bug&lt;/p&gt;
+
+&lt;h2 id=&#34;tried-to-publish-before-configured-topic-id-125错误的解决&#34;&gt;tried to publish before configured topic id 125错误的解决&lt;/h2&gt;
+
+&lt;p&gt;扩大预设缓冲区，原为512
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/7_hu1c35adff51bf3d6cff2c175cc3abf90d_121954_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/7_hu1c35adff51bf3d6cff2c175cc3abf90d_121954_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1163&#34; height=&#34;679&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/8_hu901ae43f53c6bebd77c2eea732f124b4_92945_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/8_hu901ae43f53c6bebd77c2eea732f124b4_92945_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1095&#34; height=&#34;687&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;printf打印浮点的方法&#34;&gt;Printf打印浮点的方法&lt;/h2&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/9_hu71df374c889b923626127ca523dafe55_143021_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/9_hu71df374c889b923626127ca523dafe55_143021_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1103&#34; height=&#34;749&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
 </description>
     </item>
     
@@ -18491,6 +19545,1599 @@ py -3 autoftp.py %1
 pause
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;然后直接将目标文件夹拖到这个bat上就可以实现自动上传了&#34;&gt;然后直接将目标文件夹拖到这个bat上就可以实现自动上传了！&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Transfer Learning Toolkit (TLT) &#43; DeepStream (DS)快速部署深度学习模型（以口罩检测为例）</title>
+      <link>https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/</guid>
+      <description>
+
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#简介&#34;&gt;简介&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#tlt&#34;&gt;TLT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ds&#34;&gt;DS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#基于tlt进行迁移学习&#34;&gt;基于TLT进行迁移学习&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#环境准备&#34;&gt;环境准备&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#模型训练&#34;&gt;模型训练&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#基于ds的模型部署&#34;&gt;基于DS的模型部署&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#总结&#34;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;&lt;/p&gt;
+
+&lt;p&gt;最近在做一个深度学习的横向，被实时性搞的很头疼，遂打算研究研究新的技术路线，做点技术储备。TLT+DS的中文资料很少，本文以官方资料为基础做了一点整理工作。&lt;/p&gt;
+
+&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;h2 id=&#34;tlt&#34;&gt;TLT&lt;/h2&gt;
+
+&lt;p&gt;如何快速训练和部署深度学习模型是工业界关注的重点问题，英伟达推出的TLT+DS工具链为训练自有数据集进而进行快速部署提供了端到端的解决方案。
+其中，TLT是英伟达迁移学习工具，提供对预训练模型的迁移训练、模型剪纸、量化，的一站式解决方案。&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt; &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/archive/tlt-getting-started-guide/index.html&#34;&gt;指南&lt;/a&gt;
+Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC&amp;amp;pageNumber=0&amp;amp;query=tlt&amp;amp;quickFilter=models&amp;amp;filters=&#34;&gt;NGC仓库&lt;/a&gt;中提供了一组为TLT工具维护的预训练模型，囊括了常见CV任务的经典模型（人脸识别、目标检测、语义分割、人体姿态估计、分类等）：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/0_hu4cb8cb0fb415c1017f7d086372bdd976_264865_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/0_hu4cb8cb0fb415c1017f7d086372bdd976_264865_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1921&#34; height=&#34;905&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;ds&#34;&gt;DS&lt;/h2&gt;
+
+&lt;p&gt;DeepStream（DS）则是一套经高度优化的推理系统，提供完整的检测流水线实现，包含高速编解码器、预处理器、模板跟踪器、TensorRT推理引擎等组件，并配套有完善的可视化、精度校验工具。
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。
+ - &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
+ - &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。
+ - &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
+- 官方示例：
+ （1）&lt;a href=&#34;https://developer.nvidia.com/blog/creating-a-human-pose-estimation-application-with-deepstream-sdk/&#34;&gt;Creating a Human Pose Estimation Application with NVIDIA DeepStream
+&lt;/a&gt;
+(2) &lt;a href=&#34;https://developer.nvidia.com/blog/building-iva-apps-using-deepstream-5-0-updated-for-ga/&#34;&gt;Building Intelligent Video Analytics Apps Using NVIDIA DeepStream 5.0 (Updated for GA)
+&lt;/a&gt;
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/1_hud8f90247d676fe9aebe76e4c77ffd82a_50836_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/1_hud8f90247d676fe9aebe76e4c77ffd82a_50836_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;720&#34; height=&#34;240&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;strong&gt;本文主要参照官方提供的口罩检测&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;对使用TLT+DS进行深度学习模型训练、部署的方法进行初步探索，并对&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;缺少的细节进行补充，修正&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;的部分bug，添加部分配置文件。&lt;/strong&gt;
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/2_hu33cec7bb52f20f35e229bf8ea36c7181_495047_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/2_hu33cec7bb52f20f35e229bf8ea36c7181_495047_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;640&#34; height=&#34;466&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;基于tlt进行迁移学习&#34;&gt;基于TLT进行迁移学习&lt;/h1&gt;
+
+&lt;h2 id=&#34;环境准备&#34;&gt;环境准备&lt;/h2&gt;
+
+&lt;p&gt;使用Docker镜像是获取TLT和DS工具的最佳方式。
+本文使用的运行环境：
+- Ubuntu 18.04
+- Docker 19.04
+- &lt;a href=&#34;https://github.com/NVIDIA/nvidia-docker&#34;&gt;nvidia-docker&lt;/a&gt;(提供GPU的Docker虚拟化支持)
+- GTX 2080Ti&lt;/p&gt;
+
+&lt;p&gt;首先拉取官方镜像：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# TLT
+docker pull nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3
+# DeepStream
+docker pull nvcr.io/nvidia/deepstream:5.0.1-20.09-samples
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注册一个NGC账户，并获取一个API Key，API key将用于访问NGC相关的服务（如预训练模型下载）：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/3_hu3f87165f70f8baf5c97804e32a649fa6_90812_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/3_hu3f87165f70f8baf5c97804e32a649fa6_90812_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1921&#34; height=&#34;905&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+API key仅显示一次，请注意保存，如丢失可以重新生成一个。&lt;/p&gt;
+
+&lt;p&gt;为便于陈述，下文使用xxx/tlt-demo指代项目根路径，目录结构如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/4_hu90c99a17c0b6bc55c24671e890ebb20f_50399_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/4_hu90c99a17c0b6bc55c24671e890ebb20f_50399_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;348&#34; height=&#34;546&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中原始数据集data/raw_data、代码部分face-mask-detection、最终训练好的模型data/experiment_dir_final和预训练模型data/pretrained_resnet18已经打包上传到网盘，其他文件可通过代码生成。
+&lt;strong&gt;链接：&lt;a href=&#34;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&#34;&gt;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&lt;/a&gt;
+提取码：7sxb&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如已下载上面的文件，则下面git clone 和数据集下载两步可跳过。
+拉取&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo项目&lt;/a&gt;（face-mask-detection）github仓库到xxx/tlt-demo路径&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd xxx/tlt-demo
+git clone https://github.com/NVIDIA-AI-IOT/face-mask-detection.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载数据集文件，存放到xxx/tlt_demo/data路径下。
+&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;face-mask-detection&lt;/a&gt;同时使用了四个公共数据集作为训练数据。&lt;/p&gt;
+
+&lt;h2 id=&#34;模型训练&#34;&gt;模型训练&lt;/h2&gt;
+
+&lt;p&gt;在启动容器前，先填一下API key，执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker login nvcr.io
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;填入：
+Username: $oauthtoken
+Password: 【Your Key】
+启动TLT训练容器：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run --gpus all --name tlt_train -it -v &amp;quot;xxx/tlt-demo&amp;quot;:&amp;quot;/tlt-demo&amp;quot; \
+              -p 8888:8888 nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3 /bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参数解释：
+-  &amp;ndash;gpus all 指定使用的GPU
+-  -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo; 映射宿主机文件
+-  -p 8888:8888 绑定8888端口方便访问jupyter notebook&lt;/p&gt;
+
+&lt;p&gt;进入容器后，首先运行数据集转换脚本。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /tlt-demo/face-mask-detection
+python data2kitti.py --kaggle-dataset-path /tlt-demo/data/raw_dataset/Kaggle-Medical-Mask-Dataset \
+                         --mafa-dataset-path /tlt-demo/data/raw_dataset/MAFA \
+                         --fddb-dataset-path /tlt-demo/data/raw_dataset/FDDB \
+                         --widerface-dataset-path /tlt-demo/data/raw_dataset/WiderFace \
+                         --kitti-base-path /tlt-demo/data/kitti_dataset \
+                         --train
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该脚本将四种数据集合并，转换为kitti数据格式，并存放在容器的/tlt-demo/data/kitti_dataset路径（即宿主机xxx/tlt-demo/data/kitti_dataset路径）下。转换中产生的警告可忽略。&lt;/p&gt;
+
+&lt;p&gt;对data2kitti.py的补充说明：
+用于目标检测的kitti数据集格式具有如下组织结构：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/5_hu69b1f5462ba2d91a51892c2c5eb6d154_8901_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/5_hu69b1f5462ba2d91a51892c2c5eb6d154_8901_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;271&#34; height=&#34;309&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中kitti_seq_to_map.json文件是可选的，用于描述训练集/测试集的划分。
+labels文件中每一行描述一个边界框的信息，具有如下字段：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/6_hu9b69d4d6e58f95500c53337de133dac6_158052_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/6_hu9b69d4d6e58f95500c53337de133dac6_158052_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1379&#34; height=&#34;672&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;Mask 0 0 0 5 299 121 465 0 0 0 0 0 0 0
+No-Mask 0 0 0 386 17 425 53 0 0 0 0 0 0 0
+Mask 0 0 0 280 14 336 51 0 0 0 0 0 0 0
+No-Mask 0 0 0 544 94 584 132 0 0 0 0 0 0 0
+No-Mask 0 0 0 499 121 557 167 0 0 0 0 0 0 0
+Mask 0 0 0 633 52 687 104 0 0 0 0 0 0 0
+Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在data2kitti.py脚本中，四个数据集的图片被统一resize到(960,544)，存储为jpg格式文件。&lt;/p&gt;
+
+&lt;p&gt;下一步，启动jupyter-notebook并按照face-mask-detection.ipynb提供的指示进行模型训练，本文网盘中的版本已对face-mask-detection.ipynb的bug进行修正，并补充了一些内容。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;jupyter-notebook --ip 0.0.0.0 --no-browser --allow-root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/7_hu7f6ee2d3c46fe563d63f801c404f0509_138413_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/7_hu7f6ee2d3c46fe563d63f801c404f0509_138413_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1336&#34; height=&#34;287&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+启动后，访问【宿主机ip】:8888即可。其中token可在jupyter-notebook的启动消息中获得。&lt;/p&gt;
+
+&lt;p&gt;下面对face-mask-detection.ipynb中的主要步骤进行简要说明和补充。&lt;/p&gt;
+
+&lt;p&gt;设置一些环境变量，注意修改路径和KEY:
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/8_hud55747b6861ac1153a82590412a1d601_91052_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/8_hud55747b6861ac1153a82590412a1d601_91052_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1259&#34; height=&#34;434&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+执行数据集转换和切分：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/9_hu33fcef5e343619c475eaae0723e5b93c_50437_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/9_hu33fcef5e343619c475eaae0723e5b93c_50437_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1276&#34; height=&#34;469&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中使用的配置文件detectnet_v2_tfrecords_kitti_trainval.txt 内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;kitti_config {
+  root_directory_path: &amp;quot;/tlt-demo/data/kitti_dataset/train/&amp;quot;
+  image_dir_name: &amp;quot;images&amp;quot;
+  label_dir_name: &amp;quot;labels&amp;quot;
+  image_extension: &amp;quot;.jpg&amp;quot;
+  partition_mode: &amp;quot;random&amp;quot;
+  num_partitions: 2
+  val_split: 20
+  num_shards: 10 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ref: &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&#34;&gt;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&lt;/a&gt;
+参数如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/10_hub96928284ebf4c2de36c48f4922a97d9_293229_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/10_hub96928284ebf4c2de36c48f4922a97d9_293229_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1385&#34; height=&#34;1009&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+因此在detectnet_v2_tfrecords_kitti_trainval.txt 表示我们以数据集/tlt-demo/data/kitti_dataset/train/为输入，切分20%作为验证集，其余为训练集。&lt;/p&gt;
+
+&lt;p&gt;下载与训练模型：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/11_huc286d2d7247c012f1b7b4edd14555b9a_70487_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/11_huc286d2d7247c012f1b7b4edd14555b9a_70487_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1237&#34; height=&#34;507&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+此处使用英伟达的detectnet_v2模型，鉴于数据集不大，任务也比较简单，选用较为精简的resnet18作为骨架网络。&lt;/p&gt;
+
+&lt;p&gt;启动训练：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/12_hu5e348b2700520983ecfb67cbfc074921_80589_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/12_hu5e348b2700520983ecfb67cbfc074921_80589_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1259&#34; height=&#34;398&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+这里对配置文件detectnet_v2_train_resnet18_kitti.txt的内容进行简单解释。
+配置文件约定所使用的数据增强方法和训练参数，其参数说明见：
+&lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2&#34;&gt;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;我仅修改了路径相关的几行：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/13_hu29d2c1ff4a6e88ef4453a269228db51a_15985_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/13_hu29d2c1ff4a6e88ef4453a269228db51a_15985_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;817&#34; height=&#34;106&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/14_huaa7ed6e615de7ce96b24510654048479_15447_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/14_huaa7ed6e615de7ce96b24510654048479_15447_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1280&#34; height=&#34;94&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;笔者使用2块2080Ti训练的用时为1:32:42.382548.&lt;/p&gt;
+
+&lt;p&gt;模型剪枝：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/15_hu7b727456d227f9940437e06fab429443_93331_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/15_hu7b727456d227f9940437e06fab429443_93331_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1249&#34; height=&#34;573&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+笔者此处设置剪纸阈值为0.1（参数越大，剪的越狠），效果不错，精度没有降低。&lt;/p&gt;
+
+&lt;p&gt;剪枝后还需要再重新训一下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/16_hua6ad6c1a28f2191f4e89b62bcda2e66c_80355_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/16_hua6ad6c1a28f2191f4e89b62bcda2e66c_80355_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1259&#34; height=&#34;512&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+配置文件detectnet_v2_retrain_resnet18_kitti.txt的修改方法和detectnet_v2_train_resnet18_kitti.txt相似。
+最终精度是
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/17_hucb5fc705eff5421856129af3355911e4_7181_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/17_hucb5fc705eff5421856129af3355911e4_7181_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;390&#34; height=&#34;192&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+可视化检查：
+在宿主机xxx/tlt-demo/data/test_images路径中放入待检图片。&lt;/p&gt;
+
+&lt;p&gt;对test_images中的图片执行推理：
+ 
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/18_hub02e5152b510fb65aab07f6cedbc03ef_95548_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/18_hub02e5152b510fb65aab07f6cedbc03ef_95548_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1415&#34; height=&#34;767&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+可视化：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/19_huc7b1ded1fb9f4bbec7d1ab7b57c87170_749686_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/19_huc7b1ded1fb9f4bbec7d1ab7b57c87170_749686_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1395&#34; height=&#34;1050&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+注意在箭头处需加个int修复源程序bug。
+可见训练效果非常理想。&lt;/p&gt;
+
+&lt;p&gt;最后，导出模型，格式为etlt,etlt格式可被转换为trt或tensorRT的engine文件，亦可被DeepStream加载并自动转化为所需的trt格式模型。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/20_huf8e0359e634695675d7d7175f02254fe_93617_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/20_huf8e0359e634695675d7d7175f02254fe_93617_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1387&#34; height=&#34;934&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+我们也可进一步将其转换成TensorRT的engine文件：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/21_hub7a4eb1734b3dd121341c2de8aafa7f5_41019_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/21_hub7a4eb1734b3dd121341c2de8aafa7f5_41019_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1351&#34; height=&#34;544&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+上面导出的模型是Float32类型的，为了追求更快的推理速度，可将Float32类型的模型量化int8模型。为了解决解决参数转换为int8类型后动态范围下降的问题，量化的一个关键步骤是确定float32到int8的量化映射，映射参数是根据模型对数据集的响应进行的，下面的命令抽取40个batch的数据生成calibration tensorfile。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/22_hu4785b7f862514dd047e3fb516860e579_121468_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/22_hu4785b7f862514dd047e3fb516860e579_121468_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1400&#34; height=&#34;770&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+随后我们调用tlt-convert导出int8推理engine：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/23_hueae907644da41437e0378805bb6b6e02_32630_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/23_hueae907644da41437e0378805bb6b6e02_32630_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1360&#34; height=&#34;371&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+engine文件是平台相关的，比如3080系显卡上执行tlt-convert导出的engine并不能在10系显卡上运行，需注意。Nvidia也提供了不同平台的tlt-convert工具供使用。
+至此我们已经得到了如下文件：
+- /tlt-demo/data/experiment_dir_unpruned/下存放原始训练模型
+- /tlt-demo/data/experiment_dir_pruned/存放经过剪枝的模型
+- /tlt-demo/data/experiment_dir_retrain/存放经过再次训练后的剪枝模型
+- /tlt-demo/data/experiment_dir_final/存放导出模型，包括原始的resnet18_detector.etlt模型文件和经过int8量化并转化为tensorRT推理引擎的resnet18_detector_int8.engine文件，未经过int8量化但转化为tensorRT推理引擎的resnet18_detector.engine文件。还有保存有int8映射信息的calibration.bin文件。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2021/1/12注：为了查看不同剪枝阈值的影响，对pth=[0.15,0.2,0.25,0.3,0.35,0.45]分别进行了实验：&lt;/strong&gt;
+| pth  |   mask  | no-mask | mean AP |
+|&amp;mdash;&amp;mdash;|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|
+| 0.15 | 84.7971 | 81.9967 | 83.3969 |
+| 0.2  | 84.8928 | 81.5916 | 83.2422 |
+| 0.25 | 83.9029 | 81.9541 | 82.9285 |
+| 0.3  | 84.6431 | 82.0092 | 83.3262 |
+| 0.35 | 84.9796 | 82.394  | 83.6868 |
+| 0.45 | 83.9478 | 81.4966 | 82.7222 |
+可见在本例中，对pth的裕度是很大的。但有些模型对pth很敏感，需仔细调整。&lt;/p&gt;
+
+&lt;p&gt;下一节将探讨如何在DS框架上部署这些模型。&lt;/p&gt;
+
+&lt;h1 id=&#34;基于ds的模型部署&#34;&gt;基于DS的模型部署&lt;/h1&gt;
+
+&lt;p&gt;DeepStream SDK提供了完整的流分析工具链，可用于基于AI的视频和图像理解以及多传感器处理。
+如前所述，DeepStream的相关资料较少，尚未由较为详细的中文技术博客对其进行介绍，DS开发的主要的参考来源是官方文档和例子：
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
+- &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/python-api/&#34;&gt;python API&lt;/a&gt;
+- &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
+依旧通过容器运行DeepStream，摆脱繁琐的环境配置工作：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;xhost +
+docker run --rm --gpus all --name ds_test --device=/dev/video0 -it -p 8554:8554  -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 -v &amp;quot;xxx/tlt-demo&amp;quot;:&amp;quot;/tlt-demo&amp;quot; -w /tlt-demo/face-mask-detection/ds_configs nvcr.io/nvidia/deepstream:5.0.1-20.09-samples /bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中xhost +用于开放宿主机图形界面的接入权限
+参数解释：
+- &amp;ndash;gpus all 指定容器可见的GPU
+- &amp;ndash;device=/dev/video0 将摄像头1映射进入容器
+- -it -p 8554:8554 映射RTSPStreaming RTSP端口（可选）
+- -p 5400:5400/udp 映射RTSPStreaming UDP端口（可选）
+- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机
+- -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo;  映射宿主机文件夹
+- -w /tlt-demo/face-mask-detection/ds_configs 设置进入容器后开启的路径&lt;/p&gt;
+
+&lt;p&gt;注意这里使用的是deepstream:5.0.1-20.09-samples版本镜像而非更精简的deepstream:5.0.1-20.09-base，该镜像包含重要的例程文件（deepstream-app）。&lt;/p&gt;
+
+&lt;p&gt;进入容器后，我们运行demo写好的配置文件（有改动）。
+通过指定的配置文件启动deepstream-app检测程序：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deepstream-app -c deepstream_app_source1_camera_masknet_gpu_int8.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个配置文件以640*480的分辨率，30fps的帧率从/dev/video0这个usb摄像头读入视频流，进行推理，跟踪，并渲染检测结果，最后推送到宿主机的图形界面，同时发送RTSP流。
+RTSP是流行的流传输协议，使用VLC，potplayer等视频播放器均可访问，其地址是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;rtsp://[容器所在宿主机IP]:8554/ds-test
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/24_hud3a1f515d9d442d7384e0441619600ff_220180_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/24_hud3a1f515d9d442d7384e0441619600ff_220180_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;790&#34; height=&#34;774&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;其他配置文件说明：
+- deepstream_app_source1_camera_masknet_gpu_fp32.txt 加载fp32推理模型、摄像头0为输入
+- deepstream_app_source1_camera_masknet_gpu_int8.txt 加载int8推理模型、摄像头0为输入
+- deepstream_app_source1_video_masknet_gpu_fp32.txt 加载fp32推理模型、/tlt-demo/test.mp4为输入
+- deepstream_app_source1_video_masknet_gpu_int8.txt 加载int8推理模型、/tlt-demo/test.mp4为输入&lt;/p&gt;
+
+&lt;p&gt;若一切正常，则可通过GUI或视频浏览器看到标注由检测结果的输出视频流，整个检测流水线运行速度很快，显卡的占用率也很低。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;下面简要分析一下demo中配置文件的编写方法。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;DeepStream的底层是GStreamer，GStreamer是用于创建流媒体应用程序的极其强大且通用的框架。  GStreamer框架的核心优点来自其模块化，视频处理的各个环节均有丰富的插件进行支撑，基于GStreamer进行开发的核心内容就是合理的将各个环节的模块串接为一个处理管线。GStreamer是纯C编写的，底层基于Glib库，并使用G-object提供对C语言的面向对象支持（暗黑科技）。
+DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成器等）的基础上，又为深度学习的应用场景实现了一组&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream%20Plugins%20Development%20Guide/deepstream_plugin_details.3.01.html#&#34;&gt;插件&lt;/a&gt;：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/25_huf35ea9dce2c3b8d9860a24343e3ad1d1_62692_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/25_huf35ea9dce2c3b8d9860a24343e3ad1d1_62692_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1096&#34; height=&#34;704&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+如nvinfer用于支持tensorRT推理，nvtracker用于边界框的跟踪，nvdsosd用于渲染检测结果。&lt;/p&gt;
+
+&lt;p&gt;看DS提供的例程是学习DS开发的最佳途径：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/26_huc76824713ad806ec07c823966affb916_106199_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/26_huc76824713ad806ec07c823966affb916_106199_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;720&#34; height=&#34;250&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+其中C语言版本位于容器的如下路径：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;/opt/nvidia/deepstream/deepstream-5.0/sources/apps/sample_apps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;python语言版本可在&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/deepstream_python_apps&#34;&gt;这里&lt;/a&gt;下载。
+更多例程可见&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_C_Sample_Apps.html&#34;&gt;这里&lt;/a&gt;。
+其中一个很重要的例程是&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_ref_app_test5.html&#34;&gt;deepstream-test5 app&lt;/a&gt;。
+除常规推理管道外，Test5应用程序还支持以下功能：
+- 将消息发送到后端服务器。
+- 充当使用者以从后端服务器接收消息。
+- 基于从服务器收到的消息触发基于事件的记录。
+- OTA模型更新。&lt;/p&gt;
+
+&lt;p&gt;除此之外。鉴于通过DS的底层C接口和Python接口构建检测流水线仍有些繁琐，Nvidia针对最常见的深度学习模型处理流程提炼并设计了参考程序deepstream-app，该程序允许用户通过传入配置文件描述检测流水线，deepstream-app会根据配置文件的描述调用相应DS插件，构建流水线。因此，虽然deepstream-app是个参考程序，但&lt;strong&gt;常被当做DS的CLI工具使用&lt;/strong&gt;。
+如下是deepstream-app提供的流水线的结构框图，其中很多组件是可选的（如secondary classifiers）：
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/27_hu58046d9dd4ee51c28eb311dd755f5625_146027_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/27_hu58046d9dd4ee51c28eb311dd755f5625_146027_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;912&#34; height=&#34;342&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+首先，前端使用decode插件读入视频流（来源可以是RTSP、文件、usb摄像头等），多个摄像头经过MUX进行合并，组成batch，送入主检测器（目标检测）获得边界框，随后送入tracker进行跟踪，每个跟踪的边界框继续送入次级检测器（一般是分类器），检测结果发送到tilter形成2D帧数组，进而用osd插件渲染检测结果。最后，要输出结果（sink），DeepStream提供了各种选项：在屏幕上用边框显示输出，将输出保存到本地磁盘，通过RTSP进行流传输或仅将元数据发送到云。为了将元数据发送到云，DeepStream使用Gst-nvmsgconv和Gst-nvmsgbroker插件。  Gst-nvmsgconv将元数据转换为架构有效负载，而Gst-nvmsgbroker建立与云的连接并发送遥测数据。 有几种内置的代理协议，例如Kafka，MQTT，AMQP和Azure IoT。 可以创建自定义代理适配器。&lt;/p&gt;
+
+&lt;p&gt;deepstream-app的配置文件使用&lt;a href=&#34;https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html#comments&#34;&gt;freedesktop&lt;/a&gt;格式，是一种非常精简的键值对描述文件，形如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;# demo
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Foo Viewer
+Comment=The best viewer for Foo objects available!
+TryExec=fooview
+Exec=fooview %F
+Icon=fooview
+MimeType=image/x-foo;
+Actions=Gallery;Create;
+
+[Desktop Action Gallery]
+Exec=fooview --gallery
+Name=Browse Gallery
+
+[Desktop Action Create]
+Exec=fooview --create-new
+Name=Create a new Foo!
+Icon=fooview-new
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;描述文件由若干个组（Group ）组成，[groupname]表示参数组的名字，每行用Key=Value的形式描述一个键值。使用“# ”表明注释行。
+deepstream-app的配置文件有如下可选的&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_app_config.3.2.html#&#34;&gt;配置组&lt;/a&gt;。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/28_hu7a099da03c1eafcf59298d426822b1c4_116888_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/28_hu7a099da03c1eafcf59298d426822b1c4_116888_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;1024&#34; height=&#34;596&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+本文的口罩检测demo程序正是使用deepstream-app来构建DS流水线的。我们以调用int8推理模型的配置文件为例进行说明。
+int8推理的配置包含两个文件：
+- deepstream_app_source1_camera_masknet_gpu_int8.txt
+- config_infer_primary_masknet_gpu_int8.txt&lt;/p&gt;
+
+&lt;p&gt;前者描述流水线的配置情况，后者对流水线的nvinfer推理模块进行配置（因nvinfer参数比较多，故单独拆分为一个配置文件），下面分别说明两个文件中配置项的含义。
+deepstream_app_source1_camera_masknet_gpu_int8.txt：&lt;/p&gt;
+
+&lt;p&gt;application配置组指定是否在命令行打印性能评估信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[application]
+enable-perf-measurement=1
+perf-measurement-interval-sec=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure &gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/29_hu61ac4b0ba04113f6a1a9b95a11bcb11a_39920_2000x2000_fit_lanczos_2.png&#34; &gt;
+
+
+  &lt;img data-src=&#34;https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&amp;#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/29_hu61ac4b0ba04113f6a1a9b95a11bcb11a_39920_2000x2000_fit_lanczos_2.png&#34; class=&#34;lazyload&#34; alt=&#34;&#34; width=&#34;511&#34; height=&#34;218&#34;&gt;
+&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+source组指定输入源，这里指定两个输入源同时输入：摄像头和视频文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[source0]
+enable=1
+#Type - 1=CameraV4L2 2=URI 3=MultiURI
+type=1
+camera-width=640
+camera-height=480
+camera-fps-n=30
+camera-fps-d=1
+camera-v4l2-dev-node=0
+
+[source1]
+enable=0
+#Type - 1=CameraV4L2 2=URI 3=MultiURI
+type=3
+num-sources=1
+uri=file:/tlt-demo/test.mp4
+gpu-id=0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;streammux组开启mux插件，将两个输入源的图像集成打包为batch，由于先前导出int8.engine时设置batch-size=4，故这里保持一致&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[streammux]
+gpu-id=0
+batch-size=4
+batched-push-timeout=40000
+## Set muxer output width and height
+width=640
+height=480
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;osd组指定检测标签的渲染颜色、字体&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[osd]
+enable=1
+gpu-id=0
+border-width=4
+text-size=18
+text-color=1;1;1;1;
+text-bg-color=0.3;0.3;0.3;1
+font=Arial
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;primary-gie组设置主推理引擎，注意导入了config_infer_primary_masknet_gpu_int8.txt文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[primary-gie]
+enable=1
+gpu-id=0
+# Modify as necessary
+# GPU engine file
+# model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+# batch-size=4
+# Required by the app for OSD, not a plugin property
+bbox-border-color0=0;1;0;1
+bbox-border-color1=1;0;0;1
+#bbox-border-color2=0;0;1;1 # Blue
+#bbox-border-color3=0;1;0;1
+gie-unique-id=1
+config-file=config_infer_primary_masknet_gpu_int8.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tracker组使能边界框跟踪器，此处选择klt跟踪算法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[tracker]
+enable=1
+tracker-width=640
+tracker-height=384
+#ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_iou.so
+#ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_nvdcf.so
+ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_klt.so
+#ll-config-file required for DCF/IOU only
+#ll-config-file=../deepstream-app/tracker_config.yml
+#ll-config-file=iou_config.txt
+gpu-id=0
+#enable-batch-process applicable to DCF only
+enable-batch-process=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tiled-display组将两个视频源的检测结果分开，并排渲染为一个视频流，故这里设置的输出宽度为640*2=1280&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[tiled-display]
+enable=1
+rows=1
+columns=2
+width=1280 #640
+height=480 #480
+gpu-id=0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sink组指定了两个输出源，一是在GUI显示，二是编码并推流RTSP到8554端口&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[sink0]
+enable=0
+#Type - 1=FakeSink 2=EglSink 3=File
+type=2
+sync=1
+source-id=0
+gpu-id=0
+container=2
+codec=1
+bitrate=2000000
+output-file=/tlt-demo/out.mp4
+
+[sink1]
+enable=1
+#Type - 1=FakeSink 2=EglSink 3=File 4=RTSPStreaming
+type=4
+#1=h264 2=h265
+codec=1
+sync=0
+bitrate=4000000
+# set below properties in case of RTSPStreaming
+rtsp-port=8554
+#udp-port=5400
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后，tests组的含义设置视频循环播放，方便调试时能够对短视频文件持续反复的观察&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[tests]
+file-loop=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;config_infer_primary_masknet_gpu_int8.txt文件则有三个配置组。
+property组对推理引擎进行设置，包括engine文件路径、推理模型类型、输入大小、推理batch大小、int8映射文件路径、分类阈值等。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[property]
+gpu-id=0
+net-scale-factor=0.0039215697906911373
+tlt-model-key=Z2doZm5wZmsyaTRqdTFpaTh2cTduNjdjbW46OWYwMzYyNDEtMWY0ZS00NmRjLTgxZDAtYjI0NjkzYTY0YjJk
+#tlt-encoded-model=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.etlt
+labelfile-path=labels_masknet.txt
+# GPU Engine File
+model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+# DLA Engine File
+# model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+input-dims=3;544;960;0
+uff-input-blob-name=input_1
+batch-size=4
+model-color-format=0
+## 0=FP32, 1=INT8, 2=FP16 mode
+network-mode=1
+int8-calib-file=/tlt-demo/data/experiment_dir_final/calibration.bin
+num-detected-classes=2
+cluster-mode=3
+interval=0
+gie-unique-id=1
+is-classifier=0
+classifier-threshold=0.9
+output-blob-names=output_bbox/BiasAdd;output_cov/Sigmoid
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;[class-attrs-all]组为所有类别配置检测参数，由于任务是目标检测，故设置项主要包含极大值抑制算法的相关参数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[class-attrs-0]
+pre-cluster-threshold=0.3
+group-threshold=1
+eps=0.5
+#minBoxes=1
+detected-min-w=0
+detected-min-h=0
+detected-max-w=0
+detected-max-h=0
+
+
+[class-attrs-1]
+pre-cluster-threshold=0.3
+group-threshold=1
+eps=0.3
+#minBoxes=1
+detected-min-w=0
+detected-min-h=0
+detected-max-w=0
+detected-max-h=0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;关于字段的具体含义，可查询文档，这里不再赘述。&lt;/p&gt;
+
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+
+&lt;p&gt;总体来看，TLT和DS构成的工具链将模型的训练和部署变得极为方便，唯一需要编程的部分仅仅是一些数据集转换脚本。最关键的是，借助DS框架，算法可以达到极高的帧率，TLT+DS绝对是做工（heng）程(xiang)的利器！
+当然，使用deepstream-app+配置文件仍然有很多限制，后续有机会将探索DS的python接口的使用方法。&lt;/p&gt;
 </description>
     </item>
     

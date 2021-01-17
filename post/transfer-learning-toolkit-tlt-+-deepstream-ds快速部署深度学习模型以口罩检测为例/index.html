@@ -1,0 +1,2819 @@
+<!DOCTYPE html><html lang="zh-Hans" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 4.8.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="目录 简介 TLT DS 基于TLT进行迁移学习 环境准备 模型训练 基于DS的模型部署 总结 最近在做一个深度学习的横向，被实时性搞的很头疼，遂打算研究研究新的技">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/">
+  <meta property="og:title" content="Transfer Learning Toolkit (TLT) &#43; DeepStream (DS)快速部署深度学习模型（以口罩检测为例） | Academic">
+  <meta property="og:description" content="目录 简介 TLT DS 基于TLT进行迁移学习 环境准备 模型训练 基于DS的模型部署 总结 最近在做一个深度学习的横向，被实时性搞的很头疼，遂打算研究研究新的技"><meta property="og:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh-Hans">
+  
+    
+    
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/transfer-learning-toolkit-tlt-+-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/"
+  },
+  "headline": "Transfer Learning Toolkit (TLT) + DeepStream (DS)快速部署深度学习模型（以口罩检测为例）",
+  
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "目录 简介 TLT DS 基于TLT进行迁移学习 环境准备 模型训练 基于DS的模型部署 总结 最近在做一个深度学习的横向，被实时性搞的很头疼，遂打算研究研究新的技"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Transfer Learning Toolkit (TLT) &#43; DeepStream (DS)快速部署深度学习模型（以口罩检测为例） | Academic</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class=" ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="搜索"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>浅色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>深色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>自动</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link " data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i></a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item dropdown-item-active">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Transfer Learning Toolkit (TLT) &#43; DeepStream (DS)快速部署深度学习模型（以口罩检测为例）</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  
+  <span ><a href="/authors/admin/"></a></span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jan 1, 0001
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    15 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+<p><h2>目录</h2>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#简介">简介</a>
+<ul>
+<li><a href="#tlt">TLT</a></li>
+<li><a href="#ds">DS</a></li>
+</ul></li>
+<li><a href="#基于tlt进行迁移学习">基于TLT进行迁移学习</a>
+<ul>
+<li><a href="#环境准备">环境准备</a></li>
+<li><a href="#模型训练">模型训练</a></li>
+</ul></li>
+<li><a href="#基于ds的模型部署">基于DS的模型部署</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav></p>
+
+<p>最近在做一个深度学习的横向，被实时性搞的很头疼，遂打算研究研究新的技术路线，做点技术储备。TLT+DS的中文资料很少，本文以官方资料为基础做了一点整理工作。</p>
+
+<h1 id="简介">简介</h1>
+
+<h2 id="tlt">TLT</h2>
+
+<p>如何快速训练和部署深度学习模型是工业界关注的重点问题，英伟达推出的TLT+DS工具链为训练自有数据集进而进行快速部署提供了端到端的解决方案。
+其中，TLT是英伟达迁移学习工具，提供对预训练模型的迁移训练、模型剪纸、量化，的一站式解决方案。<a href="https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA">文档</a> <a href="https://docs.nvidia.com/metropolis/TLT/archive/tlt-getting-started-guide/index.html">指南</a>
+Nvidia在<a href="https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC&amp;pageNumber=0&amp;query=tlt&amp;quickFilter=models&amp;filters=">NGC仓库</a>中提供了一组为TLT工具维护的预训练模型，囊括了常见CV任务的经典模型（人脸识别、目标检测、语义分割、人体姿态估计、分类等）：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/0_hu4cb8cb0fb415c1017f7d086372bdd976_264865_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/0_hu4cb8cb0fb415c1017f7d086372bdd976_264865_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1921" height="905">
+</a>
+
+
+
+</figure>
+</p>
+
+<h2 id="ds">DS</h2>
+
+<p>DeepStream（DS）则是一套经高度优化的推理系统，提供完整的检测流水线实现，包含高速编解码器、预处理器、模板跟踪器、TensorRT推理引擎等组件，并配套有完善的可视化、精度校验工具。
+- <a href="https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA">文档</a>中包含了基本概念的介绍。
+ - <a href="https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html">手册</a>描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
+ - <a href="https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8">宣传PPT</a>给出了DS的基本特性和DS配置文件的简要编写方法。
+ - <a href="https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c">GStreamer</a>是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
+- 官方示例：
+ （1）<a href="https://developer.nvidia.com/blog/creating-a-human-pose-estimation-application-with-deepstream-sdk/">Creating a Human Pose Estimation Application with NVIDIA DeepStream
+</a>
+(2) <a href="https://developer.nvidia.com/blog/building-iva-apps-using-deepstream-5-0-updated-for-ga/">Building Intelligent Video Analytics Apps Using NVIDIA DeepStream 5.0 (Updated for GA)
+</a>
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/1_hud8f90247d676fe9aebe76e4c77ffd82a_50836_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/1_hud8f90247d676fe9aebe76e4c77ffd82a_50836_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="720" height="240">
+</a>
+
+
+
+</figure>
+
+<strong>本文主要参照官方提供的口罩检测<a href="https://github.com/NVIDIA-AI-IOT/face-mask-detection">demo</a>对使用TLT+DS进行深度学习模型训练、部署的方法进行初步探索，并对<a href="https://github.com/NVIDIA-AI-IOT/face-mask-detection">demo</a>缺少的细节进行补充，修正<a href="https://github.com/NVIDIA-AI-IOT/face-mask-detection">demo</a>的部分bug，添加部分配置文件。</strong>
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/2_hu33cec7bb52f20f35e229bf8ea36c7181_495047_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/2_hu33cec7bb52f20f35e229bf8ea36c7181_495047_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="640" height="466">
+</a>
+
+
+
+</figure>
+</p>
+
+<h1 id="基于tlt进行迁移学习">基于TLT进行迁移学习</h1>
+
+<h2 id="环境准备">环境准备</h2>
+
+<p>使用Docker镜像是获取TLT和DS工具的最佳方式。
+本文使用的运行环境：
+- Ubuntu 18.04
+- Docker 19.04
+- <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>(提供GPU的Docker虚拟化支持)
+- GTX 2080Ti</p>
+
+<p>首先拉取官方镜像：</p>
+
+<pre><code class="language-bash"># TLT
+docker pull nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3
+# DeepStream
+docker pull nvcr.io/nvidia/deepstream:5.0.1-20.09-samples
+</code></pre>
+
+<p>注册一个NGC账户，并获取一个API Key，API key将用于访问NGC相关的服务（如预训练模型下载）：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/3_hu3f87165f70f8baf5c97804e32a649fa6_90812_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/3_hu3f87165f70f8baf5c97804e32a649fa6_90812_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1921" height="905">
+</a>
+
+
+
+</figure>
+
+API key仅显示一次，请注意保存，如丢失可以重新生成一个。</p>
+
+<p>为便于陈述，下文使用xxx/tlt-demo指代项目根路径，目录结构如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/4_hu90c99a17c0b6bc55c24671e890ebb20f_50399_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/4_hu90c99a17c0b6bc55c24671e890ebb20f_50399_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="348" height="546">
+</a>
+
+
+
+</figure>
+
+其中原始数据集data/raw_data、代码部分face-mask-detection、最终训练好的模型data/experiment_dir_final和预训练模型data/pretrained_resnet18已经打包上传到网盘，其他文件可通过代码生成。
+<strong>链接：<a href="https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA">https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA</a>
+提取码：7sxb</strong></p>
+
+<p>如已下载上面的文件，则下面git clone 和数据集下载两步可跳过。
+拉取<a href="https://github.com/NVIDIA-AI-IOT/face-mask-detection">demo项目</a>（face-mask-detection）github仓库到xxx/tlt-demo路径</p>
+
+<pre><code class="language-bash">cd xxx/tlt-demo
+git clone https://github.com/NVIDIA-AI-IOT/face-mask-detection.git
+</code></pre>
+
+<p>下载数据集文件，存放到xxx/tlt_demo/data路径下。
+<a href="https://github.com/NVIDIA-AI-IOT/face-mask-detection">face-mask-detection</a>同时使用了四个公共数据集作为训练数据。</p>
+
+<h2 id="模型训练">模型训练</h2>
+
+<p>在启动容器前，先填一下API key，执行：</p>
+
+<pre><code class="language-bash">docker login nvcr.io
+</code></pre>
+
+<p>填入：
+Username: $oauthtoken
+Password: 【Your Key】
+启动TLT训练容器：</p>
+
+<pre><code class="language-bash">docker run --gpus all --name tlt_train -it -v &quot;xxx/tlt-demo&quot;:&quot;/tlt-demo&quot; \
+              -p 8888:8888 nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3 /bin/bash
+</code></pre>
+
+<p>参数解释：
+-  &ndash;gpus all 指定使用的GPU
+-  -v &ldquo;xxx/tlt-demo&rdquo;:&ldquo;/tlt-demo&rdquo; 映射宿主机文件
+-  -p 8888:8888 绑定8888端口方便访问jupyter notebook</p>
+
+<p>进入容器后，首先运行数据集转换脚本。</p>
+
+<pre><code class="language-bash">cd /tlt-demo/face-mask-detection
+python data2kitti.py --kaggle-dataset-path /tlt-demo/data/raw_dataset/Kaggle-Medical-Mask-Dataset \
+                         --mafa-dataset-path /tlt-demo/data/raw_dataset/MAFA \
+                         --fddb-dataset-path /tlt-demo/data/raw_dataset/FDDB \
+                         --widerface-dataset-path /tlt-demo/data/raw_dataset/WiderFace \
+                         --kitti-base-path /tlt-demo/data/kitti_dataset \
+                         --train
+</code></pre>
+
+<p>该脚本将四种数据集合并，转换为kitti数据格式，并存放在容器的/tlt-demo/data/kitti_dataset路径（即宿主机xxx/tlt-demo/data/kitti_dataset路径）下。转换中产生的警告可忽略。</p>
+
+<p>对data2kitti.py的补充说明：
+用于目标检测的kitti数据集格式具有如下组织结构：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/5_hu69b1f5462ba2d91a51892c2c5eb6d154_8901_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/5_hu69b1f5462ba2d91a51892c2c5eb6d154_8901_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="271" height="309">
+</a>
+
+
+
+</figure>
+
+其中kitti_seq_to_map.json文件是可选的，用于描述训练集/测试集的划分。
+labels文件中每一行描述一个边界框的信息，具有如下字段：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/6_hu9b69d4d6e58f95500c53337de133dac6_158052_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/6_hu9b69d4d6e58f95500c53337de133dac6_158052_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1379" height="672">
+</a>
+
+
+
+</figure>
+
+如：</p>
+
+<pre><code class="language-text">Mask 0 0 0 5 299 121 465 0 0 0 0 0 0 0
+No-Mask 0 0 0 386 17 425 53 0 0 0 0 0 0 0
+Mask 0 0 0 280 14 336 51 0 0 0 0 0 0 0
+No-Mask 0 0 0 544 94 584 132 0 0 0 0 0 0 0
+No-Mask 0 0 0 499 121 557 167 0 0 0 0 0 0 0
+Mask 0 0 0 633 52 687 104 0 0 0 0 0 0 0
+Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
+</code></pre>
+
+<p>在data2kitti.py脚本中，四个数据集的图片被统一resize到(960,544)，存储为jpg格式文件。</p>
+
+<p>下一步，启动jupyter-notebook并按照face-mask-detection.ipynb提供的指示进行模型训练，本文网盘中的版本已对face-mask-detection.ipynb的bug进行修正，并补充了一些内容。</p>
+
+<pre><code class="language-bash">jupyter-notebook --ip 0.0.0.0 --no-browser --allow-root
+</code></pre>
+
+<p>
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/7_hu7f6ee2d3c46fe563d63f801c404f0509_138413_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/7_hu7f6ee2d3c46fe563d63f801c404f0509_138413_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1336" height="287">
+</a>
+
+
+
+</figure>
+
+启动后，访问【宿主机ip】:8888即可。其中token可在jupyter-notebook的启动消息中获得。</p>
+
+<p>下面对face-mask-detection.ipynb中的主要步骤进行简要说明和补充。</p>
+
+<p>设置一些环境变量，注意修改路径和KEY:
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/8_hud55747b6861ac1153a82590412a1d601_91052_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/8_hud55747b6861ac1153a82590412a1d601_91052_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1259" height="434">
+</a>
+
+
+
+</figure>
+
+执行数据集转换和切分：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/9_hu33fcef5e343619c475eaae0723e5b93c_50437_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/9_hu33fcef5e343619c475eaae0723e5b93c_50437_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1276" height="469">
+</a>
+
+
+
+</figure>
+
+其中使用的配置文件detectnet_v2_tfrecords_kitti_trainval.txt 内容如下：</p>
+
+<pre><code class="language-txt">kitti_config {
+  root_directory_path: &quot;/tlt-demo/data/kitti_dataset/train/&quot;
+  image_dir_name: &quot;images&quot;
+  label_dir_name: &quot;labels&quot;
+  image_extension: &quot;.jpg&quot;
+  partition_mode: &quot;random&quot;
+  num_partitions: 2
+  val_split: 20
+  num_shards: 10 }
+</code></pre>
+
+<p>ref: <a href="https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords">https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords</a>
+参数如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/10_hub96928284ebf4c2de36c48f4922a97d9_293229_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/10_hub96928284ebf4c2de36c48f4922a97d9_293229_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1385" height="1009">
+</a>
+
+
+
+</figure>
+
+因此在detectnet_v2_tfrecords_kitti_trainval.txt 表示我们以数据集/tlt-demo/data/kitti_dataset/train/为输入，切分20%作为验证集，其余为训练集。</p>
+
+<p>下载与训练模型：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/11_huc286d2d7247c012f1b7b4edd14555b9a_70487_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/11_huc286d2d7247c012f1b7b4edd14555b9a_70487_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1237" height="507">
+</a>
+
+
+
+</figure>
+
+此处使用英伟达的detectnet_v2模型，鉴于数据集不大，任务也比较简单，选用较为精简的resnet18作为骨架网络。</p>
+
+<p>启动训练：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/12_hu5e348b2700520983ecfb67cbfc074921_80589_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/12_hu5e348b2700520983ecfb67cbfc074921_80589_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1259" height="398">
+</a>
+
+
+
+</figure>
+
+这里对配置文件detectnet_v2_train_resnet18_kitti.txt的内容进行简单解释。
+配置文件约定所使用的数据增强方法和训练参数，其参数说明见：
+<a href="https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2">https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2</a></p>
+
+<p>我仅修改了路径相关的几行：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/13_hu29d2c1ff4a6e88ef4453a269228db51a_15985_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/13_hu29d2c1ff4a6e88ef4453a269228db51a_15985_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="817" height="106">
+</a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/14_huaa7ed6e615de7ce96b24510654048479_15447_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/14_huaa7ed6e615de7ce96b24510654048479_15447_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1280" height="94">
+</a>
+
+
+
+</figure>
+</p>
+
+<p>笔者使用2块2080Ti训练的用时为1:32:42.382548.</p>
+
+<p>模型剪枝：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/15_hu7b727456d227f9940437e06fab429443_93331_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/15_hu7b727456d227f9940437e06fab429443_93331_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1249" height="573">
+</a>
+
+
+
+</figure>
+
+笔者此处设置剪纸阈值为0.1（参数越大，剪的越狠），效果不错，精度没有降低。</p>
+
+<p>剪枝后还需要再重新训一下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/16_hua6ad6c1a28f2191f4e89b62bcda2e66c_80355_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/16_hua6ad6c1a28f2191f4e89b62bcda2e66c_80355_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1259" height="512">
+</a>
+
+
+
+</figure>
+
+配置文件detectnet_v2_retrain_resnet18_kitti.txt的修改方法和detectnet_v2_train_resnet18_kitti.txt相似。
+最终精度是
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/17_hucb5fc705eff5421856129af3355911e4_7181_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/17_hucb5fc705eff5421856129af3355911e4_7181_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="390" height="192">
+</a>
+
+
+
+</figure>
+
+可视化检查：
+在宿主机xxx/tlt-demo/data/test_images路径中放入待检图片。</p>
+
+<p>对test_images中的图片执行推理：
+ 
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/18_hub02e5152b510fb65aab07f6cedbc03ef_95548_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/18_hub02e5152b510fb65aab07f6cedbc03ef_95548_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1415" height="767">
+</a>
+
+
+
+</figure>
+
+可视化：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/19_huc7b1ded1fb9f4bbec7d1ab7b57c87170_749686_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/19_huc7b1ded1fb9f4bbec7d1ab7b57c87170_749686_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1395" height="1050">
+</a>
+
+
+
+</figure>
+
+注意在箭头处需加个int修复源程序bug。
+可见训练效果非常理想。</p>
+
+<p>最后，导出模型，格式为etlt,etlt格式可被转换为trt或tensorRT的engine文件，亦可被DeepStream加载并自动转化为所需的trt格式模型。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/20_huf8e0359e634695675d7d7175f02254fe_93617_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/20_huf8e0359e634695675d7d7175f02254fe_93617_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1387" height="934">
+</a>
+
+
+
+</figure>
+
+我们也可进一步将其转换成TensorRT的engine文件：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/21_hub7a4eb1734b3dd121341c2de8aafa7f5_41019_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/21_hub7a4eb1734b3dd121341c2de8aafa7f5_41019_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1351" height="544">
+</a>
+
+
+
+</figure>
+
+上面导出的模型是Float32类型的，为了追求更快的推理速度，可将Float32类型的模型量化int8模型。为了解决解决参数转换为int8类型后动态范围下降的问题，量化的一个关键步骤是确定float32到int8的量化映射，映射参数是根据模型对数据集的响应进行的，下面的命令抽取40个batch的数据生成calibration tensorfile。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/22_hu4785b7f862514dd047e3fb516860e579_121468_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/22_hu4785b7f862514dd047e3fb516860e579_121468_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1400" height="770">
+</a>
+
+
+
+</figure>
+
+随后我们调用tlt-convert导出int8推理engine：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/23_hueae907644da41437e0378805bb6b6e02_32630_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/23_hueae907644da41437e0378805bb6b6e02_32630_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1360" height="371">
+</a>
+
+
+
+</figure>
+
+engine文件是平台相关的，比如3080系显卡上执行tlt-convert导出的engine并不能在10系显卡上运行，需注意。Nvidia也提供了不同平台的tlt-convert工具供使用。
+至此我们已经得到了如下文件：
+- /tlt-demo/data/experiment_dir_unpruned/下存放原始训练模型
+- /tlt-demo/data/experiment_dir_pruned/存放经过剪枝的模型
+- /tlt-demo/data/experiment_dir_retrain/存放经过再次训练后的剪枝模型
+- /tlt-demo/data/experiment_dir_final/存放导出模型，包括原始的resnet18_detector.etlt模型文件和经过int8量化并转化为tensorRT推理引擎的resnet18_detector_int8.engine文件，未经过int8量化但转化为tensorRT推理引擎的resnet18_detector.engine文件。还有保存有int8映射信息的calibration.bin文件。</p>
+
+<p><strong>2021/1/12注：为了查看不同剪枝阈值的影响，对pth=[0.15,0.2,0.25,0.3,0.35,0.45]分别进行了实验：</strong>
+| pth  |   mask  | no-mask | mean AP |
+|&mdash;&mdash;|:&mdash;&mdash;-:|:&mdash;&mdash;-:|:&mdash;&mdash;-:|
+| 0.15 | 84.7971 | 81.9967 | 83.3969 |
+| 0.2  | 84.8928 | 81.5916 | 83.2422 |
+| 0.25 | 83.9029 | 81.9541 | 82.9285 |
+| 0.3  | 84.6431 | 82.0092 | 83.3262 |
+| 0.35 | 84.9796 | 82.394  | 83.6868 |
+| 0.45 | 83.9478 | 81.4966 | 82.7222 |
+可见在本例中，对pth的裕度是很大的。但有些模型对pth很敏感，需仔细调整。</p>
+
+<p>下一节将探讨如何在DS框架上部署这些模型。</p>
+
+<h1 id="基于ds的模型部署">基于DS的模型部署</h1>
+
+<p>DeepStream SDK提供了完整的流分析工具链，可用于基于AI的视频和图像理解以及多传感器处理。
+如前所述，DeepStream的相关资料较少，尚未由较为详细的中文技术博客对其进行介绍，DS开发的主要的参考来源是官方文档和例子：
+- <a href="https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA">文档</a>中包含了基本概念的介绍。
+- <a href="https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html">手册</a>描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
+- <a href="https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8">宣传PPT</a>给出了DS的基本特性和DS配置文件的简要编写方法。
+- <a href="https://docs.nvidia.com/metropolis/deepstream/python-api/">python API</a>
+- <a href="https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c">GStreamer</a>是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
+依旧通过容器运行DeepStream，摆脱繁琐的环境配置工作：</p>
+
+<pre><code class="language-bash">xhost +
+docker run --rm --gpus all --name ds_test --device=/dev/video0 -it -p 8554:8554  -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 -v &quot;xxx/tlt-demo&quot;:&quot;/tlt-demo&quot; -w /tlt-demo/face-mask-detection/ds_configs nvcr.io/nvidia/deepstream:5.0.1-20.09-samples /bin/bash
+</code></pre>
+
+<p>其中xhost +用于开放宿主机图形界面的接入权限
+参数解释：
+- &ndash;gpus all 指定容器可见的GPU
+- &ndash;device=/dev/video0 将摄像头1映射进入容器
+- -it -p 8554:8554 映射RTSPStreaming RTSP端口（可选）
+- -p 5400:5400/udp 映射RTSPStreaming UDP端口（可选）
+- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机
+- -v &ldquo;xxx/tlt-demo&rdquo;:&ldquo;/tlt-demo&rdquo;  映射宿主机文件夹
+- -w /tlt-demo/face-mask-detection/ds_configs 设置进入容器后开启的路径</p>
+
+<p>注意这里使用的是deepstream:5.0.1-20.09-samples版本镜像而非更精简的deepstream:5.0.1-20.09-base，该镜像包含重要的例程文件（deepstream-app）。</p>
+
+<p>进入容器后，我们运行demo写好的配置文件（有改动）。
+通过指定的配置文件启动deepstream-app检测程序：</p>
+
+<pre><code class="language-bash">deepstream-app -c deepstream_app_source1_camera_masknet_gpu_int8.txt
+</code></pre>
+
+<p>这个配置文件以640*480的分辨率，30fps的帧率从/dev/video0这个usb摄像头读入视频流，进行推理，跟踪，并渲染检测结果，最后推送到宿主机的图形界面，同时发送RTSP流。
+RTSP是流行的流传输协议，使用VLC，potplayer等视频播放器均可访问，其地址是</p>
+
+<pre><code class="language-txt">rtsp://[容器所在宿主机IP]:8554/ds-test
+</code></pre>
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/24_hud3a1f515d9d442d7384e0441619600ff_220180_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/24_hud3a1f515d9d442d7384e0441619600ff_220180_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="790" height="774">
+</a>
+
+
+
+</figure>
+
+
+<p>其他配置文件说明：
+- deepstream_app_source1_camera_masknet_gpu_fp32.txt 加载fp32推理模型、摄像头0为输入
+- deepstream_app_source1_camera_masknet_gpu_int8.txt 加载int8推理模型、摄像头0为输入
+- deepstream_app_source1_video_masknet_gpu_fp32.txt 加载fp32推理模型、/tlt-demo/test.mp4为输入
+- deepstream_app_source1_video_masknet_gpu_int8.txt 加载int8推理模型、/tlt-demo/test.mp4为输入</p>
+
+<p>若一切正常，则可通过GUI或视频浏览器看到标注由检测结果的输出视频流，整个检测流水线运行速度很快，显卡的占用率也很低。</p>
+
+<p><strong>下面简要分析一下demo中配置文件的编写方法。</strong></p>
+
+<p>DeepStream的底层是GStreamer，GStreamer是用于创建流媒体应用程序的极其强大且通用的框架。  GStreamer框架的核心优点来自其模块化，视频处理的各个环节均有丰富的插件进行支撑，基于GStreamer进行开发的核心内容就是合理的将各个环节的模块串接为一个处理管线。GStreamer是纯C编写的，底层基于Glib库，并使用G-object提供对C语言的面向对象支持（暗黑科技）。
+DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成器等）的基础上，又为深度学习的应用场景实现了一组<a href="https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream%20Plugins%20Development%20Guide/deepstream_plugin_details.3.01.html#">插件</a>：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/25_huf35ea9dce2c3b8d9860a24343e3ad1d1_62692_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/25_huf35ea9dce2c3b8d9860a24343e3ad1d1_62692_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1096" height="704">
+</a>
+
+
+
+</figure>
+
+如nvinfer用于支持tensorRT推理，nvtracker用于边界框的跟踪，nvdsosd用于渲染检测结果。</p>
+
+<p>看DS提供的例程是学习DS开发的最佳途径：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/26_huc76824713ad806ec07c823966affb916_106199_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/26_huc76824713ad806ec07c823966affb916_106199_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="720" height="250">
+</a>
+
+
+
+</figure>
+
+其中C语言版本位于容器的如下路径：</p>
+
+<pre><code class="language-txt">/opt/nvidia/deepstream/deepstream-5.0/sources/apps/sample_apps
+</code></pre>
+
+<p>python语言版本可在<a href="https://github.com/NVIDIA-AI-IOT/deepstream_python_apps">这里</a>下载。
+更多例程可见<a href="https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_C_Sample_Apps.html">这里</a>。
+其中一个很重要的例程是<a href="https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_ref_app_test5.html">deepstream-test5 app</a>。
+除常规推理管道外，Test5应用程序还支持以下功能：
+- 将消息发送到后端服务器。
+- 充当使用者以从后端服务器接收消息。
+- 基于从服务器收到的消息触发基于事件的记录。
+- OTA模型更新。</p>
+
+<p>除此之外。鉴于通过DS的底层C接口和Python接口构建检测流水线仍有些繁琐，Nvidia针对最常见的深度学习模型处理流程提炼并设计了参考程序deepstream-app，该程序允许用户通过传入配置文件描述检测流水线，deepstream-app会根据配置文件的描述调用相应DS插件，构建流水线。因此，虽然deepstream-app是个参考程序，但<strong>常被当做DS的CLI工具使用</strong>。
+如下是deepstream-app提供的流水线的结构框图，其中很多组件是可选的（如secondary classifiers）：
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/27_hu58046d9dd4ee51c28eb311dd755f5625_146027_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/27_hu58046d9dd4ee51c28eb311dd755f5625_146027_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="912" height="342">
+</a>
+
+
+
+</figure>
+
+首先，前端使用decode插件读入视频流（来源可以是RTSP、文件、usb摄像头等），多个摄像头经过MUX进行合并，组成batch，送入主检测器（目标检测）获得边界框，随后送入tracker进行跟踪，每个跟踪的边界框继续送入次级检测器（一般是分类器），检测结果发送到tilter形成2D帧数组，进而用osd插件渲染检测结果。最后，要输出结果（sink），DeepStream提供了各种选项：在屏幕上用边框显示输出，将输出保存到本地磁盘，通过RTSP进行流传输或仅将元数据发送到云。为了将元数据发送到云，DeepStream使用Gst-nvmsgconv和Gst-nvmsgbroker插件。  Gst-nvmsgconv将元数据转换为架构有效负载，而Gst-nvmsgbroker建立与云的连接并发送遥测数据。 有几种内置的代理协议，例如Kafka，MQTT，AMQP和Azure IoT。 可以创建自定义代理适配器。</p>
+
+<p>deepstream-app的配置文件使用<a href="https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html#comments">freedesktop</a>格式，是一种非常精简的键值对描述文件，形如：</p>
+
+<pre><code class="language-txt"># demo
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Foo Viewer
+Comment=The best viewer for Foo objects available!
+TryExec=fooview
+Exec=fooview %F
+Icon=fooview
+MimeType=image/x-foo;
+Actions=Gallery;Create;
+
+[Desktop Action Gallery]
+Exec=fooview --gallery
+Name=Browse Gallery
+
+[Desktop Action Create]
+Exec=fooview --create-new
+Name=Create a new Foo!
+Icon=fooview-new
+</code></pre>
+
+<p>描述文件由若干个组（Group ）组成，[groupname]表示参数组的名字，每行用Key=Value的形式描述一个键值。使用“# ”表明注释行。
+deepstream-app的配置文件有如下可选的<a href="https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_app_config.3.2.html#">配置组</a>。
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/28_hu7a099da03c1eafcf59298d426822b1c4_116888_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/28_hu7a099da03c1eafcf59298d426822b1c4_116888_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="1024" height="596">
+</a>
+
+
+
+</figure>
+
+本文的口罩检测demo程序正是使用deepstream-app来构建DS流水线的。我们以调用int8推理模型的配置文件为例进行说明。
+int8推理的配置包含两个文件：
+- deepstream_app_source1_camera_masknet_gpu_int8.txt
+- config_infer_primary_masknet_gpu_int8.txt</p>
+
+<p>前者描述流水线的配置情况，后者对流水线的nvinfer推理模块进行配置（因nvinfer参数比较多，故单独拆分为一个配置文件），下面分别说明两个文件中配置项的含义。
+deepstream_app_source1_camera_masknet_gpu_int8.txt：</p>
+
+<p>application配置组指定是否在命令行打印性能评估信息：</p>
+
+<pre><code class="language-bash">[application]
+enable-perf-measurement=1
+perf-measurement-interval-sec=1
+</code></pre>
+
+<p>
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/29_hu61ac4b0ba04113f6a1a9b95a11bcb11a_39920_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/29_hu61ac4b0ba04113f6a1a9b95a11bcb11a_39920_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="511" height="218">
+</a>
+
+
+
+</figure>
+
+source组指定输入源，这里指定两个输入源同时输入：摄像头和视频文件</p>
+
+<pre><code class="language-bash">[source0]
+enable=1
+#Type - 1=CameraV4L2 2=URI 3=MultiURI
+type=1
+camera-width=640
+camera-height=480
+camera-fps-n=30
+camera-fps-d=1
+camera-v4l2-dev-node=0
+
+[source1]
+enable=0
+#Type - 1=CameraV4L2 2=URI 3=MultiURI
+type=3
+num-sources=1
+uri=file:/tlt-demo/test.mp4
+gpu-id=0
+</code></pre>
+
+<p>streammux组开启mux插件，将两个输入源的图像集成打包为batch，由于先前导出int8.engine时设置batch-size=4，故这里保持一致</p>
+
+<pre><code class="language-bash">[streammux]
+gpu-id=0
+batch-size=4
+batched-push-timeout=40000
+## Set muxer output width and height
+width=640
+height=480
+</code></pre>
+
+<p>osd组指定检测标签的渲染颜色、字体</p>
+
+<pre><code class="language-bash">[osd]
+enable=1
+gpu-id=0
+border-width=4
+text-size=18
+text-color=1;1;1;1;
+text-bg-color=0.3;0.3;0.3;1
+font=Arial
+</code></pre>
+
+<p>primary-gie组设置主推理引擎，注意导入了config_infer_primary_masknet_gpu_int8.txt文件</p>
+
+<pre><code class="language-bash">[primary-gie]
+enable=1
+gpu-id=0
+# Modify as necessary
+# GPU engine file
+# model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+# batch-size=4
+# Required by the app for OSD, not a plugin property
+bbox-border-color0=0;1;0;1
+bbox-border-color1=1;0;0;1
+#bbox-border-color2=0;0;1;1 # Blue
+#bbox-border-color3=0;1;0;1
+gie-unique-id=1
+config-file=config_infer_primary_masknet_gpu_int8.txt
+</code></pre>
+
+<p>tracker组使能边界框跟踪器，此处选择klt跟踪算法</p>
+
+<pre><code class="language-bash">[tracker]
+enable=1
+tracker-width=640
+tracker-height=384
+#ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_iou.so
+#ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_nvdcf.so
+ll-lib-file=/opt/nvidia/deepstream/deepstream-5.0/lib/libnvds_mot_klt.so
+#ll-config-file required for DCF/IOU only
+#ll-config-file=../deepstream-app/tracker_config.yml
+#ll-config-file=iou_config.txt
+gpu-id=0
+#enable-batch-process applicable to DCF only
+enable-batch-process=1
+</code></pre>
+
+<p>tiled-display组将两个视频源的检测结果分开，并排渲染为一个视频流，故这里设置的输出宽度为640*2=1280</p>
+
+<pre><code class="language-bash">[tiled-display]
+enable=1
+rows=1
+columns=2
+width=1280 #640
+height=480 #480
+gpu-id=0
+</code></pre>
+
+<p>sink组指定了两个输出源，一是在GUI显示，二是编码并推流RTSP到8554端口</p>
+
+<pre><code class="language-bash">[sink0]
+enable=0
+#Type - 1=FakeSink 2=EglSink 3=File
+type=2
+sync=1
+source-id=0
+gpu-id=0
+container=2
+codec=1
+bitrate=2000000
+output-file=/tlt-demo/out.mp4
+
+[sink1]
+enable=1
+#Type - 1=FakeSink 2=EglSink 3=File 4=RTSPStreaming
+type=4
+#1=h264 2=h265
+codec=1
+sync=0
+bitrate=4000000
+# set below properties in case of RTSPStreaming
+rtsp-port=8554
+#udp-port=5400
+</code></pre>
+
+<p>最后，tests组的含义设置视频循环播放，方便调试时能够对短视频文件持续反复的观察</p>
+
+<pre><code class="language-bash">[tests]
+file-loop=1
+</code></pre>
+
+<p>config_infer_primary_masknet_gpu_int8.txt文件则有三个配置组。
+property组对推理引擎进行设置，包括engine文件路径、推理模型类型、输入大小、推理batch大小、int8映射文件路径、分类阈值等。</p>
+
+<pre><code class="language-bash">[property]
+gpu-id=0
+net-scale-factor=0.0039215697906911373
+tlt-model-key=Z2doZm5wZmsyaTRqdTFpaTh2cTduNjdjbW46OWYwMzYyNDEtMWY0ZS00NmRjLTgxZDAtYjI0NjkzYTY0YjJk
+#tlt-encoded-model=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.etlt
+labelfile-path=labels_masknet.txt
+# GPU Engine File
+model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+# DLA Engine File
+# model-engine-file=/tlt-demo/data/experiment_dir_final/resnet18_detector_int8.engine
+input-dims=3;544;960;0
+uff-input-blob-name=input_1
+batch-size=4
+model-color-format=0
+## 0=FP32, 1=INT8, 2=FP16 mode
+network-mode=1
+int8-calib-file=/tlt-demo/data/experiment_dir_final/calibration.bin
+num-detected-classes=2
+cluster-mode=3
+interval=0
+gie-unique-id=1
+is-classifier=0
+classifier-threshold=0.9
+output-blob-names=output_bbox/BiasAdd;output_cov/Sigmoid
+</code></pre>
+
+<p>[class-attrs-all]组为所有类别配置检测参数，由于任务是目标检测，故设置项主要包含极大值抑制算法的相关参数。</p>
+
+<pre><code class="language-bash">[class-attrs-0]
+pre-cluster-threshold=0.3
+group-threshold=1
+eps=0.5
+#minBoxes=1
+detected-min-w=0
+detected-min-h=0
+detected-max-w=0
+detected-max-h=0
+
+
+[class-attrs-1]
+pre-cluster-threshold=0.3
+group-threshold=1
+eps=0.3
+#minBoxes=1
+detected-min-w=0
+detected-min-h=0
+detected-max-w=0
+detected-max-h=0
+</code></pre>
+
+<p>关于字段的具体含义，可查询文档，这里不再赘述。</p>
+
+<h1 id="总结">总结</h1>
+
+<p>总体来看，TLT和DS构成的工具链将模型的训练和部署变得极为方便，唯一需要编程的部分仅仅是一些数据集转换脚本。最关键的是，借助DS框架，算法可以达到极高的帧率，TLT+DS绝对是做工（heng）程(xiang)的利器！
+当然，使用deepstream-app+配置文件仍然有很多限制，后续有机会将探索DS的python接口的使用方法。</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/&amp;text=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/&amp;t=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89&amp;body=https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/&amp;title=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89%20https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/&amp;title=Transfer%20Learning%20Toolkit%20%28TLT%29%20&#43;%20DeepStream%20%28DS%29%e5%bf%ab%e9%80%9f%e9%83%a8%e7%bd%b2%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a8%a1%e5%9e%8b%ef%bc%88%e4%bb%a5%e5%8f%a3%e7%bd%a9%e6%a3%80%e6%b5%8b%e4%b8%ba%e4%be%8b%ef%bc%89" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://leidawt.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt=""></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/"></a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">研究兴趣主要包括生产系统工程、最优控制.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/python.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/cpp.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/bash.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/java.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/javascript.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲",
+        'slides' : "演示文稿"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2021
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

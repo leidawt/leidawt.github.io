@@ -1,0 +1,1513 @@
+<!DOCTYPE html><html lang="zh-Hans" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 4.8.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="目录 镜像制作 准备数据集和配置文件 训练 推理 最近做横向需要用YOLOv4迁移训练一个模型，但简单搜索居然没有发现特别好用的Docker镜像，故自">
+
+  
+  <link rel="alternate" hreflang="en" href="https://leidawt.github.io/en/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/">
+  
+  <link rel="alternate" hreflang="zh-Hans" href="https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-light">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/vs.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158088555-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-158088555-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Academic">
+  <meta property="og:url" content="https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/">
+  <meta property="og:title" content="使用Docker镜像训练YOLOv4 | Academic">
+  <meta property="og:description" content="目录 镜像制作 准备数据集和配置文件 训练 推理 最近做横向需要用YOLOv4迁移训练一个模型，但简单搜索居然没有发现特别好用的Docker镜像，故自"><meta property="og:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="zh-Hans">
+  
+    
+      <meta property="article:published_time" content="2020-12-14T12:00:00&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-12-14T12:00:00&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/"
+  },
+  "headline": "使用Docker镜像训练YOLOv4",
+  
+  "datePublished": "2020-12-14T12:00:00+08:00",
+  "dateModified": "2020-12-14T12:00:00+08:00",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "目录 镜像制作 准备数据集和配置文件 训练 推理 最近做横向需要用YOLOv4迁移训练一个模型，但简单搜索居然没有发现特别好用的Docker镜像，故自"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>使用Docker镜像训练YOLOv4 | Academic</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class=" ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Academic</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>主页</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>文章</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>项目</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#featured"><span>论文</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/courses/"><span>教程</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="搜索"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>浅色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>深色</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>自动</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+      <li class="nav-item dropdown i18n-dropdown">
+        <a href="#" class="nav-link " data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-globe mr-1" aria-hidden="true"></i></a>
+        <div class="dropdown-menu">
+          <div class="dropdown-item dropdown-item-active">
+            <span>中文 (简体)</span>
+          </div>
+          
+          <a class="dropdown-item" href="https://leidawt.github.io/en/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/">
+            <span>English</span>
+          </a>
+          
+        </div>
+      </li>
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>使用Docker镜像训练YOLOv4</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  
+  <span ><a href="/authors/admin/"></a></span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 14, 2020
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 分钟阅读时长
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+<p><h2>目录</h2>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#镜像制作">镜像制作</a></li>
+<li><a href="#准备数据集和配置文件">准备数据集和配置文件</a></li>
+<li><a href="#训练">训练</a></li>
+<li><a href="#推理">推理</a></li>
+</ul>
+</nav></p>
+
+<p>最近做横向需要用YOLOv4迁移训练一个模型，但简单搜索居然没有发现特别好用的Docker镜像，故自制了一个darknet版YOLOv4的Docker镜像，本文记录镜像制作及使用镜像训练YOLOv4的方法。</p>
+
+<h1 id="镜像制作">镜像制作</h1>
+
+<p>Ref: <a href="https://github.com/alexeyab/darknet">https://github.com/alexeyab/darknet</a>
+<strong>注：制作好的镜像已上传至docker hub，可直接拉取使用：</strong></p>
+
+<pre><code class="language-bash">docker pull leidawt/darknet-yolov4
+</code></pre>
+
+<p>依赖环境：</p>
+
+<ul>
+<li>Ubuntu 18.04</li>
+<li>Docker &gt;19.04</li>
+<li>nvidia-container-toolkit</li>
+</ul>
+
+<p>为建立镜像，编写如下Dockerfile脚本文件，以nvidia/cuda:10.1-cudnn7-deve为基础镜像开始构建：</p>
+
+<pre><code>FROM nvidia/cuda:10.1-cudnn7-devel #拉取cuda基础镜像
+COPY ./sources.list /etc/apt/ #更换国内apt源
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections #设置静默安装
+# 设置系统字符集以支持中文
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+# 安装darknet的必要依赖
+RUN echo &quot;45.43.38.82 developer.download.nvidia.cn&quot; &gt;&gt; /etc/hosts &amp;&amp; \
+    apt-get update &amp;&amp; \
+    apt-get upgrade -y &amp;&amp; \
+    apt-get install -y  build-essential libopencv-dev\
+    cmake python3-opencv python3-dev nano
+# 建立操作路径
+WORKDIR /training
+# 安装pip3并更换清华pip源
+COPY ./get-pip.py .
+RUN python3 get-pip.py &amp;&amp; rm get-pip.py &amp;&amp;  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U \
+    &amp;&amp; pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 
+# 建立操作路径，拷贝darknet程序源文件
+WORKDIR /training/darknet
+COPY ./darknet-master/ .
+# build在建立镜像后通过容器进行操作
+# RUN ./build.sh
+</code></pre>
+
+<p><strong>注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：</strong>
+链接: <a href="https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw">https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw</a> 提取码: n8xx</p>
+
+<p>执行镜像构建：</p>
+
+<pre><code class="language-bash">docker build -t leidawt/darknet-yolov4 .
+</code></pre>
+
+<p>接下来启动一个带有GPU支持的临时容器对YOLOv4代码进行编译：</p>
+
+<pre><code class="language-bash">docker run --name temp_yolo --gpus all -it leidawt/darknet-yolov4 /bin/bash
+</code></pre>
+
+<p>进入容器后执行：</p>
+
+<pre><code class="language-bash">cd /training/darknet
+./build
+</code></pre>
+
+<p>编译成功后，按ctrl+D退出容器。
+commit容器变更到镜像，并删除临时容器:</p>
+
+<pre><code class="language-bash">docker commit temp_yolo leidawt/darknet-yolov4:v1
+docker container rm temp_yolo
+</code></pre>
+
+<p>至此训练镜像构建完毕。</p>
+
+<h1 id="准备数据集和配置文件">准备数据集和配置文件</h1>
+
+<p>YOLO的数据集构成结构如下：
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<figure >
+
+
+  <a data-fancybox="" href="/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/0_hu3cd84a75d9f8f0b28dd20b9889893b09_3949_2000x2000_fit_lanczos_2.png" >
+
+
+  <img data-src="/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/0_hu3cd84a75d9f8f0b28dd20b9889893b09_3949_2000x2000_fit_lanczos_2.png" class="lazyload" alt="" width="172" height="178">
+</a>
+
+
+
+</figure>
+
+每张数据图片对于一个同名的txt标注文件，标注文件格式如下：</p>
+
+<pre><code>&lt;object-class&gt; &lt;x_center&gt; &lt;y_center&gt; &lt;width&gt; &lt;height&gt;
+</code></pre>
+
+<p>object-class：所属类号，如 0，1，2，3
+x_center：边界框中心x坐标的相对值（x/imageWidth）
+y_center：边界框中心y坐标的相对值（y/imageHeight）
+width: 边界框宽度的相对值（w/imageWidth）
+height: 边界框高度的相对值（h/imageHeight）</p>
+
+<pre><code>0 0.5583817829457363 0.791343669250646 0.05644327860159183 0.07525770480212245
+0 0.40043604651162784 0.7761627906976746 0.058139534883721186 0.07751937984496159
+0 0.44597868217054265 0.8233204134366926 0.03439922480620154 0.029715762273901842
+0 0.47862001943634597 0.8276643990929705 0.03401360544217683 0.032798833819241854
+0 0.5117984693877551 0.829385325558795 0.03295068027210881 0.030976676384839644
+0 0.463283527696793 0.7846412374473598 0.030369290573372194 0.02166342727567212
+0 0.4949435131195335 0.7887917071590541 0.03112852283770652 0.02348558471007449
+0 0.48104956268221577 0.7448574667962422 0.035228377065111796 0.027939747327502415
+0 0.5184797133138971 0.7485017816650469 0.03841715257531586 0.026724975704567555
+0 0.4427842565597667 0.7414156138645934 0.04008746355685127 0.027939747327502575
+0 0.481277332361516 0.7006195335276968 0.056942419825072935 0.03057175251052797
+0 0.5403456025267249 0.7031503077421445 0.05694241982507282 0.025105280207320942
+0 0.4244108357628766 0.6958616780045351 0.05375364431486881 0.031988986070618744
+0 0.6153506324404762 0.6361607142857142 0.02162388392857141 0.044022817460317436
+0 0.619535900297619 0.5853174603174602 0.025809151785714354 0.051463293650793676
+0 0.6211635044642857 0.5298239087301586 0.02813430059523808 0.05270337301587307
+0 0.3597005208333333 0.6125992063492063 0.019996279761904805 0.04650297619047616
+0 0.3598167782738095 0.5639260912698412 0.023949032738095254 0.053323412698412655
+0 0.361328125 0.5132378472222221 0.026971726190476216 0.04991319444444445
+</code></pre>
+
+<p>做好数据集后，下一步准备所需的配置文件
+- obj.names（类名）:
+    形如：
+    <code>
+    button
+</code>
+- test.txt（测试集路径索引）:
+    形如：
+    <code>
+    data/obj/73.jpg 
+    data/obj/28.jpg 
+    ...
+    data/obj/32.jpg
+</code></p>
+
+<ul>
+<li><p>train.txt（训练集路径索引）:
+形如：</p>
+
+<pre><code>data/obj/34.jpg
+...
+data/obj/39.jpg 
+data/obj/50.jpg
+</code></pre></li>
+
+<li><p>obj.data（上述三个文件的索引）:</p>
+
+<pre><code>classes = 1 
+    train  = data/train.txt 
+    valid  = data/test.txt 
+    names = data/obj.names
+</code></pre></li>
+
+<li><p>yolov4-custom.cfg （配置文件）
+从Github<a href="https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg">下载</a>yolov4-custom.cfg文件，按<a href="https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects">此处</a>说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：
+util_yolo_cfg_builder.py:</p>
+
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+import argparse
+    
+parser = argparse.ArgumentParser()  # 初始化解析器
+parser.add_argument(&quot;--print&quot;,
+                    action=&quot;store_true&quot;,
+                    default=False,
+                    help=&quot;Print cfg&quot;)
+    
+parser.add_argument(
+    &quot;--classes&quot;, help=&quot;Number of classes in training data.&quot;)
+# parser.add_argument(&quot;--out&quot;, help=&quot;Path for result output&quot;, default=&quot;default&quot;)
+args = vars(parser.parse_args())  # 从命令行读参数，解析到args
+classes = int(args[&quot;classes&quot;])
+    
+with open('./yolov4-custom.cfg', 'r') as f:
+    cfg = f.read()
+    
+cfg = cfg.replace(&quot;max_batches = 500500&quot;,
+                  &quot;max_batches = {}&quot;.format(classes*2000))
+cfg = cfg.replace(&quot;steps=400000,450000&quot;, &quot;steps={},{}&quot;.format(
+    int(classes*2000*0.8), int(classes*2000*0.9)))
+cfg = cfg.replace(&quot;classes=80&quot;, &quot;classes={}&quot;.format(classes))
+cfg = cfg.replace(&quot;filters=255&quot;, &quot;filters={}&quot;.format((classes + 5)*3))
+    
+if args[&quot;print&quot;]:
+    print(cfg)
+with open('./yolov4-custom.cfg', 'w') as f:
+    f.write(cfg)
+</code></pre>
+
+<p>使用方法：</p>
+
+<pre><code class="language-bash">python util_yolo_cfg_builder.py --classes [类数]
+</code></pre></li>
+</ul>
+
+<p>准备预训练权重文件yolov4.conv.137
+下载：链接: <a href="https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g">https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g</a> 提取码: g6en</p>
+
+<h1 id="训练">训练</h1>
+
+<p>启动镜像：</p>
+
+<pre><code class="language-bash">docker run --rm --gpus all -p 8888:8888 -v 【数据集和配置文件所在文件夹】:/my_cfgs -it leidawt/darknet-yolov4:v1 /bin/bash
+</code></pre>
+
+<p>其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&ndash;gpus all指定所需使用的GPU。
+进入镜像后，执行下述命令把各文件拷贝到正确的路径：</p>
+
+<pre><code class="language-bash">cd /my_cfgs
+cp obj.names /training/darknet/data/ 
+cp test.txt /training/darknet/data/ 
+cp train.txt /training/darknet/data/ 
+cp obj.data /training/darknet/data/ 
+cp lgd.cfg /training/darknet/cfg/ 
+cp yolov4.conv.137 /training/darknet/ 
+mkdir -p /training/darknet/data/obj/ 
+mkdir -p /training/darknet/backup 
+cp data_dataset_yolo/* /training/darknet/data/obj/
+cd -
+</code></pre>
+
+<p>最后，启动训练：</p>
+
+<pre><code class="language-bash">./darknet detector train data/obj.data cfg/yolov4-custom.cfg.cfg yolov4.conv.137 -dont_show -mjpeg_port 8888 -map
+</code></pre>
+
+<p>通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。
+训练参数文件将自动保存在../backup路径下。</p>
+
+<h1 id="推理">推理</h1>
+
+<p>单张图片推理：</p>
+
+<pre><code class="language-bash">./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&lt;xxxxxx&gt;.weights -dont_show data/obj/1.jpg   
+</code></pre>
+
+<p>该命令生成一个带预测框的predictions.jpg文件。
+批量图片推理：</p>
+
+<pre><code class="language-bash">./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&lt;xxxxxx&gt;.weights -ext_output -dont_show -out test_result.json &lt; data/test.txt
+</code></pre>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/&amp;text=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/&amp;t=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4&amp;body=https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4%20https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%95%9c%e5%83%8f%e8%ae%ad%e7%bb%83YOLOv4" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://leidawt.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu59276f0227de022fcb968f70c40fe7c2_22845_270x270_fill_q90_lanczos_center.jpg" alt=""></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://leidawt.github.io/"></a></h5>
+      <h6 class="card-subtitle">博士生</h6>
+      <p class="card-text">研究兴趣主要包括生产系统工程、最优控制.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/leidawt/" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/python.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/cpp.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/bash.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/java.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/javascript.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲",
+        'slides' : "演示文稿"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Copyright © wxh 2021
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
