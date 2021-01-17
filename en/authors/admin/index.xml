@@ -18000,32 +18000,40 @@ hold off
       <link>https://leidawt.github.io/en/post/vuecordova%E6%B7%B7%E5%90%88%E5%BA%94%E7%94%A8/</link>
       <pubDate>Sun, 01 Apr 2018 12:00:00 +0800</pubDate>
       <guid>https://leidawt.github.io/en/post/vuecordova%E6%B7%B7%E5%90%88%E5%BA%94%E7%94%A8/</guid>
-      <description>&lt;p&gt;####Vue+VUX ui库+Cordova打包混合应用
-####模板工程详见文末pan链接
-####1.项目的Cordova基本命令
-初始化文件夹
+      <description>&lt;h1 id=&#34;vuevux-ui库cordova打包混合应用&#34;&gt;Vue+VUX ui库+Cordova打包混合应用&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;模板工程详见文末pan链接&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;1项目的cordova基本命令&#34;&gt;1.项目的Cordova基本命令&lt;/h2&gt;
+&lt;p&gt;初始化文件夹
 cordova create cordova-app com.lxlazy.www.app cordovaApp
-进入
-cd cordova-app
-添加平台使用630API不然找不到
-cordova platform add &lt;a href=&#34;mailto:android@6.3.0&#34;&gt;android@6.3.0&lt;/a&gt;
-检查依赖
-cordova requirements
-真机调试
-cordova run
-添加插件
-cordova plugin add XXXX
-查看安装的插件
-cordova plugins
-卸载插件
-cordova plugin remove XXXX
-编译
-cordova build android
-####2.项目的npm命令
-开启开发服务器 npm run dev
-编译web文件，更新cordova设置，编译apk并下载到手机运行 npm run update
-####3.工程结构
-
+进入&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd cordova-app
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;添加平台使用630API不然找不到&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova platform add android@6.3.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;检查依赖&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova requirements
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;真机调试&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova run
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;添加插件&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova plugin add XXXX
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看安装的插件&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova plugins
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;卸载插件&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova plugin remove XXXX
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编译&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cordova build android
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;2项目的npm命令&#34;&gt;2.项目的npm命令&lt;/h2&gt;
+&lt;p&gt;开启开发服务器 npm run dev
+编译web文件，更新cordova设置，编译apk并下载到手机运行 npm run update&lt;/p&gt;
+&lt;h2 id=&#34;3工程结构&#34;&gt;3.工程结构&lt;/h2&gt;
+&lt;p&gt;
 
 
 
@@ -18064,9 +18072,9 @@ cordova build android
 index.html是主入口
 src文件夹包含vue组件，vue路由在main.js中，assets存放静态文件。
 vue-cordova文件夹存放的是一个vue插件，用于衔接vue和cordova提供的插件。项目地址：
-&lt;a href=&#34;https://github.com/kartsims/vue-cordova&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;vue-cordova&lt;/a&gt;
-####4.添加cordova插件到项目
-首先运行cordova plugin add XXXX安装好插件
+&lt;a href=&#34;https://github.com/kartsims/vue-cordova&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;vue-cordova&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;4添加cordova插件到项目&#34;&gt;4.添加cordova插件到项目&lt;/h2&gt;
+&lt;p&gt;首先运行cordova plugin add XXXX安装好插件
 然后注册到vue-cordova插件方便vue组件使用，如下操作：
 
 
@@ -18167,32 +18175,32 @@ vue-cordova文件夹存放的是一个vue插件，用于衔接vue和cordova提�
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;插件加载好后会被vue-cordova挂在在这里。
 这样拿到后就可以参考cordova的相应文档使用了。
-######注意项目中App.vue中mounted内函数对页面的触发控制，只有这样后续才可正常加载！
-cordova的插件也可从window上获取，如window.navigator.vibrate(100)
-####5.调试
-先在dev下完善ui和逻辑，也可在真机上调试web:
+&lt;strong&gt;注意项目中App.vue中mounted内函数对页面的触发控制，只有这样后续才可正常加载！&lt;/strong&gt;
+cordova的插件也可从window上获取，如window.navigator.vibrate(100)&lt;/p&gt;
+&lt;h2 id=&#34;5调试&#34;&gt;5.调试&lt;/h2&gt;
+&lt;p&gt;先在dev下完善ui和逻辑，也可在真机上调试web:
 打开 Chrome 浏览器，输入地址chrome://inspect，默认进入 chrome://inspect/#devices，将在页面显示当前可用设备，点击链接弹出控制台界面，然后跟普通页面一样调试
-之后使用npm run update安装到手机进行混合应用调试
-####6.图标
-png图标放在res/android目录下，可分大中小，详见cordova
-之后修改congig.xml中响应内容即可
-####7.一些常用cordova插件
-一   震动手机
-安装vibrate插件
-window.navigator.vibrate(Time in ms);
-二  蓝牙串口
-安装 bluetoothSerial 
+之后使用npm run update安装到手机进行混合应用调试&lt;/p&gt;
+&lt;h2 id=&#34;6图标&#34;&gt;6.图标&lt;/h2&gt;
+&lt;p&gt;png图标放在res/android目录下，可分大中小，详见cordova
+之后修改congig.xml中响应内容即可&lt;/p&gt;
+&lt;h2 id=&#34;7一些常用cordova插件&#34;&gt;7.一些常用cordova插件&lt;/h2&gt;
+&lt;h3 id=&#34;震动手机&#34;&gt;震动手机&lt;/h3&gt;
+&lt;p&gt;安装vibrate插件
+window.navigator.vibrate(Time in ms);&lt;/p&gt;
+&lt;h3 id=&#34;蓝牙串口&#34;&gt;蓝牙串口&lt;/h3&gt;
+&lt;p&gt;安装 bluetoothSerial 
 &lt;a href=&#34;https://github.com/don/BluetoothSerial&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;项目地址&lt;/a&gt;
 这是个和蓝牙串口模块通信的插件
 使用流程：
 获取设备列表    Vue.cordova.bluetoothSerial.list
 链接设备   Vue.cordova.bluetoothSerial.connect
 向设备发送    Vue.cordova.bluetoothSerial.write
-监听设备回复   Vue.cordova.bluetoothSerial.subscribe
-三 存储简单数据
-简便方法是使用h5的storage特性，无存储期限限制，但大小不得过大，
-&lt;a href=&#34;http://www.w3school.com.cn/html5/html_5_webstorage.asp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;详细介绍&lt;/a&gt;
-例子如下&lt;/p&gt;
+监听设备回复   Vue.cordova.bluetoothSerial.subscribe&lt;/p&gt;
+&lt;h3 id=&#34;存储简单数据&#34;&gt;存储简单数据&lt;/h3&gt;
+&lt;p&gt;简便方法是使用h5的storage特性，无存储期限限制，但大小不得过大，
+&lt;a href=&#34;http://www.w3school.com.cn/html5/html_5_webstorage.asp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;详细介绍&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;例子如下&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;SaveCurrentData: function () {
 	//var value = storage.getItem(key); // 传递键的名字获取对应的值。
 	var value = JSON.stringify(this.pineappleNums);//将要存储的内容序列化
@@ -18209,9 +18217,11 @@ restoreData: function () {
 	}
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;####demo工程下载：
-链接：https://pan.baidu.com/s/1wcaCn4PPFGnSxBcYjWFKEg 密码：7w8b
+&lt;h2 id=&#34;demo工程下载&#34;&gt;demo工程下载：&lt;/h2&gt;
+&lt;p&gt;链接：https://pan.baidu.com/s/1wcaCn4PPFGnSxBcYjWFKEg 密码：7w8b
 无需再npm install&lt;/p&gt;
+&lt;h2 id=&#34;basic-html-tutorial&#34;&gt;Basic HTML Tutorial&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.websiteplanet.com/blog/html-guide-beginners/&#34;&gt;https://www.websiteplanet.com/blog/html-guide-beginners/&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

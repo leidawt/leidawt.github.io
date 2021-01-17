@@ -34,7 +34,7 @@
   
     
   
-  <meta name="description" content="####Vue&#43;VUX ui库&#43;Cordova打包混合应用 ####模板工程详见文末pan链接 ####1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app">
+  <meta name="description" content="Vue&#43;VUX ui库&#43;Cordova打包混合应用 模板工程详见文末pan链接 1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app 添加平台使用63">
 
   
   <link rel="alternate" hreflang="zh" href="https://leidawt.github.io/post/vuecordova%E6%B7%B7%E5%90%88%E5%BA%94%E7%94%A8/">
@@ -316,7 +316,7 @@
   <meta property="og:site_name" content="leidawt">
   <meta property="og:url" content="https://leidawt.github.io/en/post/vuecordova%E6%B7%B7%E5%90%88%E5%BA%94%E7%94%A8/">
   <meta property="og:title" content="vue&amp;cordova混合应用 | leidawt">
-  <meta property="og:description" content="####Vue&#43;VUX ui库&#43;Cordova打包混合应用 ####模板工程详见文末pan链接 ####1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app"><meta property="og:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="Vue&#43;VUX ui库&#43;Cordova打包混合应用 模板工程详见文末pan链接 1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app 添加平台使用63"><meta property="og:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -361,7 +361,7 @@
       "url": "https://leidawt.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "####Vue+VUX ui库+Cordova打包混合应用 ####模板工程详见文末pan链接 ####1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app"
+  "description": "Vue+VUX ui库+Cordova打包混合应用 模板工程详见文末pan链接 1.项目的Cordova基本命令 初始化文件夹 cordova create cordova-app com.lxlazy.www.app cordovaApp 进入 cd cordova-app 添加平台使用63"
 }
 </script>
 
@@ -840,32 +840,40 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>####Vue+VUX ui库+Cordova打包混合应用
-####模板工程详见文末pan链接
-####1.项目的Cordova基本命令
-初始化文件夹
+      <h1 id="vuevux-ui库cordova打包混合应用">Vue+VUX ui库+Cordova打包混合应用</h1>
+<p><strong>模板工程详见文末pan链接</strong></p>
+<h2 id="1项目的cordova基本命令">1.项目的Cordova基本命令</h2>
+<p>初始化文件夹
 cordova create cordova-app com.lxlazy.www.app cordovaApp
-进入
-cd cordova-app
-添加平台使用630API不然找不到
-cordova platform add <a href="mailto:android@6.3.0">android@6.3.0</a>
-检查依赖
-cordova requirements
-真机调试
-cordova run
-添加插件
-cordova plugin add XXXX
-查看安装的插件
-cordova plugins
-卸载插件
-cordova plugin remove XXXX
-编译
-cordova build android
-####2.项目的npm命令
-开启开发服务器 npm run dev
-编译web文件，更新cordova设置，编译apk并下载到手机运行 npm run update
-####3.工程结构
-
+进入</p>
+<pre><code class="language-bash">cd cordova-app
+</code></pre>
+<p>添加平台使用630API不然找不到</p>
+<pre><code class="language-bash">cordova platform add android@6.3.0
+</code></pre>
+<p>检查依赖</p>
+<pre><code class="language-bash">cordova requirements
+</code></pre>
+<p>真机调试</p>
+<pre><code class="language-bash">cordova run
+</code></pre>
+<p>添加插件</p>
+<pre><code class="language-bash">cordova plugin add XXXX
+</code></pre>
+<p>查看安装的插件</p>
+<pre><code class="language-bash">cordova plugins
+</code></pre>
+<p>卸载插件</p>
+<pre><code class="language-bash">cordova plugin remove XXXX
+</code></pre>
+<p>编译</p>
+<pre><code class="language-bash">cordova build android
+</code></pre>
+<h2 id="2项目的npm命令">2.项目的npm命令</h2>
+<p>开启开发服务器 npm run dev
+编译web文件，更新cordova设置，编译apk并下载到手机运行 npm run update</p>
+<h2 id="3工程结构">3.工程结构</h2>
+<p>
 
 
 
@@ -904,9 +912,9 @@ cordova build android
 index.html是主入口
 src文件夹包含vue组件，vue路由在main.js中，assets存放静态文件。
 vue-cordova文件夹存放的是一个vue插件，用于衔接vue和cordova提供的插件。项目地址：
-<a href="https://github.com/kartsims/vue-cordova" target="_blank" rel="noopener">vue-cordova</a>
-####4.添加cordova插件到项目
-首先运行cordova plugin add XXXX安装好插件
+<a href="https://github.com/kartsims/vue-cordova" target="_blank" rel="noopener">vue-cordova</a></p>
+<h2 id="4添加cordova插件到项目">4.添加cordova插件到项目</h2>
+<p>首先运行cordova plugin add XXXX安装好插件
 然后注册到vue-cordova插件方便vue组件使用，如下操作：
 
 
@@ -1007,32 +1015,32 @@ vue-cordova文件夹存放的是一个vue插件，用于衔接vue和cordova提�
 </code></pre>
 <p>插件加载好后会被vue-cordova挂在在这里。
 这样拿到后就可以参考cordova的相应文档使用了。
-######注意项目中App.vue中mounted内函数对页面的触发控制，只有这样后续才可正常加载！
-cordova的插件也可从window上获取，如window.navigator.vibrate(100)
-####5.调试
-先在dev下完善ui和逻辑，也可在真机上调试web:
+<strong>注意项目中App.vue中mounted内函数对页面的触发控制，只有这样后续才可正常加载！</strong>
+cordova的插件也可从window上获取，如window.navigator.vibrate(100)</p>
+<h2 id="5调试">5.调试</h2>
+<p>先在dev下完善ui和逻辑，也可在真机上调试web:
 打开 Chrome 浏览器，输入地址chrome://inspect，默认进入 chrome://inspect/#devices，将在页面显示当前可用设备，点击链接弹出控制台界面，然后跟普通页面一样调试
-之后使用npm run update安装到手机进行混合应用调试
-####6.图标
-png图标放在res/android目录下，可分大中小，详见cordova
-之后修改congig.xml中响应内容即可
-####7.一些常用cordova插件
-一   震动手机
-安装vibrate插件
-window.navigator.vibrate(Time in ms);
-二  蓝牙串口
-安装 bluetoothSerial 
+之后使用npm run update安装到手机进行混合应用调试</p>
+<h2 id="6图标">6.图标</h2>
+<p>png图标放在res/android目录下，可分大中小，详见cordova
+之后修改congig.xml中响应内容即可</p>
+<h2 id="7一些常用cordova插件">7.一些常用cordova插件</h2>
+<h3 id="震动手机">震动手机</h3>
+<p>安装vibrate插件
+window.navigator.vibrate(Time in ms);</p>
+<h3 id="蓝牙串口">蓝牙串口</h3>
+<p>安装 bluetoothSerial 
 <a href="https://github.com/don/BluetoothSerial" target="_blank" rel="noopener">项目地址</a>
 这是个和蓝牙串口模块通信的插件
 使用流程：
 获取设备列表    Vue.cordova.bluetoothSerial.list
 链接设备   Vue.cordova.bluetoothSerial.connect
 向设备发送    Vue.cordova.bluetoothSerial.write
-监听设备回复   Vue.cordova.bluetoothSerial.subscribe
-三 存储简单数据
-简便方法是使用h5的storage特性，无存储期限限制，但大小不得过大，
-<a href="http://www.w3school.com.cn/html5/html_5_webstorage.asp" target="_blank" rel="noopener">详细介绍</a>
-例子如下</p>
+监听设备回复   Vue.cordova.bluetoothSerial.subscribe</p>
+<h3 id="存储简单数据">存储简单数据</h3>
+<p>简便方法是使用h5的storage特性，无存储期限限制，但大小不得过大，
+<a href="http://www.w3school.com.cn/html5/html_5_webstorage.asp" target="_blank" rel="noopener">详细介绍</a></p>
+<p>例子如下</p>
 <pre><code>SaveCurrentData: function () {
 	//var value = storage.getItem(key); // 传递键的名字获取对应的值。
 	var value = JSON.stringify(this.pineappleNums);//将要存储的内容序列化
@@ -1049,9 +1057,11 @@ restoreData: function () {
 	}
 }
 </code></pre>
-<p>####demo工程下载：
-链接：https://pan.baidu.com/s/1wcaCn4PPFGnSxBcYjWFKEg 密码：7w8b
+<h2 id="demo工程下载">demo工程下载：</h2>
+<p>链接：https://pan.baidu.com/s/1wcaCn4PPFGnSxBcYjWFKEg 密码：7w8b
 无需再npm install</p>
+<h2 id="basic-html-tutorial">Basic HTML Tutorial</h2>
+<p><a href="https://www.websiteplanet.com/blog/html-guide-beginners/">https://www.websiteplanet.com/blog/html-guide-beginners/</a></p>
 
     </div>
 
