@@ -844,7 +844,7 @@
     <div class="article-style">
       
 
-<p><h2>Table of Contents</h2>
+<p><h2>Table of Contents</h2><br />
 <nav id="TableOfContents">
 <ul>
 <li><a href="#1-g-h滤波器">1.g-h滤波器</a></li>
@@ -864,12 +864,12 @@
 </ul>
 </nav></p>
 
-<p>此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点
+<p>此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点<br />
 @[TOC]</p>
 
 <h1 id="1-g-h滤波器">1.g-h滤波器</h1>
 
-<p>又称Alpha beta filter，f-g filter，是一类融合观测和估计的滤波器中形式上最朴素的。原书表达不清晰，下为wiki的。g-h滤波器只考虑 x x&rsquo; 作为状态变量
+<p>又称Alpha beta filter，f-g filter，是一类融合观测和估计的滤波器中形式上最朴素的。原书表达不清晰，下为wiki的。g-h滤波器只考虑 x x&rsquo; 作为状态变量<br />
 
 
 
@@ -905,10 +905,10 @@
 
 
 </figure>
-
-其中$x_k$是观测，此算法很简单，（1）（2）按模型更新状态，（3）步融合观测来得到残差，（4）（5）根据残差修订状态。显然其中两个参数是决定的是融合比例。
-<strong>参数的选择</strong>
-g的影响
+<br />
+其中$x_k$是观测，此算法很简单，（1）（2）按模型更新状态，（3）步融合观测来得到残差，（4）（5）根据残差修订状态。显然其中两个参数是决定的是融合比例。<br />
+<strong>参数的选择</strong><br />
+g的影响<br />
 
 
 
@@ -944,8 +944,8 @@ g的影响
 
 
 </figure>
-
-h的影响
+<br />
+h的影响<br />
 
 
 
@@ -985,7 +985,7 @@ h的影响
 
 <h1 id="2-离散贝叶斯滤波器">2. 离散贝叶斯滤波器</h1>
 
-<p>这是卡尔曼滤波，例子滤波等一类滤波器的基本框架
+<p>这是卡尔曼滤波，例子滤波等一类滤波器的基本框架<br />
 
 
 
@@ -1021,26 +1021,26 @@ h的影响
 
 
 </figure>
-
-核心思想如下
+<br />
+核心思想如下<br />
 $$\begin{aligned} \bar {\mathbf x} &amp;= \mathbf x \ast f_{\mathbf x}(\bullet)\, \, &amp;\text{Predict Step} <br />
-\mathbf x &amp;= |\mathcal L \cdot \bar{\mathbf x}|\, \, &amp;\text{Update Step}\end{aligned}$$
-$\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率与先验的乘积标准化以确保$x$是一个和为1的概率分布。
+\mathbf x &amp;= |\mathcal L \cdot \bar{\mathbf x}|\, \, &amp;\text{Update Step}\end{aligned}$$<br />
+$\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率与先验的乘积标准化以确保$x$是一个和为1的概率分布。<br />
 流程伪代码如下：</p>
 
-<p><strong>初始化</strong>
-初始化我们对状态的信念。
-<strong>预测</strong>
-根据系统行为，预测下一步的状态
-调整信念，以解释预测中的不确定性
-<strong>更新</strong>
-获取测量并给一个对其精度的信念
-计算测量值对每个状态匹配的程度（likelihood）
+<p><strong>初始化</strong><br />
+初始化我们对状态的信念。<br />
+<strong>预测</strong><br />
+根据系统行为，预测下一步的状态<br />
+调整信念，以解释预测中的不确定性<br />
+<strong>更新</strong><br />
+获取测量并给一个对其精度的信念<br />
+计算测量值对每个状态匹配的程度（likelihood）<br />
 用这种可能性更新状态信念</p>
 
-<p>这种形式的算法有时也叫预测校正。
-<strong>例子：</strong>
-背景陈述：假设追踪狗在走廊里的位置，为了方便，离散化为10个位置，其中三个位置由门，其他位置没有。我们对狗的行为一无所知，故采用平坦先验，即认为狗在任意位置出现等可能。不过我们能获得狗身上声呐传感器的数据，故可以知道狗是否在有门的位置。
+<p>这种形式的算法有时也叫预测校正。<br />
+<strong>例子：</strong><br />
+背景陈述：假设追踪狗在走廊里的位置，为了方便，离散化为10个位置，其中三个位置由门，其他位置没有。我们对狗的行为一无所知，故采用平坦先验，即认为狗在任意位置出现等可能。不过我们能获得狗身上声呐传感器的数据，故可以知道狗是否在有门的位置。<br />
 先看主函数逻辑：</p>
 
 <pre><code class="language-python">def discrete_bayes_sim(prior, kernel, measurements, z_prob, hallway):
@@ -1063,11 +1063,11 @@ priors, posteriors = discrete_bayes_sim(prior, kernel, zs, z_prob, hallway)
 interact(animate_discrete_bayes, step=IntSlider(value=12, max=len(zs)*2));
 </code></pre>
 
-<p>predict函数根据上次位置预测结果为先验进行预测，预测方法是假设其以kernel（）的概率向左或向右移动1个位置。为了计算方便，是通过卷积实现的，是个小trick
-convolve(np.roll(pdf, offset), kernel, mode=&lsquo;wrap&rsquo;)
+<p>predict函数根据上次位置预测结果为先验进行预测，预测方法是假设其以kernel（）的概率向左或向右移动1个位置。为了计算方便，是通过卷积实现的，是个小trick<br />
+convolve(np.roll(pdf, offset), kernel, mode=&lsquo;wrap&rsquo;)<br />
 此步骤实际是全概率公式的应用：$$P(X_i^t) = \sum_j P(X_j^{t-1})  P(x_i | x_j)$$</p>
 
-<p>得到新的prior 后，计算观测的likelihood（对每个点）。
+<p>得到新的prior 后，计算观测的likelihood（对每个点）。<br />
 这个玩意在不同具体任务中计算方式不同，本问题中算法很朴素：</p>
 
 <pre><code class="language-python">  try:
@@ -1080,12 +1080,12 @@ convolve(np.roll(pdf, offset), kernel, mode=&lsquo;wrap&rsquo;)
   return likelihood
 </code></pre>
 
-<p>z_prob 表示相信传感器的程度。例子中何为1表示完全相信，故当z=1时强烈加大在三个有门位置的likelihood，z=0时表示一定没门，强烈加大其余位置likelihood。
-最后的update步骤实为应用下面的贝叶斯公式产生新息，其将likelihood和prior相乘并归一化
-$$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
+<p>z_prob 表示相信传感器的程度。例子中何为1表示完全相信，故当z=1时强烈加大在三个有门位置的likelihood，z=0时表示一定没门，强烈加大其余位置likelihood。<br />
+最后的update步骤实为应用下面的贝叶斯公式产生新息，其将likelihood和prior相乘并归一化<br />
+$$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$<br />
 其中p(x)即prior，p(z|x)即算得的likelihood。分母仅仅是个norm项，顾不必计算，只需归一化一下即可。</p>
 
-<p>最后运行起来如下：
+<p>最后运行起来如下：<br />
 
 
 
@@ -1121,10 +1121,10 @@ $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 
 
 </figure>
-
-可以看到两件事，一是因为predict的不确定，分布在预测阶段发散，但由于观测的帮助，弥补了纯预测的信度损失。
-此方法几大缺陷：
-1.此filter是多峰的（multimodal），不能给出唯一确定的答案，不过这在很多场景下反而不是问题
+<br />
+可以看到两件事，一是因为predict的不确定，分布在预测阶段发散，但由于观测的帮助，弥补了纯预测的信度损失。<br />
+此方法几大缺陷：<br />
+1.此filter是多峰的（multimodal），不能给出唯一确定的答案，不过这在很多场景下反而不是问题<br />
 2.需要直接测量状态变化</p>
 
 <h1 id="3-概率-高斯和贝叶斯">3.概率，高斯和贝叶斯</h1>
@@ -1132,34 +1132,34 @@ $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 <p>俩高斯分布相乘:</p>
 
 <p>$$\begin{aligned}\mu &amp;=\frac{\sigma_1^2\mu_2 + \sigma_2^2\mu_1}{\sigma_1^2+\sigma_2^2}<br />
-\sigma^2 &amp;=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}
+\sigma^2 &amp;=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}<br />
 \end{aligned}$$</p>
 
 <p>俩高斯分布相加</p>
 
 <p>$$\begin{gathered}\mu = \mu_1 + \mu_2 <br />
-\sigma^2 = \sigma^2_1 + \sigma^2_2
+\sigma^2 = \sigma^2_1 + \sigma^2_2<br />
 \end{gathered}$$</p>
 
 <p>在前一章的离散分布情形下，我们使用了 element-wise成来updata后验分布，计算比较麻烦，如果分布写作高斯分布形式，即可用上面的公式大大简单计算。</p>
 
 <h1 id="4-一维卡尔曼滤波">4. 一维卡尔曼滤波</h1>
 
-<p>背景问题描述：狗位置预测，传感器返回狗位置，带高斯噪声。
+<p>背景问题描述：狗位置预测，传感器返回狗位置，带高斯噪声。<br />
 我们以高斯建模传感器观测，套用离散贝叶斯滤波器的基本形式如下</p>
 
-<p>$$\begin{array}{l|l|c}
+<p>$$\begin{array}{l|l|c}<br />
 \text{discrete Bayes} &amp; \text{Gaussian} &amp; \text{Step}<br />
-\hline
-\bar {\mathbf x} = \mathbf x \ast f(\mathbf x) &amp;
-\bar {x}<em>\mathcal{N} =  x</em>\mathcal{N} \, \oplus \, f<em>{x</em>\mathcal{N}}(\bullet) &amp;
+\hline<br />
+\bar {\mathbf x} = \mathbf x \ast f(\mathbf x) &amp;<br />
+\bar {x}<em>\mathcal{N} =  x</em>\mathcal{N} \, \oplus \, f<em>{x</em>\mathcal{N}}(\bullet) &amp;<br />
 \text{Predict} <br />
-\mathbf x = |\mathcal L \bar{\mathbf x}| &amp; x<em>\mathcal{N} = L \, \otimes \, \bar{x}</em>\mathcal{N} &amp; \text{Update}
+\mathbf x = |\mathcal L \bar{\mathbf x}| &amp; x<em>\mathcal{N} = L \, \otimes \, \bar{x}</em>\mathcal{N} &amp; \text{Update}<br />
 \end{array}$$</p>
 
-<p><strong>具体predict方法</strong>
+<p><strong>具体predict方法</strong><br />
 $$ \begin{aligned}\bar{x}<em>k &amp;= x</em>{k-1} + v<em>k \Delta t <br />
- &amp;= x</em>{k-1} + f_x\end{aligned}$$
+ &amp;= x</em>{k-1} + f_x\end{aligned}$$<br />
  其中$f_x,x$均为高斯分布。编程上用python的具名数组做了一下，比较规范，还改了repr魔法方法</p>
 
 <pre><code class="language-python">from collections import namedtuple
@@ -1175,12 +1175,12 @@ def predict(pos, movement):
     return gaussian(pos.mean + movement.mean, pos.var + movement.var)
 </code></pre>
 
-<p><strong>具体update方法</strong>
-likelihood是给定当前状态下测量的概率，此处likelihood就是我们的measurement，也用高斯表示。
-$$\begin{aligned}
+<p><strong>具体update方法</strong><br />
+likelihood是给定当前状态下测量的概率，此处likelihood就是我们的measurement，也用高斯表示。<br />
+$$\begin{aligned}<br />
 \mathcal N(\mu, \sigma^2) &amp;= | prior \cdot likelihood |<br />
 &amp;= | \mathcal{N}(\bar\mu, \bar\sigma^2)\cdot \mathcal{N}(\mu_z, \sigma_z^2) |<br />
-&amp;= \mathcal N(\frac{\bar\sigma^2 \mu_z + \sigma_z^2 \bar\mu}{\bar\sigma^2 + \sigma_z^2},\frac{\bar\sigma^2\sigma_z^2}{\bar\sigma^2 + \sigma_z^2})
+&amp;= \mathcal N(\frac{\bar\sigma^2 \mu_z + \sigma_z^2 \bar\mu}{\bar\sigma^2 + \sigma_z^2},\frac{\bar\sigma^2\sigma_z^2}{\bar\sigma^2 + \sigma_z^2})<br />
 \end{aligned}$$</p>
 
 <pre><code class="language-python">def gaussian_multiply(g1, g2):
@@ -1239,15 +1239,15 @@ for z in zs:
 
 
 </figure>
-
-开始方差很大是因为设的初始系统方差很大，可以看到收敛非常快。
-以上程序就是一维卡尔曼的实现，下面将其数学表达转换为更传统的表达方式，不过此形式下贝叶斯滤波的意思不再那么明显：
+<br />
+开始方差很大是因为设的初始系统方差很大，可以看到收敛非常快。<br />
+以上程序就是一维卡尔曼的实现，下面将其数学表达转换为更传统的表达方式，不过此形式下贝叶斯滤波的意思不再那么明显：<br />
 We see that the filter works. Now let&rsquo;s go back to the math to understand what is happening. The posterior $x$ is computed as the likelihood times the prior ($\mathcal L \bar x$), where both are Gaussians.</p>
 
 <p>Therefore the mean of the posterior is given by:</p>
 
-<p>$$
-\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2}
+<p>$$<br />
+\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2}<br />
 $$</p>
 
 <p>I use the subscript $z$ to denote the measurement. We can rewrite this as:</p>
@@ -1260,9 +1260,9 @@ $$</p>
 
 <p>The weights sum to one because the denominator is a normalization term. We introduce a new term, $K=W_1$, giving us:</p>
 
-<p>$$\begin{aligned}
+<p>$$\begin{aligned}<br />
 \mu &amp;= K \mu_z + (1-K) \bar\mu<br />
-&amp;= \bar\mu + K(\mu_z - \bar\mu)
+&amp;= \bar\mu + K(\mu_z - \bar\mu)<br />
 \end{aligned}$$</p>
 
 <p>where</p>
@@ -1273,30 +1273,30 @@ $$</p>
 
 <p>Let&rsquo;s work a few examples. If the measurement is nine times more accurate than the prior, then $\bar\sigma^2 = 9\sigma_z^2$, and</p>
 
-<p>$$\begin{aligned}
+<p>$$\begin{aligned}<br />
 \mu&amp;=\frac{9 \sigma_z^2 \mu_z + \sigma_z^2\, \bar\mu} {9 \sigma<em>z^2 + \sigma</em>\mathtt{z}^2} <br />
-&amp;= \left(\frac{9}{10}\right) \mu_z + \left(\frac{1}{10}\right) \bar\mu
-\end{aligned}
+&amp;= \left(\frac{9}{10}\right) \mu_z + \left(\frac{1}{10}\right) \bar\mu<br />
+\end{aligned}<br />
 $$</p>
 
 <p>Hence $K = \frac 9 {10}$, and to form the posterior we take nine tenths of the measurement and one tenth of the prior.</p>
 
 <p>If the measurement and prior are equally accurate, then $\bar\sigma^2 = \sigma_z^2$ and</p>
 
-<p>$$\begin{gathered}
+<p>$$\begin{gathered}<br />
 \mu=\frac{\sigma<em>z^2\,  (\bar\mu + \mu_z)}{2\sigma</em>\mathtt{z}^2} <br />
-= \left(\frac{1}{2}\right)\bar\mu + \left(\frac{1}{2}\right)\mu_z
+= \left(\frac{1}{2}\right)\bar\mu + \left(\frac{1}{2}\right)\mu_z<br />
 \end{gathered}$$</p>
 
 <p>which is the average of the two means. It makes intuitive sense to take the average of two equally accurate values.</p>
 
 <p>We can also express the variance in terms of the Kalman gain:</p>
 
-<p>$$\begin{aligned}
+<p>$$\begin{aligned}<br />
 \sigma^2 &amp;= \frac{\bar\sigma^2 \sigma_z^2 } {\bar\sigma^2 + \sigma_z^2} <br />
 &amp;= K\sigma_z^2 <br />
-&amp;= (1-K)\bar\sigma^2
-\end{aligned}$$
+&amp;= (1-K)\bar\sigma^2<br />
+\end{aligned}$$<br />
 
 
 
@@ -1332,7 +1332,7 @@ $$</p>
 
 
 </figure>
-
+<br />
 按此推导的等价实现如下：</p>
 
 <pre><code class="language-python">def update(prior, measurement):
@@ -1358,42 +1358,42 @@ def predict(posterior, movement):
 
 <p><u>Predict</u></p>
 
-<p>$\begin{array}{|l|l|l|}
-\hline
+<p>$\begin{array}{|l|l|l|}<br />
+\hline<br />
 \text{Equation} &amp; \text{Implementation} &amp; \text{Kalman Form}<br />
-\hline
+\hline<br />
  \bar x = x + f<em>x &amp; \bar\mu = \mu + \mu</em>{f<em>x} &amp; \bar x = x + dx<br />
 &amp; \bar\sigma^2 = \sigma^2 + \sigma</em>{f_x}^2 &amp; \bar P = P + Q<br />
-\hline
+\hline<br />
 \end{array}$</p>
 
 <p><u>Update</u></p>
 
-<p>$\begin{array}{|l|l|l|}
-\hline
+<p>$\begin{array}{|l|l|l|}<br />
+\hline<br />
 \text{Equation} &amp; \text{Implementation}&amp; \text{Kalman Form}<br />
-\hline
+\hline<br />
  x = | \mathcal L\bar x| &amp; y = z - \bar\mu &amp; y = z - \bar x<br />
  &amp; K = \frac {\bar\sigma^2} {\bar\sigma^2 + \sigma_z^2} &amp; K = \frac {\bar P}{\bar P+R}<br />
  &amp; \mu = \bar \mu + Ky &amp; x = \bar x + Ky<br />
  &amp; \sigma^2 = \frac {\bar\sigma^2 \sigma_z^2} {\bar\sigma^2 + \sigma_z^2} &amp; P = (1-K)\bar P<br />
-\hline
+\hline<br />
 \end{array}$</p>
 
-<p>其他小问题：
-1.此方法难以处理非线性
+<p>其他小问题：<br />
+1.此方法难以处理非线性<br />
 2.在面临受限的硬件时，可以直接将K设为其最后的收敛值来简化计算。</p>
 
 <h1 id="5-多维高斯">5.多维高斯</h1>
 
-<p>$$
-f(\mathbf{x},\, \mu,\,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}\, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}
-$$
-由于其协方差矩阵包含变量关系的信息，因此对预测是有帮助的
-多维高斯相乘：
-$$\begin{aligned}
+<p>$$<br />
+f(\mathbf{x},\, \mu,\,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}\, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}<br />
+$$<br />
+由于其协方差矩阵包含变量关系的信息，因此对预测是有帮助的<br />
+多维高斯相乘：<br />
+$$\begin{aligned}<br />
 \mu &amp;= \Sigma_2(\Sigma_1 + \Sigma_2)^{-1}\mu_1 + \Sigma_1(\Sigma_1 + \Sigma_2)^{-1}\mu_2 <br />
-\Sigma &amp;= \Sigma_1(\Sigma_1+\Sigma_2)^{-1}\Sigma_2
+\Sigma &amp;= \Sigma_1(\Sigma_1+\Sigma_2)^{-1}\Sigma_2<br />
 \end{aligned}$$</p>
 
 <h1 id="6-多维卡尔曼滤波">6.多维卡尔曼滤波</h1>
@@ -1402,14 +1402,14 @@ $$\begin{aligned}
 
 <p><u><strong>Predict</strong></u></p>
 
-<p>$\begin{array}{|l|l|l|}
-\hline
+<p>$\begin{array}{|l|l|l|}<br />
+\hline<br />
 \text{Univariate} &amp; \text{Univariate} &amp; \text{Multivariate}<br />
 &amp; \text{(Kalman form)} &amp; <br />
-\hline
+\hline<br />
 \bar \mu = \mu + \mu_{f_x} &amp; \bar x = x + dx &amp; \bar{\mathbf x} = \mathbf{Fx} + \mathbf{Bu}<br />
 \bar\sigma^2 = \sigma<em>x^2 + \sigma</em>{f_x}^2 &amp; \bar P = P + Q &amp; \bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q <br />
-\hline
+\hline<br />
 \end{array}$</p>
 
 <p>$\mathbf x,\, \mathbf P$ 是状态均值和方差</p>
@@ -1422,18 +1422,18 @@ $$\begin{aligned}
 
 <p><u><strong>Update</strong></u></p>
 
-<p>$\begin{array}{|l|l|l|}
-\hline
+<p>$\begin{array}{|l|l|l|}<br />
+\hline<br />
 \text{Univariate} &amp; \text{Univariate} &amp; \text{Multivariate}<br />
 &amp; \text{(Kalman form)} &amp; <br />
-\hline
+\hline<br />
 &amp; y = z - \bar x &amp; \mathbf y = \mathbf z - \mathbf{H\bar x} <br />
-&amp; K = \frac{\bar P}{\bar P+R}&amp;
+&amp; K = \frac{\bar P}{\bar P+R}&amp;<br />
 \mathbf K = \mathbf{\bar{P}H}^\mathsf T (\mathbf{H\bar{P}H}^\mathsf T + \mathbf R)^{-1} <br />
 \mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2} &amp; x = \bar x + Ky &amp; \mathbf x = \bar{\mathbf x} + \mathbf{Ky} <br />
-\sigma^2 = \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2} &amp; P = (1-K)\bar P &amp;
+\sigma^2 = \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2} &amp; P = (1-K)\bar P &amp;<br />
 \mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar{P}} <br />
-\hline
+\hline<br />
 \end{array}$</p>
 
 <p>$\mathbf H$ 观测函数</p>
@@ -1442,16 +1442,16 @@ $$\begin{aligned}
 
 <p>$\mathbf y$ ， $\mathbf K$ 残差，卡尔曼增益</p>
 
-<p>与单变量相比，只是引入了矩阵，其他都一样：
-- 使用高斯函数来表示我们对状态和误差的估计
-- 使用高斯函数表示测量值及其误差
-- 使用高斯函数表示过程模型
-- 使用过程模型预测下一个状态(先验)
-- 在测量值和先验值之间形成一个估计
-<strong>注：细节的一些直观理解</strong>
+<p>与单变量相比，只是引入了矩阵，其他都一样：<br />
+- 使用高斯函数来表示我们对状态和误差的估计<br />
+- 使用高斯函数表示测量值及其误差<br />
+- 使用高斯函数表示过程模型<br />
+- 使用过程模型预测下一个状态(先验)<br />
+- 在测量值和先验值之间形成一个估计<br />
+<strong>注：细节的一些直观理解</strong><br />
 在predict步中，状态方差以$\mathbf{\bar P} = \mathbf{FPF}^\mathsf T + \mathbf Q$方式计算得到，而不是简单P+Q，这是因为要映射到相同空间才能运算。$\mathbf{FPF}^\mathsf T$将P从t-1状态空间映射变换到t的状态空间。</p>
 
-<p><strong>下面以之前的狗追踪问题举例说明</strong>
+<p><strong>下面以之前的狗追踪问题举例说明</strong><br />
 这次试用位置和速度作为状态变量，其中位置可测，作为观测变量，速度作为隐变量，假设做匀速直线运动，并估测了初试位置和过程方差，如下，过程方差Q还未确定</p>
 
 <pre><code class="language-python">from filterpy.kalman import predict
@@ -1464,7 +1464,7 @@ F = np.array([[1, dt], [0, 1]])
 x, P = predict(x=x, P=P, F=F, Q=0)
 </code></pre>
 
-<p>预测结果如下：
+<p>预测结果如下：<br />
 
 
 
@@ -1500,9 +1500,9 @@ x, P = predict(x=x, P=P, F=F, Q=0)
 
 
 </figure>
-
-可以看到随着 predict的进行，不确定在增加，同时速度与位置的相关性在增加。
-过程噪声设计：
+<br />
+可以看到随着 predict的进行，不确定在增加，同时速度与位置的相关性在增加。<br />
+过程噪声设计：<br />
 Q是表示系统受外界的干扰的，具体细节在下章讨论，现在先使用库函数计算</p>
 
 <pre><code class="language-python">from filterpy.common import Q_discrete_white_noise
@@ -1514,8 +1514,8 @@ print(Q)
  '''
 </code></pre>
 
-<p>最后，我们加上控制项，这可以让我们得以控制对象。$\Delta\mathbf x = \mathbf{Bu}$，至此，完整的预测方程已经确定，次例子是无控的，故设u=0$$\mathbf{\bar x} = \mathbf{Fx} + \mathbf{Bu}$$
-之后来看updata步：
+<p>最后，我们加上控制项，这可以让我们得以控制对象。$\Delta\mathbf x = \mathbf{Bu}$，至此，完整的预测方程已经确定，次例子是无控的，故设u=0$$\mathbf{\bar x} = \mathbf{Fx} + \mathbf{Bu}$$<br />
+之后来看updata步：<br />
 为了求观测和预测之间的残差，需要一个观测函数（矩阵）H将状态空间映射到观测空间。本例中为[1,0]，最后设置好观测方差R，整个滤波器就完全确定好了</p>
 
 <pre><code class="language-python">from filterpy.kalman import update
@@ -1527,9 +1527,9 @@ x, P = update(x, P, z, R, H)
 
 <h1 id="7-卡尔曼滤波器数学细节">7. 卡尔曼滤波器数学细节</h1>
 
-<p><strong>动态系统的状态空间表达</strong>
-一般建立系统微分方程后很容易得到连续状态方程$\dot{\mathbf x} = \mathbf{Ax} + \mathbf{Bu} + w$（w是噪声），接下来的问题是要离散化为$\mathbf x_k = \mathbf {Fx}_{k-1}$以让计算机得以运行。离散化实际上就是在解微分方程组，方法很多，工程上常用数值方法。如van Loan&rsquo;s方法可求 $\mathbf F_k$ 并同时得到 $\mathbf Q_k$
-<strong>过程噪声Q的确定</strong>
+<p><strong>动态系统的状态空间表达</strong><br />
+一般建立系统微分方程后很容易得到连续状态方程$\dot{\mathbf x} = \mathbf{Ax} + \mathbf{Bu} + w$（w是噪声），接下来的问题是要离散化为$\mathbf x_k = \mathbf {Fx}_{k-1}$以让计算机得以运行。离散化实际上就是在解微分方程组，方法很多，工程上常用数值方法。如van Loan&rsquo;s方法可求 $\mathbf F_k$ 并同时得到 $\mathbf Q_k$<br />
+<strong>过程噪声Q的确定</strong><br />
 相似的，我们也需要对噪声w离散化以确定Q，具体要看我们对噪声的假设，典型的有连续白噪声模型和分段白噪声模型，各有利弊，实践上通过实验来确定。其具体计算可调用如下：</p>
 
 <pre><code class="language-python">from filterpy.common import Q_continuous_white_noise
@@ -1539,35 +1539,35 @@ Q = Q_continuous_white_noise(dim=2, dt=1, spectral_density=1)
 Q = Q_discrete_white_noise(2, var=1.)
 </code></pre>
 
-<p>Q可以被简化。当时间步t很小的时候，我们大可以只保留最高阶状态变量对应的值，而将其他设为0。如
-$$\mathbf Q=\begin{bmatrix}0&amp;0&amp;0\0&amp;0&amp;0\0&amp;0&amp;\sigma^2\end{bmatrix}$$
+<p>Q可以被简化。当时间步t很小的时候，我们大可以只保留最高阶状态变量对应的值，而将其他设为0。如<br />
+$$\mathbf Q=\begin{bmatrix}0&amp;0&amp;0\0&amp;0&amp;0\0&amp;0&amp;\sigma^2\end{bmatrix}$$<br />
 对 $x=\begin{bmatrix}x &amp; \dot x &amp; \ddot{x} &amp; y &amp; \dot{y} &amp; \ddot{y}\end{bmatrix}^\mathsf{T}$  Q 将为 6x6，这时可以保留$\ddot{x}$ ， $\ddot{y}$ ，其他都设为0.</p>
 
-<p>$\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar P}$<strong>的计算稳定性问题</strong>
-由于浮点数的精度损失，此式子在计算的时候可能使得P不再对称，由于P是协方差矩阵，其应该是严格对称的，这会导致滤波器发散等一系列错误。因此实际上使用了Joseph 方程计算P。$$\mathbf P = (\mathbf I-\mathbf {KH})\mathbf{\bar P}(\mathbf I-\mathbf{KH})^\mathsf T + \mathbf{KRK}^\mathsf T$$
+<p>$\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar P}$<strong>的计算稳定性问题</strong><br />
+由于浮点数的精度损失，此式子在计算的时候可能使得P不再对称，由于P是协方差矩阵，其应该是严格对称的，这会导致滤波器发散等一系列错误。因此实际上使用了Joseph 方程计算P。$$\mathbf P = (\mathbf I-\mathbf {KH})\mathbf{\bar P}(\mathbf I-\mathbf{KH})^\mathsf T + \mathbf{KRK}^\mathsf T$$<br />
 此方法不仅能解决因为浮点不对称引起的滤波器不稳定，亦可一定程度上解决因模型不精确和非高斯噪声等实际环境引起的滤波器发散问题。</p>
 
 <h1 id="8-面向实际问题的卡尔曼滤波器的设计">8.面向实际问题的卡尔曼滤波器的设计</h1>
 
-<p>以过滤来自有噪声传感器的(x,y)为例（人工数据，匀速直线运动）。显然可取状态变量和转移矩阵
-$$\mathbf x =
-\begin{bmatrix}x &amp; \dot x &amp; y &amp; \dot y\end{bmatrix}^\mathsf T$$
-$$
-\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix} = \begin{bmatrix}1&amp; \Delta t&amp; 0&amp; 0\0&amp; 1&amp; 0&amp; 0\0&amp; 0&amp; 1&amp; \Delta t\ 0&amp; 0&amp; 0&amp; 1\end{bmatrix}\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix}$$
-之后设计过程噪声，采用离散白噪声模型，并认为x,y直接独立。
-系统无控制，故设B=0。
-确定观测矩阵：由于我们传感器返回$\begin{bmatrix}x &amp; y\end{bmatrix}^\mathsf T$ ，且单位为英尺，故设:
-$$\mathbf H =
-\begin{bmatrix}
+<p>以过滤来自有噪声传感器的(x,y)为例（人工数据，匀速直线运动）。显然可取状态变量和转移矩阵<br />
+$$\mathbf x =<br />
+\begin{bmatrix}x &amp; \dot x &amp; y &amp; \dot y\end{bmatrix}^\mathsf T$$<br />
+$$<br />
+\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix} = \begin{bmatrix}1&amp; \Delta t&amp; 0&amp; 0\0&amp; 1&amp; 0&amp; 0\0&amp; 0&amp; 1&amp; \Delta t\ 0&amp; 0&amp; 0&amp; 1\end{bmatrix}\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix}$$<br />
+之后设计过程噪声，采用离散白噪声模型，并认为x,y直接独立。<br />
+系统无控制，故设B=0。<br />
+确定观测矩阵：由于我们传感器返回$\begin{bmatrix}x &amp; y\end{bmatrix}^\mathsf T$ ，且单位为英尺，故设:<br />
+$$\mathbf H =<br />
+\begin{bmatrix}<br />
 \frac{1}{0.3048} &amp; 0 &amp; 0 &amp; 0 <br />
-0 &amp; 0 &amp; \frac{1}{0.3048} &amp; 0
-\end{bmatrix}
-$$
-观测噪声矩阵：认为x,y独立，假设高斯噪声，设：
-$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp; \sigma_y\sigma_x \ \sigma_x\sigma<em>y &amp; \sigma</em>{y}^2\end{bmatrix}
-= \begin{bmatrix}5&amp;0\0&amp;5\end{bmatrix}$$
-最后设置下初始值，注意P初值习惯上给的较大。
-$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, \,
+0 &amp; 0 &amp; \frac{1}{0.3048} &amp; 0<br />
+\end{bmatrix}<br />
+$$<br />
+观测噪声矩阵：认为x,y独立，假设高斯噪声，设：<br />
+$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp; \sigma_y\sigma_x \ \sigma_x\sigma<em>y &amp; \sigma</em>{y}^2\end{bmatrix}<br />
+= \begin{bmatrix}5&amp;0\0&amp;5\end{bmatrix}$$<br />
+最后设置下初始值，注意P初值习惯上给的较大。<br />
+$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, \,<br />
 \mathbf P = \begin{bmatrix}500&amp;0&amp;0&amp;0\0&amp;500&amp;0&amp;0\0&amp;0&amp;500&amp;0\0&amp;0&amp;0&amp;500\end{bmatrix}$$</p>
 
 <pre><code class="language-python">from filterpy.stats import plot_covariance_ellipse
@@ -1621,7 +1621,7 @@ plt.xlim(0, 20);
                                                           
 </code></pre>
 
-<p>效果尚可
+<p>效果尚可<br />
 
 
 
@@ -1657,9 +1657,9 @@ plt.xlim(0, 20);
 
 
 </figure>
-
-<strong>模型阶数选择</strong>
-具体应该用多少阶的模型来描述实际问题？下面给出0,1,2阶的系统，并对其进行性能分析。具体分析方法是画出真实值与预测值直接的残差，并借助P矩阵的对角线画出置信域，如下是一阶的：
+<br />
+<strong>模型阶数选择</strong><br />
+具体应该用多少阶的模型来描述实际问题？下面给出0,1,2阶的系统，并对其进行性能分析。具体分析方法是画出真实值与预测值直接的残差，并借助P矩阵的对角线画出置信域，如下是一阶的：<br />
 
 
 
@@ -1695,8 +1695,8 @@ plt.xlim(0, 20);
 
 
 </figure>
-
-当换到二阶滤波器，虽然短期内不是很差，但可观察到长期发散。
+<br />
+当换到二阶滤波器，虽然短期内不是很差，但可观察到长期发散。<br />
 
 
 
@@ -1732,36 +1732,36 @@ plt.xlim(0, 20);
 
 
 </figure>
-
-高阶数的过程模型很容易过拟合，我们可以选择采用较低阶数，同时适当加大过程噪声Q以达到统样不错的效果。
-<strong>检测和避免糟糕的测量值</strong>
-显然实践中由于传感器故障等原因我们偶尔会得到很糟糕的观测值，这个需要被检测和剔除以避免其破坏性影响。一个朴素但有效的做法是gating。可以利用P矩阵中的状态方差来判断观测值的好坏。具体的，可以使用mahalanobis distance。mahalanobis distance判断一个点到分布的距离，其定义如下：
-$$D_m= \sqrt{(\mathbf x-\mu)^\mathsf T \mathbf S^{-1} (\mathbf x-\mu)}$$
-其中S是协方差矩阵。
-它其实很像欧氏距离:
-$$D_e= \sqrt{(\mathbf x-\mathbf y)^\mathsf T (\mathbf x-\mathbf y)}$$
-若S是对角阵，马氏距离可简化为：
-$$D_m = \sqrt{\sum_{i-1}^N \frac{(x_i - \mu_i)^2}{\sigma_i}}$$
-就是欧氏距离加了个方差做因子。
-<strong>滤波器性能评估</strong>
-真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。
-1. Normalized Estimated Error Squared（NEES）
-这是当能获取状态变量ground-truth时的最佳选择。
+<br />
+高阶数的过程模型很容易过拟合，我们可以选择采用较低阶数，同时适当加大过程噪声Q以达到统样不错的效果。<br />
+<strong>检测和避免糟糕的测量值</strong><br />
+显然实践中由于传感器故障等原因我们偶尔会得到很糟糕的观测值，这个需要被检测和剔除以避免其破坏性影响。一个朴素但有效的做法是gating。可以利用P矩阵中的状态方差来判断观测值的好坏。具体的，可以使用mahalanobis distance。mahalanobis distance判断一个点到分布的距离，其定义如下：<br />
+$$D_m= \sqrt{(\mathbf x-\mu)^\mathsf T \mathbf S^{-1} (\mathbf x-\mu)}$$<br />
+其中S是协方差矩阵。<br />
+它其实很像欧氏距离:<br />
+$$D_e= \sqrt{(\mathbf x-\mathbf y)^\mathsf T (\mathbf x-\mathbf y)}$$<br />
+若S是对角阵，马氏距离可简化为：<br />
+$$D_m = \sqrt{\sum_{i-1}^N \frac{(x_i - \mu_i)^2}{\sigma_i}}$$<br />
+就是欧氏距离加了个方差做因子。<br />
+<strong>滤波器性能评估</strong><br />
+真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。<br />
+1. Normalized Estimated Error Squared（NEES）<br />
+这是当能获取状态变量ground-truth时的最佳选择。<br />
 $$\tilde{\mathbf x} = \mathbf x - \hat{\mathbf x} \ \epsilon = \tilde{\mathbf x}^\mathsf T\mathbf P^{-1}\tilde{\mathbf x}$$</p>
 
 <pre><code class="language-python">from filterpy.stats import NEES
 </code></pre>
 
-<p>事实上这是一个假设检验方法。我们认定当NEES的均值&lt;状态变量维度时是一个好的滤波器。
-2. 似然函数
-当无法获得ground-truth的时候，可计算似然，即观测符合当前模型假设的程度。
-$$\begin{aligned}
+<p>事实上这是一个假设检验方法。我们认定当NEES的均值&lt;状态变量维度时是一个好的滤波器。<br />
+2. 似然函数<br />
+当无法获得ground-truth的时候，可计算似然，即观测符合当前模型假设的程度。<br />
+$$\begin{aligned}<br />
 \mathbf y &amp;= \mathbf z - \mathbf{H \bar x}<br />
 \mathbf S &amp;= \mathbf{H\bar{P}H}^\mathsf T + \mathbf R<br />
-\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf y^\mathsf T\mathbf S^{-1}\mathbf y]
-\end{aligned}
-$$
-这个也很适合用于剔除坏的测量，如下
+\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf y^\mathsf T\mathbf S^{-1}\mathbf y]<br />
+\end{aligned}<br />
+$$<br />
+这个也很适合用于剔除坏的测量，如下<br />
 
 
 
@@ -1801,14 +1801,14 @@ $$
 
 <h1 id="9-非线性滤波">9.非线性滤波</h1>
 
-<p>原始的卡尔曼滤波器是线性的，我们生活在非线性的世界，需要一些非线性的技术。
-<strong>非线性</strong>
-数学上的<strong>线性</strong>要求以下两点：
-* additivity: $f(x+y) = f(x) + f(y)$
+<p>原始的卡尔曼滤波器是线性的，我们生活在非线性的世界，需要一些非线性的技术。<br />
+<strong>非线性</strong><br />
+数学上的<strong>线性</strong>要求以下两点：<br />
+* additivity: $f(x+y) = f(x) + f(y)$<br />
 * homogeneity: $f(ax) = af(x)$</p>
 
-<p><strong>非线性的效果</strong>
-考虑一个有噪声雷达跟踪系统，它向我们报告物体距离50km，方位90度，那么我们直觉上可能认为其绝对坐标应该是（50，0）。我们设距离方差为0.4，角度方差为0.35，并采样3000点如下，计算3000点的均值标记为星。
+<p><strong>非线性的效果</strong><br />
+考虑一个有噪声雷达跟踪系统，它向我们报告物体距离50km，方位90度，那么我们直觉上可能认为其绝对坐标应该是（50，0）。我们设距离方差为0.4，角度方差为0.35，并采样3000点如下，计算3000点的均值标记为星。<br />
 
 
 
@@ -1844,9 +1844,9 @@ $$
 
 
 </figure>
-
-可见由于非线性的缘故，我们的直觉失效了。
-下图绘出了分析函数对高斯分布的影响，可以看到虽然f(x)看起来还是挺线性的，但是影响巨大，这对卡尔曼滤波器的假设具有破坏性打击。
+<br />
+可见由于非线性的缘故，我们的直觉失效了。<br />
+下图绘出了分析函数对高斯分布的影响，可以看到虽然f(x)看起来还是挺线性的，但是影响巨大，这对卡尔曼滤波器的假设具有破坏性打击。<br />
 
 
 
@@ -1882,56 +1882,56 @@ $$
 
 
 </figure>
-
+<br />
 UKF,EKF,例子滤波 是几种处理非线性滤波的有效手段，尤其UKF和粒子滤波器在实践中取得了非常好的效果。</p>
 
 <h1 id="9-无迹卡尔曼滤波器ukf">9. 无迹卡尔曼滤波器UKF</h1>
 
-<p>该技术与1997年提出，相对于EKF等算是比较新的。有趣的是其名称中的unscented一词并没有任何含义，而是源于发明者开的玩笑。。。
-上一章的例子使我们了解到由于非线性函数的存在，新状态已经难以解析的计算得到，因此需要引入采样方法进行数值求解。单纯使用大量随机采样（蒙特卡洛思路）是最朴素的方法，效果不错，能很好的近似原分布经过非线性函数后的均值和方差，但考虑到这个采样在每个时间步update中都要进行，计算量实在太大。更好的方法是使用加权采样。选择的采样点称之为sigma points，记为$\boldsymbol{\chi}$。当我们通过一些采样方法得到$\boldsymbol{\chi}$后，并可进行如下的计算
-$$\boldsymbol{\mathcal{Y}} = f(\boldsymbol{\chi})$$
-将$\boldsymbol{\chi}$通过非线性函数计算其对应的映射之后，计算均值和方差作为新的估计，拿到这些估计值后我们便可与标准的线性卡尔曼滤波方法接轨了。故UKF方法的精髓就是以加权采样近似估计状态在非线性变换之后的均值方差，借助于较好的采样算法，这个估计一般是不错的，故此方法可以在非线性系统中取得较好的性能。
-<strong>具体算法</strong>
-$$\begin{array}{l|l}
+<p>该技术与1997年提出，相对于EKF等算是比较新的。有趣的是其名称中的unscented一词并没有任何含义，而是源于发明者开的玩笑。。。<br />
+上一章的例子使我们了解到由于非线性函数的存在，新状态已经难以解析的计算得到，因此需要引入采样方法进行数值求解。单纯使用大量随机采样（蒙特卡洛思路）是最朴素的方法，效果不错，能很好的近似原分布经过非线性函数后的均值和方差，但考虑到这个采样在每个时间步update中都要进行，计算量实在太大。更好的方法是使用加权采样。选择的采样点称之为sigma points，记为$\boldsymbol{\chi}$。当我们通过一些采样方法得到$\boldsymbol{\chi}$后，并可进行如下的计算<br />
+$$\boldsymbol{\mathcal{Y}} = f(\boldsymbol{\chi})$$<br />
+将$\boldsymbol{\chi}$通过非线性函数计算其对应的映射之后，计算均值和方差作为新的估计，拿到这些估计值后我们便可与标准的线性卡尔曼滤波方法接轨了。故UKF方法的精髓就是以加权采样近似估计状态在非线性变换之后的均值方差，借助于较好的采样算法，这个估计一般是不错的，故此方法可以在非线性系统中取得较好的性能。<br />
+<strong>具体算法</strong><br />
+$$\begin{array}{l|l}<br />
 \textrm{Kalman Filter} &amp; \textrm{Unscented Kalman Filter} <br />
-\hline
+\hline<br />
 &amp; \boldsymbol{\mathcal Y} = f(\boldsymbol\chi) <br />
-\mathbf{\bar x} = \mathbf{Fx} &amp;
+\mathbf{\bar x} = \mathbf{Fx} &amp;<br />
 \mathbf{\bar x} = \sum w^m\boldsymbol{\mathcal Y}  <br />
-\mathbf{\bar P} = \mathbf{FPF}^\mathsf T+\mathbf Q  &amp;
+\mathbf{\bar P} = \mathbf{FPF}^\mathsf T+\mathbf Q  &amp;<br />
 \mathbf{\bar P} = \sum w^c({\boldsymbol{\mathcal Y} - \mathbf{\bar x})(\boldsymbol{\mathcal Y} - \mathbf{\bar x})^\mathsf T}+\mathbf Q <br />
-\hline
+\hline<br />
 &amp; \boldsymbol{\mathcal Z} =  h(\boldsymbol{\mathcal{Y}}) <br />
 &amp; \boldsymbol\mu_z = \sum w^m\boldsymbol{\mathcal{Z}} <br />
-\mathbf y = \mathbf z - \mathbf{Hx} &amp;
+\mathbf y = \mathbf z - \mathbf{Hx} &amp;<br />
 \mathbf y = \mathbf z - \boldsymbol\mu_z <br />
-\mathbf S = \mathbf{H\bar PH}^\mathsf{T} + \mathbf R &amp;
-\mathbf P_z = \sum w^c{(\boldsymbol{\mathcal Z}-\boldsymbol\mu_z)(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}} + \mathbf R \
-\mathbf K = \mathbf{\bar PH}^\mathsf T \mathbf S^{-1} &amp;
+\mathbf S = \mathbf{H\bar PH}^\mathsf{T} + \mathbf R &amp;<br />
+\mathbf P_z = \sum w^c{(\boldsymbol{\mathcal Z}-\boldsymbol\mu_z)(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}} + \mathbf R \<br />
+\mathbf K = \mathbf{\bar PH}^\mathsf T \mathbf S^{-1} &amp;<br />
 \mathbf K = \left[\sum w^c(\boldsymbol{\mathcal Y}-\bar{\mathbf x})(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}\right] \mathbf P_z^{-1} <br />
 \mathbf x = \mathbf{\bar x} + \mathbf{Ky} &amp; \mathbf x = \mathbf{\bar x} + \mathbf{Ky}<br />
-\mathbf P = (\mathbf{I}-\mathbf{KH})\mathbf{\bar P} &amp; \mathbf P = \bar{\mathbf P} - \mathbf{KP_z}\mathbf{K}^\mathsf{T}
-\end{array}$$
-可以看到仅是进行一些调整，其他完全符合卡尔曼滤波的思想。
-首先，由于非线性系统难以用状态方程描述，这里转而使用非线性函数$f$描述$F$。相应的，观测矩阵$H$也替换为了$h$函数。$w^m,w^c$分别是sigma points的均值权重和方差权重，在构造sigma points时生成。
-<strong>Sigma Point的采样方法</strong>
-几十年来大家水了很多采样方法，目前大家用的最多的是Van der Merwe的方法，其能很好的平衡计算复杂度和精度。该方法由$\alpha$, $\beta$, $\kappa$三个参数控制。
-为了方便我们记$\lambda = \alpha^2(n+\kappa)-n$
-先看点的位置如何得到：
-首先一个特殊的采样点是
-$$ \mathcal{X}_0 = \mu$$
-之后其余点的计算
-$$
-\boldsymbol{\chi}<em>i = \begin{cases}
+\mathbf P = (\mathbf{I}-\mathbf{KH})\mathbf{\bar P} &amp; \mathbf P = \bar{\mathbf P} - \mathbf{KP_z}\mathbf{K}^\mathsf{T}<br />
+\end{array}$$<br />
+可以看到仅是进行一些调整，其他完全符合卡尔曼滤波的思想。<br />
+首先，由于非线性系统难以用状态方程描述，这里转而使用非线性函数$f$描述$F$。相应的，观测矩阵$H$也替换为了$h$函数。$w^m,w^c$分别是sigma points的均值权重和方差权重，在构造sigma points时生成。<br />
+<strong>Sigma Point的采样方法</strong><br />
+几十年来大家水了很多采样方法，目前大家用的最多的是Van der Merwe的方法，其能很好的平衡计算复杂度和精度。该方法由$\alpha$, $\beta$, $\kappa$三个参数控制。<br />
+为了方便我们记$\lambda = \alpha^2(n+\kappa)-n$<br />
+先看点的位置如何得到：<br />
+首先一个特殊的采样点是<br />
+$$ \mathcal{X}_0 = \mu$$<br />
+之后其余点的计算<br />
+$$<br />
+\boldsymbol{\chi}<em>i = \begin{cases}<br />
 \mu + \left[ \sqrt{(n+\lambda)\Sigma}\right ]</em>{i}&amp; \text{for i=1 .. n} <br />
-\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]_{i-n} &amp;\text{for i=(n+1) .. 2n}\end{cases}
-$$
-其中n是状态向量x的维数，$\Sigma$是协方差矩阵P。+-的形式保证了对称性。下标$i$表示取矩阵的第$i$列。此式子通俗理解是以$\mu$为中心，扩散$\Sigma$的一个系数大小的的值。这里的矩阵开方是个很神奇的东西，其定义不唯一，此处使用如下定义：若$\Sigma = \mathbf{SS}^\mathsf T$则 $S = \sqrt{\Sigma}$。具体的，使用$\mathbf S = \text{cholesky}(\mathbf P)$ 作为$\mathbf P$的开方。其中cholesky是cholesky分解。
-之后看权重的计算：
+\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]_{i-n} &amp;\text{for i=(n+1) .. 2n}\end{cases}<br />
+$$<br />
+其中n是状态向量x的维数，$\Sigma$是协方差矩阵P。+-的形式保证了对称性。下标$i$表示取矩阵的第$i$列。此式子通俗理解是以$\mu$为中心，扩散$\Sigma$的一个系数大小的的值。这里的矩阵开方是个很神奇的东西，其定义不唯一，此处使用如下定义：若$\Sigma = \mathbf{SS}^\mathsf T$则 $S = \sqrt{\Sigma}$。具体的，使用$\mathbf S = \text{cholesky}(\mathbf P)$ 作为$\mathbf P$的开方。其中cholesky是cholesky分解。<br />
+之后看权重的计算：<br />
 $$W^m_0 = \frac{\lambda}{n+\lambda} <br />
 W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta <br />
-W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$
-此方法的采样结形如下图：
+W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$<br />
+此方法的采样结形如下图：<br />
 
 
 
@@ -1967,10 +1967,10 @@ W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$
 
 
 </figure>
-
-至于三个参数的选择，可如下进行：
-$\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the dimension of $\mathbf x$ is a good choice for $\kappa$, and $0 \le \alpha \le 1$ is an appropriate choice for $\alpha$, where a larger value for $\alpha$ spreads the sigma points further from the mean.
-<strong>一个例子：航班追踪</strong>
+<br />
+至于三个参数的选择，可如下进行：<br />
+$\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the dimension of $\mathbf x$ is a good choice for $\kappa$, and $0 \le \alpha \le 1$ is an appropriate choice for $\alpha$, where a larger value for $\alpha$ spreads the sigma points further from the mean.<br />
+<strong>一个例子：航班追踪</strong><br />
 
 
 
@@ -2006,19 +2006,19 @@ $\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the 
 
 
 </figure>
-
-此任务的目标是由雷达给出的距离和角度的观测，得到（x，y）。
-我们采用匀速直线运动假设：
-$$\mathbf x = \begin{bmatrix}\mathtt{distance} \\mathtt{velocity}\ \mathtt{altitude}\end{bmatrix}=    \begin{bmatrix}x \ \dot x\ y\end{bmatrix}$$
-显然转移矩阵是线性的：
-$$\mathbf{\bar x} = \begin{bmatrix} 1 &amp; \Delta t &amp; 0 \ 0&amp; 1&amp; 0 \ 0&amp;0&amp;1\end{bmatrix}
-\begin{bmatrix}x \ \dot x\ y\end{bmatrix}
-$$
-但本例中的观测函数就是非线性的了：
+<br />
+此任务的目标是由雷达给出的距离和角度的观测，得到（x，y）。<br />
+我们采用匀速直线运动假设：<br />
+$$\mathbf x = \begin{bmatrix}\mathtt{distance} \\mathtt{velocity}\ \mathtt{altitude}\end{bmatrix}=    \begin{bmatrix}x \ \dot x\ y\end{bmatrix}$$<br />
+显然转移矩阵是线性的：<br />
+$$\mathbf{\bar x} = \begin{bmatrix} 1 &amp; \Delta t &amp; 0 \ 0&amp; 1&amp; 0 \ 0&amp;0&amp;1\end{bmatrix}<br />
+\begin{bmatrix}x \ \dot x\ y\end{bmatrix}<br />
+$$<br />
+但本例中的观测函数就是非线性的了：<br />
 $$\text{r} = \sqrt{(x_\text{ac} - x_\text{radar})^2 + (y_\text{ac} - y_\mathtt{radar})^2}$$</p>
 
-<p>$$\epsilon = \tan^{-1}{\frac{y_\mathtt{ac} - y_\text{radar}}{x_\text{ac} - x_\text{radar}}}$$
-代码实现如下：
+<p>$$\epsilon = \tan^{-1}{\frac{y_\mathtt{ac} - y_\text{radar}}{x_\text{ac} - x_\text{radar}}}$$<br />
+代码实现如下：<br />
 首先创造仿真环境：飞机和雷达站</p>
 
 <pre><code class="language-python">from numpy.linalg import norm
@@ -2120,32 +2120,32 @@ for _ in time:
 plot_radar(xs, time)    
 </code></pre>
 
-<p><strong>最后，呈现一个较复杂的例子</strong>
-此例子处理机器人定位问题。我们有一个机器人，它需要用传感器感知地标来定位和导航。
-机器人模型采用经典的自行车模型来建模。
+<p><strong>最后，呈现一个较复杂的例子</strong><br />
+此例子处理机器人定位问题。我们有一个机器人，它需要用传感器感知地标来定位和导航。<br />
+机器人模型采用经典的自行车模型来建模。<br />
 $$\begin{aligned} \bar x &amp;= x - R\sin(\theta) + R\sin(\theta + \beta) <br />
 \bar y &amp;= y + R\cos(\theta) - R\cos(\theta + \beta) <br />
-\bar \theta &amp;= \theta + \beta
-\end{aligned}
-$$
-其中$\beta = \frac{d}{w} \tan{(\alpha)}$ ，$R = \frac{d}{\beta}$
-选定状态变量$\mathbf x = \begin{bmatrix}x &amp; y &amp; \theta\end{bmatrix}^\mathsf{T}$
-选定控制变量$\mathbf{u} = \begin{bmatrix}v &amp; \alpha\end{bmatrix}^\mathsf{T}$（α是前轮转向角）
-明确地标p的观测函数：
-$$\begin{aligned}
+\bar \theta &amp;= \theta + \beta<br />
+\end{aligned}<br />
+$$<br />
+其中$\beta = \frac{d}{w} \tan{(\alpha)}$ ，$R = \frac{d}{\beta}$<br />
+选定状态变量$\mathbf x = \begin{bmatrix}x &amp; y &amp; \theta\end{bmatrix}^\mathsf{T}$<br />
+选定控制变量$\mathbf{u} = \begin{bmatrix}v &amp; \alpha\end{bmatrix}^\mathsf{T}$（α是前轮转向角）<br />
+明确地标p的观测函数：<br />
+$$\begin{aligned}<br />
 \mathbf{z}&amp; = h(\mathbf x, \mathbf P) &amp;+ \mathcal{N}(0, R)<br />
-&amp;= \begin{bmatrix}
+&amp;= \begin{bmatrix}<br />
 \sqrt{(p_x - x)^2 + (p_y - y)^2} <br />
-\tan^{-1}(\frac{p_y - y}{p_x - x}) - \theta
-\end{bmatrix} &amp;+ \mathcal{N}(0, R)
-\end{aligned}$$
-这里需要小心角度相减的计算问题，即0°附近的离散性，显然可以取模处理之。
-此外还需要注意的是如何对角度求平均？显然359°和1°的平均是0°，但其数值均值却为180°。因此我们需要特别考虑此问题，使用下面的式子计算角度均值：
-$$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1}^n \cos\theta_i}{n}\right)$$
-规定的这些均值计算方法可以传入UKF类的初始化函数。
-具体代码见原书，不赘述，具有很好参考价值。
-实验：
-给一组手工设定的控制序列，撒一些地标，运行如下。可以看到不确定度很小。
+\tan^{-1}(\frac{p_y - y}{p_x - x}) - \theta<br />
+\end{bmatrix} &amp;+ \mathcal{N}(0, R)<br />
+\end{aligned}$$<br />
+这里需要小心角度相减的计算问题，即0°附近的离散性，显然可以取模处理之。<br />
+此外还需要注意的是如何对角度求平均？显然359°和1°的平均是0°，但其数值均值却为180°。因此我们需要特别考虑此问题，使用下面的式子计算角度均值：<br />
+$$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1}^n \cos\theta_i}{n}\right)$$<br />
+规定的这些均值计算方法可以传入UKF类的初始化函数。<br />
+具体代码见原书，不赘述，具有很好参考价值。<br />
+实验：<br />
+给一组手工设定的控制序列，撒一些地标，运行如下。可以看到不确定度很小。<br />
 
 
 
@@ -2181,8 +2181,8 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 
 </figure>
-
-删去一些地标，误差显著增大。
+<br />
+删去一些地标，误差显著增大。<br />
 
 
 
@@ -2226,34 +2226,34 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 <h1 id="12-粒子滤波器pf">12. 粒子滤波器PF</h1>
 
-<p>之前的技术不能处理多目标，强非线性，强非高斯噪声，无过程模型的场景，这些场景下可以使用PF。
-粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：
-1. 随机产生一群粒子
-粒子可以有位置、方向 和/或 任何其他需要估计的状态变量。
-每一个粒子都有一个权值(概率)，表示它与系统实际状态匹配的可能性。
+<p>之前的技术不能处理多目标，强非线性，强非高斯噪声，无过程模型的场景，这些场景下可以使用PF。<br />
+粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：<br />
+1. 随机产生一群粒子<br />
+粒子可以有位置、方向 和/或 任何其他需要估计的状态变量。<br />
+每一个粒子都有一个权值(概率)，表示它与系统实际状态匹配的可能性。<br />
 用相同的权重初始化每个对象。</p>
 
 <ol>
-<li><p>预测粒子的下一个状态
+<li><p>预测粒子的下一个状态<br />
 根据你对真实系统行为的预测来移动粒子。</p></li>
 
-<li><p>更新
-根据测量结果更新颗粒的权重。
+<li><p>更新<br />
+根据测量结果更新颗粒的权重。<br />
 与测量值紧密相称的粒子的权重要高于与测量值不匹配的粒子。</p></li>
 
-<li><p>重采样
+<li><p>重采样<br />
 抛弃非常不可能的粒子，用更可能的粒子的拷贝替换它们。</p></li>
 
-<li><p>计算估计
+<li><p>计算估计<br />
 （可选）计算一组粒子的加权平均值和协方差，得到状态估计。</p></li>
 </ol>
 
-<p>以车辆追踪问题为例，我们选定（x,y,θ）为粒子的变量
-初始化阶段，随机初始化粒子状态，基于1/N的均等权重
-预测阶段我们让例子有噪声地按控制变量移动
-更新阶段我们计算每个例子对观测的似然度，以似然度更新例子权重
-重采样阶段我们按例子权重随机采样，防止退化。具体操作方法如下：
-对归一化权重[0.0625, 0.125 , 0.1875, 0.25  , 0.125 , 0.1875, 0.0625]，计算累积和序列得[0.0625, 0.1875, 0.375 , 0.625 , 0.75  , 0.9375, 1.    ]以便画出如下的图。之后制造0-1的随机数，按照几何概型，其落在各个色块的概率就是权重，进行N次后就可达到完整的重采样结果。
+<p>以车辆追踪问题为例，我们选定（x,y,θ）为粒子的变量<br />
+初始化阶段，随机初始化粒子状态，基于1/N的均等权重<br />
+预测阶段我们让例子有噪声地按控制变量移动<br />
+更新阶段我们计算每个例子对观测的似然度，以似然度更新例子权重<br />
+重采样阶段我们按例子权重随机采样，防止退化。具体操作方法如下：<br />
+对归一化权重[0.0625, 0.125 , 0.1875, 0.25  , 0.125 , 0.1875, 0.0625]，计算累积和序列得[0.0625, 0.1875, 0.375 , 0.625 , 0.75  , 0.9375, 1.    ]以便画出如下的图。之后制造0-1的随机数，按照几何概型，其落在各个色块的概率就是权重，进行N次后就可达到完整的重采样结果。<br />
 
 
 
@@ -2289,38 +2289,38 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 
 </figure>
-
-重采样不是每次更新都进行的，没有新息注入时重采样并无意义。我们使用一下指标决定何时进行重采样：
-$$\hat{N}_\text{eff} = \frac{1}{\sum w^2}$$（w是粒子权重）
+<br />
+重采样不是每次更新都进行的，没有新息注入时重采样并无意义。我们使用一下指标决定何时进行重采样：<br />
+$$\hat{N}_\text{eff} = \frac{1}{\sum w^2}$$（w是粒子权重）<br />
 重采样在此值小于每一给定的阈值（比如N/2，其中N为粒子数）后进行。此值是对当前有用粒子数量的估计。这种策略称Sampling Importance Resampling (SIR)。</p>
 
-<p>在上面的预测和更新两步中我们按输入u移动例子，并使用观测更新其对应权重，这种方法的理论依据正是著名的重要性采样（统计学通用方法，也被openai用在PPO中用于构建off-policy learning）：
-使用重要性采样可以更换采样分布，将无法计算的
-$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x)\, dx$$
-转为
-$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x)\, \,  \cdot \,  \frac{\pi(x)}{q(x)}\, dx$$
-在上面的机器人追踪问题中，分布π即机器人状态的分布，这是不一定对的（因为是推断的结果），而q分布即新获得的测量的分布，可以认为是准确的。因此自然的利用重要性采样公式换到q上采样会得到更精准的值。在具体实施中，我们计算的是$\mu = \sum\limits_{i=1}^N x^iw^i$，即加权平均，其中权重w就是重要性采样公式中的π/q。
-<strong>粒子滤波中不同的重采样方法</strong>
-重采样在粒子滤波中起到防止粒子退化的作用，有重要意义。除了上面的采样方法，还有残差重采样（Residual Resampling），分层重采样（Stratified Resampling），系统重采样（Systematic Resampling）。作者认为其中比较好的是系统重采样，这在采样量小的时候比较明显（所谓好指采样结果符合权重的程度好坏，好的采样应该很好符合权重规定的比例关系），但个人感觉在点稍多的时候这并不是个问题。不过系统重采样有O(N)的复杂度，这比上面的O(Nlog(N))好。
-<strong>总结</strong>
+<p>在上面的预测和更新两步中我们按输入u移动例子，并使用观测更新其对应权重，这种方法的理论依据正是著名的重要性采样（统计学通用方法，也被openai用在PPO中用于构建off-policy learning）：<br />
+使用重要性采样可以更换采样分布，将无法计算的<br />
+$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x)\, dx$$<br />
+转为<br />
+$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x)\, \,  \cdot \,  \frac{\pi(x)}{q(x)}\, dx$$<br />
+在上面的机器人追踪问题中，分布π即机器人状态的分布，这是不一定对的（因为是推断的结果），而q分布即新获得的测量的分布，可以认为是准确的。因此自然的利用重要性采样公式换到q上采样会得到更精准的值。在具体实施中，我们计算的是$\mu = \sum\limits_{i=1}^N x^iw^i$，即加权平均，其中权重w就是重要性采样公式中的π/q。<br />
+<strong>粒子滤波中不同的重采样方法</strong><br />
+重采样在粒子滤波中起到防止粒子退化的作用，有重要意义。除了上面的采样方法，还有残差重采样（Residual Resampling），分层重采样（Stratified Resampling），系统重采样（Systematic Resampling）。作者认为其中比较好的是系统重采样，这在采样量小的时候比较明显（所谓好指采样结果符合权重的程度好坏，好的采样应该很好符合权重规定的比例关系），但个人感觉在点稍多的时候这并不是个问题。不过系统重采样有O(N)的复杂度，这比上面的O(Nlog(N))好。<br />
+<strong>总结</strong><br />
 在线性和高斯噪声的假设下，卡尔曼滤波是最优估计，而粒子滤波则可处理非线性和无模型系统，不需要高斯和线性假设。但是粒子滤波的性能分析，稳定性分析都很困难，计算量也大，不过这也是处理和非线性有关问题时经常见到的。KF，UKF，EKF已经在工业上获得了很多实时在线应用的机会。随着计算成本的不断下降，未来粒子滤波类可能也会有不错的应用。</p>
 
 <h1 id="13-平滑器">13. 平滑器</h1>
 
-<p>卡尔曼滤波器是在线滤波方法，之利用历史信息，而对于离线滤波场景，使用平滑器可扩展到使用整个序列信息进行滤波，效果会更好。
-<strong>固定区间平滑（Fixed-Interval Smoothing）</strong>
-这类平滑器在接受到一个完整的区间后一并进行估计操作。RTS是这类中最主要的方法。RTS先运行标准卡尔曼滤波，得到所有的估计值X和对应系统协方差P。之后用X和P，按下面算法从第K步预测到第1步（即反向预测）：
-预测：
-$$\begin{aligned}
-\mathbf{P} &amp;= \mathbf{FP}_k\mathbf{F}^\mathsf{T} + \mathbf{Q }
-\end{aligned}$$
-更新：
-$$\begin{aligned}
+<p>卡尔曼滤波器是在线滤波方法，之利用历史信息，而对于离线滤波场景，使用平滑器可扩展到使用整个序列信息进行滤波，效果会更好。<br />
+<strong>固定区间平滑（Fixed-Interval Smoothing）</strong><br />
+这类平滑器在接受到一个完整的区间后一并进行估计操作。RTS是这类中最主要的方法。RTS先运行标准卡尔曼滤波，得到所有的估计值X和对应系统协方差P。之后用X和P，按下面算法从第K步预测到第1步（即反向预测）：<br />
+预测：<br />
+$$\begin{aligned}<br />
+\mathbf{P} &amp;= \mathbf{FP}_k\mathbf{F}^\mathsf{T} + \mathbf{Q }<br />
+\end{aligned}$$<br />
+更新：<br />
+$$\begin{aligned}<br />
 \mathbf{K}_k &amp;= \mathbf{P}_k\mathbf{F}^\mathsf{T}\mathbf{P}^{-1} <br />
 \mathbf{x}_k &amp;= \mathbf{x}_k + \mathbf{K}<em>k(\mathbf{x}</em>{k+1} - \mathbf{Fx}_k) <br />
-\mathbf{P}_k &amp;= \mathbf{P}_k + \mathbf{K}<em>k(\mathbf{P}</em>{k+1} - \mathbf{P})\mathbf{K}_k^\mathsf{T}
-\end{aligned}$$
-效果显著：
+\mathbf{P}_k &amp;= \mathbf{P}_k + \mathbf{K}<em>k(\mathbf{P}</em>{k+1} - \mathbf{P})\mathbf{K}_k^\mathsf{T}<br />
+\end{aligned}$$<br />
+效果显著：<br />
 
 
 
@@ -2360,8 +2360,8 @@ $$\begin{aligned}
 
 <h1 id="14-自适应滤波">14. 自适应滤波</h1>
 
-<p>Adaptive Filtering旨在处理模型不匹配的情况，其检查到有当前过程模型无法描述的动态行为时可以自适应的调整。（回想在之前非自适应的滤波器中，我们只能增大Q以权衡模型的问题，但大的Q会使我们的滤波器不再进行最优估计）
-我们建立一个ManeuveringTarget类来产生人工数据。ManeuveringTarget模拟了二维平面的小车，可以接受转向和加减速指令。另外设计个模拟传感器，吐出加噪声后的（x，y）。给一个转向的数据实例如下：
+<p>Adaptive Filtering旨在处理模型不匹配的情况，其检查到有当前过程模型无法描述的动态行为时可以自适应的调整。（回想在之前非自适应的滤波器中，我们只能增大Q以权衡模型的问题，但大的Q会使我们的滤波器不再进行最优估计）<br />
+我们建立一个ManeuveringTarget类来产生人工数据。ManeuveringTarget模拟了二维平面的小车，可以接受转向和加减速指令。另外设计个模拟传感器，吐出加噪声后的（x，y）。给一个转向的数据实例如下：<br />
 
 
 
@@ -2397,8 +2397,8 @@ $$\begin{aligned}
 
 
 </figure>
-
-下面我们尝试以匀速直线运动模型的卡尔曼滤波器对齐进行滤波，为方便起见只做x坐标。结果如下，可见由于转向导致的与模型不符，有了很大的估计误差，不过误差在观测的纠正下逐渐变小：
+<br />
+下面我们尝试以匀速直线运动模型的卡尔曼滤波器对齐进行滤波，为方便起见只做x坐标。结果如下，可见由于转向导致的与模型不符，有了很大的估计误差，不过误差在观测的纠正下逐渐变小：<br />
 
 
 
@@ -2434,8 +2434,8 @@ $$\begin{aligned}
 
 
 </figure>
-
-为了解决这个，我们可以大幅加大Q，但这也导致了估计质量的下降：
+<br />
+为了解决这个，我们可以大幅加大Q，但这也导致了估计质量的下降：<br />
 
 
 
@@ -2471,8 +2471,8 @@ $$\begin{aligned}
 
 
 </figure>
-
-或，我们可以增大模型阶数，改为横加速度直线运动模型，同样可以有效解决滞后的问题，但依旧顾此失彼，估计噪声明显大了：
+<br />
+或，我们可以增大模型阶数，改为横加速度直线运动模型，同样可以有效解决滞后的问题，但依旧顾此失彼，估计噪声明显大了：<br />
 
 
 
@@ -2508,9 +2508,9 @@ $$\begin{aligned}
 
 
 </figure>
-
-因此，若我们能设计一种机制动态的改变滤波器模型，比如在恒速运动阶段使用低阶模型降低噪声，在转向等阶段使用高阶模型保证响应则有望较好的平衡矛盾。
-我们可以观察滤波器里的残差来得知目标运动状态何时发生变化，如下：
+<br />
+因此，若我们能设计一种机制动态的改变滤波器模型，比如在恒速运动阶段使用低阶模型降低噪声，在转向等阶段使用高阶模型保证响应则有望较好的平衡矛盾。<br />
+我们可以观察滤波器里的残差来得知目标运动状态何时发生变化，如下：<br />
 
 
 
@@ -2546,10 +2546,10 @@ $$\begin{aligned}
 
 
 </figure>
-
-<strong>自适应思路1：可调过程噪声</strong>
-第一种方法是使用低阶模型，并根据机动是否发生来调整过程噪声。当残差变得“大”时，我们将增加过程噪声。这将导致滤波器更倾向于测量而不是过程预测，并且滤波器将密切跟踪信号。当残差很小时，我们将缩小过程噪声。
-一种连续调整的方法计算残差的归一化值$\epsilon = \mathbf{y^\mathsf{T}S}^{-1}\mathbf{y}$，其中S是过程噪声：$\mathbf{S} = \mathbf{HPH^\mathsf{T}} + \mathbf{R}$。我们可以设一个$\epsilon_{max}$（可通过实验选择，一个不错的经验值是$\epsilon$ 的4~5倍标准差），当$\epsilon \gt \epsilon_{max}$时将Q矩阵成一个扩大系数$q_{factor}$即可。下图$\epsilon_{max}=4， q_{factor}=1000$，可见显著的性能提升。
+<br />
+<strong>自适应思路1：可调过程噪声</strong><br />
+第一种方法是使用低阶模型，并根据机动是否发生来调整过程噪声。当残差变得“大”时，我们将增加过程噪声。这将导致滤波器更倾向于测量而不是过程预测，并且滤波器将密切跟踪信号。当残差很小时，我们将缩小过程噪声。<br />
+一种连续调整的方法计算残差的归一化值$\epsilon = \mathbf{y^\mathsf{T}S}^{-1}\mathbf{y}$，其中S是过程噪声：$\mathbf{S} = \mathbf{HPH^\mathsf{T}} + \mathbf{R}$。我们可以设一个$\epsilon_{max}$（可通过实验选择，一个不错的经验值是$\epsilon$ 的4~5倍标准差），当$\epsilon \gt \epsilon_{max}$时将Q矩阵成一个扩大系数$q_{factor}$即可。下图$\epsilon_{max}=4， q_{factor}=1000$，可见显著的性能提升。<br />
 
 
 
@@ -2585,10 +2585,10 @@ $$\begin{aligned}
 
 
 </figure>
-
-此外，还可计算$std = \sqrt{\mathbf{HPH}^\mathsf{T} + \mathbf{R}}$ 之后采用如下策略改变Q：当残差&gt;std的某一倍数时，增大Q
-<strong>自适应思路2：渐消记忆滤波器（Fading memory filters）</strong>
-此类方法优势不被归类为自适应滤波方法。此方法的关注点在卡尔曼滤波器的记忆性上。标准卡尔曼滤波使用了1~k-1的所有信息，但这可能导致过大的“惯性”，我们加入一个微小的修改，将原方法中$\bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q$更改为$\tilde{\mathbf P} = \alpha^2\mathbf{FPF}^\mathsf T + \mathbf Q$。其中α&gt;1，但通常很接近1，比如1.02。这样做的考虑是若我们增加估计误差协方差，滤波器对估计的不确定性就会增加，因此它给测量增加了权重，从而减小了滤波器的惯性。此法的改动微乎其微，实现很方便，值得一试，虽然效果不是很惊艳。
+<br />
+此外，还可计算$std = \sqrt{\mathbf{HPH}^\mathsf{T} + \mathbf{R}}$ 之后采用如下策略改变Q：当残差&gt;std的某一倍数时，增大Q<br />
+<strong>自适应思路2：渐消记忆滤波器（Fading memory filters）</strong><br />
+此类方法优势不被归类为自适应滤波方法。此方法的关注点在卡尔曼滤波器的记忆性上。标准卡尔曼滤波使用了1~k-1的所有信息，但这可能导致过大的“惯性”，我们加入一个微小的修改，将原方法中$\bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q$更改为$\tilde{\mathbf P} = \alpha^2\mathbf{FPF}^\mathsf T + \mathbf Q$。其中α&gt;1，但通常很接近1，比如1.02。这样做的考虑是若我们增加估计误差协方差，滤波器对估计的不确定性就会增加，因此它给测量增加了权重，从而减小了滤波器的惯性。此法的改动微乎其微，实现很方便，值得一试，虽然效果不是很惊艳。<br />
 
 
 
@@ -2624,9 +2624,9 @@ $$\begin{aligned}
 
 
 </figure>
-
-<strong>自适应思路3：多模型估计</strong>
-这是一种集成（ensemble ）的思路。最朴素的想法是搞一把模型，然后看情况切换，当然也可进行UKF,KF的集成或对不同的状态变量使用不同的模型或算法。
+<br />
+<strong>自适应思路3：多模型估计</strong><br />
+这是一种集成（ensemble ）的思路。最朴素的想法是搞一把模型，然后看情况切换，当然也可进行UKF,KF的集成或对不同的状态变量使用不同的模型或算法。<br />
 我们很容易实现的方法是对残差进行阈值判断，以此来切换模型，但这种硬切换显然会导致估计结果不连续的跳跃。因此，我们采用多模型自适应估计技术（MMAE），该方法按模型likelihoods给出融合结果。其中似然函数已在前述章节有过讨论：$\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf{y}^\mathsf{T}\mathbf{S}^{-1}\mathbf{y}]$，其中y是残差，S是系统不确定性。之后按$p_k^i = \frac{\mathcal{L}_k^ip_{k-1}^i}{\sum\limits_{j=1}^N \mathcal{L}_k^jp_{k-1}^j}$分配即可。此方法的一个缺陷是算法可能收敛到只信任某一最可能算法上去，这需要被注意，可以通过重新初始化选择权重进行修正。</p>
 
 <p>此外还有交互式多模型技术 IMM（Interacting Multiple Model），利用贝叶斯方法在多个模型间转移，但为了交互，其要求模型必需有相同的维数，这是个比较大的限制。</p>

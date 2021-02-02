@@ -844,7 +844,7 @@
     <div class="article-style">
       
 
-<p><h2>Table of Contents</h2>
+<p><h2>Table of Contents</h2><br />
 <nav id="TableOfContents">
 <ul>
 <li><a href="#简介">简介</a></li>
@@ -855,8 +855,8 @@
 
 <h1 id="简介">简介</h1>
 
-<p>Ref： <a href="https://www.overleaf.com/learn/latex/Articles/Using_Latexdiff_For_Marking_Changes_To_Tex_Documents">Using Latexdiff For Marking Changes To Tex Documents</a>
-latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之间的变更情况，生成diff.tex文件，对diff.tex进行编译即可获得可视化的变更标注，如下图所示：
+<p>Ref： <a href="https://www.overleaf.com/learn/latex/Articles/Using_Latexdiff_For_Marking_Changes_To_Tex_Documents">Using Latexdiff For Marking Changes To Tex Documents</a><br />
+latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之间的变更情况，生成diff.tex文件，对diff.tex进行编译即可获得可视化的变更标注，如下图所示：<br />
 
 
 
@@ -896,7 +896,7 @@ latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之�
 
 <h1 id="使用方法">使用方法</h1>
 
-<p>对修改前tex文件original.tex和修改后tex文件modify.tex进行对比：
+<p>对修改前tex文件original.tex和修改后tex文件modify.tex进行对比：<br />
 命令行（powershell）中执行：</p>
 
 <pre><code class="language-bash">latexdiff 【original.tex】【modify.tex】&gt; diff.tex
@@ -906,9 +906,9 @@ latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之�
 
 <h1 id="latexdiff-git">latexdiff+git</h1>
 
-<p>Ref: <a href="https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git">https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git</a>
-为实现使用latexdiff工具对比git管理的tex工程的版本，这里编写了一个脚本，定义git ldiff命令，调用latexdiff实现git diff，并用chrome浏览器打开生成的对比文件。
-进入git配置文件所在路径，windows为C:\Users\【用户名】
+<p>Ref: <a href="https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git">https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git</a><br />
+为实现使用latexdiff工具对比git管理的tex工程的版本，这里编写了一个脚本，定义git ldiff命令，调用latexdiff实现git diff，并用chrome浏览器打开生成的对比文件。<br />
+进入git配置文件所在路径，windows为C:\Users\【用户名】<br />
 编辑配置文件.gitconfig，在末尾添加：</p>
 
 <pre><code class="language-bash"># https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git	
@@ -946,7 +946,7 @@ echo &quot;[INFO] removing temp files...&quot;
 rm -rf $TMPDIR
 </code></pre>
 
-<p>用法：bash（powershell）中执行：
+<p>用法：bash（powershell）中执行：<br />
 其中HEAD~x表示同上x个版本对比</p>
 
 <pre><code class="language-bash">git ldiff HEAD~1

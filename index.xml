@@ -61,7 +61,7 @@
       <guid>https://leidawt.github.io/post/deepstream-python%E6%8E%A5%E5%8F%A3%E6%8E%A2%E7%B4%A2/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#gstreamer参考阅读&#34;&gt;GStreamer参考阅读&lt;/a&gt;&lt;/li&gt;
@@ -73,7 +73,7 @@
 &lt;/ul&gt;
 &lt;/nav&gt;&lt;/p&gt;
 
-&lt;p&gt;本文承接&lt;a href=&#34;https://blog.csdn.net/leida_wt/article/details/112181863&#34;&gt;上文&lt;/a&gt;，记录对英伟达DeepStream python接口的初步探索。
+&lt;p&gt;本文承接&lt;a href=&#34;https://blog.csdn.net/leida_wt/article/details/112181863&#34;&gt;上文&lt;/a&gt;，记录对英伟达DeepStream python接口的初步探索。&lt;br /&gt;
 
 
 
@@ -115,37 +115,37 @@
 
 &lt;h1 id=&#34;gstreamer参考阅读&#34;&gt;GStreamer参考阅读&lt;/h1&gt;
 
-&lt;p&gt;DeepStream-Python接口依赖GStreamer的python接口建立和操作GStreamer管线，并提供python包pyds提供访问GStreamer metadata的一些接口函数。GStreamer和Gst-Python的相关信息可通过下面的链接进行了解。
-&lt;a href=&#34;https://thebigdoc.readthedocs.io/en/latest/gstreamer/gst-concept.html&#34;&gt;GStreamer系列之几个入门概念&lt;/a&gt;
-&lt;a href=&#34;https://blog.csdn.net/qq_32188669/article/details/95185731&#34;&gt;Python Gstreamer入门-学习笔记&lt;/a&gt;
-&lt;a href=&#34;https://blog.csdn.net/leixiaohua1020/article/details/18893769#commentBox&#34;&gt;视音频编解码技术零基础学习方法&lt;/a&gt;
+&lt;p&gt;DeepStream-Python接口依赖GStreamer的python接口建立和操作GStreamer管线，并提供python包pyds提供访问GStreamer metadata的一些接口函数。GStreamer和Gst-Python的相关信息可通过下面的链接进行了解。&lt;br /&gt;
+&lt;a href=&#34;https://thebigdoc.readthedocs.io/en/latest/gstreamer/gst-concept.html&#34;&gt;GStreamer系列之几个入门概念&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://blog.csdn.net/qq_32188669/article/details/95185731&#34;&gt;Python Gstreamer入门-学习笔记&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://blog.csdn.net/leixiaohua1020/article/details/18893769#commentBox&#34;&gt;视音频编解码技术零基础学习方法&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;https://blog.csdn.net/sakulafly/category_1819383.html&#34;&gt;GStreamer文档翻译&lt;/a&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;deepstream-python例程&#34;&gt;DeepStream-Python例程&lt;/h1&gt;
 
-&lt;p&gt;官方例程&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/deepstream_python_apps&#34;&gt;DeepStream Python Apps&lt;/a&gt;包含如下内容：
-- deepstream-test1 &amp;ndash; 4-class object detection pipeline
-- deepstream-test2 &amp;ndash; 4-class object detection, tracking and attribute classification pipeline
-- deepstream-test3 &amp;ndash; multi-stream pipeline performing 4-class object detection
-- deepstream-test4 &amp;ndash; msgbroker for sending analytics results to the cloud
-- deepstream-imagedata-multistream &amp;ndash; multi-stream pipeline with access to image buffers
-- deepstream-ssd-parser &amp;ndash; SSD model inference via Triton server with output parsing in Python
-- deepstream-test1-usbcam &amp;ndash; deepstream-test1 pipeline with USB camera input
+&lt;p&gt;官方例程&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/deepstream_python_apps&#34;&gt;DeepStream Python Apps&lt;/a&gt;包含如下内容：&lt;br /&gt;
+- deepstream-test1 &amp;ndash; 4-class object detection pipeline&lt;br /&gt;
+- deepstream-test2 &amp;ndash; 4-class object detection, tracking and attribute classification pipeline&lt;br /&gt;
+- deepstream-test3 &amp;ndash; multi-stream pipeline performing 4-class object detection&lt;br /&gt;
+- deepstream-test4 &amp;ndash; msgbroker for sending analytics results to the cloud&lt;br /&gt;
+- deepstream-imagedata-multistream &amp;ndash; multi-stream pipeline with access to image buffers&lt;br /&gt;
+- deepstream-ssd-parser &amp;ndash; SSD model inference via Triton server with output parsing in Python&lt;br /&gt;
+- deepstream-test1-usbcam &amp;ndash; deepstream-test1 pipeline with USB camera input&lt;br /&gt;
 - deepstream-test1-rtsp-out &amp;ndash; deepstream-test1 pipeline with RTSP output&lt;/p&gt;
 
-&lt;p&gt;为运行DeepStream-Python例程，我们使用nvcr.io/nvidia/deepstream:5.0.1-20.09-samples镜像。该镜像提供SeepStream环境，同时还囊括了示例程序所需使用的模型和测试视频，但不包括python例程仓库。
+&lt;p&gt;为运行DeepStream-Python例程，我们使用nvcr.io/nvidia/deepstream:5.0.1-20.09-samples镜像。该镜像提供SeepStream环境，同时还囊括了示例程序所需使用的模型和测试视频，但不包括python例程仓库。&lt;br /&gt;
 将例程仓库克隆到xxx/tlt-python/deepstream_python_apps，执行下面命令启动进入镜像：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;xhost +
 docker run --rm --gpus all --name ds_python_test --device=/dev/video0 -it -p 8554:8554  -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 -v &amp;quot;xxx/tlt-python/deepstream_python_apps&amp;quot;:&amp;quot;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&amp;quot; -w /opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/apps/ nvcr.io/nvidia/deepstream:5.0.1-20.09-samples /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;参数解释：
-- gpus all 指定容器可见的GPU
-- device=/dev/video0 将摄像头0映射进入容器
-- -p 8554:8554 映射RTSPStreaming RTSP端口（可选）
-- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机
-- -v &amp;ldquo;xxx/tlt-python/deepstream_python_apps&amp;rdquo;:&amp;ldquo;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&amp;rdquo; 映射例程仓库
+&lt;p&gt;参数解释：&lt;br /&gt;
+- gpus all 指定容器可见的GPU&lt;br /&gt;
+- device=/dev/video0 将摄像头0映射进入容器&lt;br /&gt;
+- -p 8554:8554 映射RTSPStreaming RTSP端口（可选）&lt;br /&gt;
+- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机&lt;br /&gt;
+- -v &amp;ldquo;xxx/tlt-python/deepstream_python_apps&amp;rdquo;:&amp;ldquo;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&amp;rdquo; 映射例程仓库&lt;br /&gt;
 - -w /opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/apps/设置进入容器后开启的路径&lt;/p&gt;
 
 &lt;p&gt;进入镜像后，我们安装所需依赖包：&lt;/p&gt;
@@ -214,7 +214,7 @@ from common.bus_call import bus_call
 import pyds
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;其中gi是PyGObject包，它为基于GObject的库（例如GTK，GStreamer，W​​ebKitGTK，GLib，GIO等）提供python接口。pyds是用于访问GStreamer metadata的包，bus_call和is_aarch64是两个util，分别用于总线回调和cpu体系结构判断。
+&lt;p&gt;其中gi是PyGObject包，它为基于GObject的库（例如GTK，GStreamer，W​​ebKitGTK，GLib，GIO等）提供python接口。pyds是用于访问GStreamer metadata的包，bus_call和is_aarch64是两个util，分别用于总线回调和cpu体系结构判断。&lt;br /&gt;
 随后，在main函数中，初始化GStreamer并实例化构建pipeline所需的GStreamer元素。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Standard GStreamer initialization
@@ -254,7 +254,7 @@ if not decoder:
     sys.stderr.write(&amp;quot; Unable to create Nvv4l2 Decoder \n&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;添加deepstream提供的nvstreammux插件，该插件是功能是聚合多个视频流，组成batch，以便被随后的推理模块处理。
+&lt;p&gt;添加deepstream提供的nvstreammux插件，该插件是功能是聚合多个视频流，组成batch，以便被随后的推理模块处理。&lt;br /&gt;
 
 
 
@@ -307,7 +307,7 @@ if not pgie:
     sys.stderr.write(&amp;quot; Unable to create pgie \n&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;添加可视化渲染模块nvdsosd，该模块接收RGBA格式，故还需加两个转换器。由于是进行帧格式转换，故这两个转换器的开销很小。转换器会根据其前后模块的Cap类型（消息类型）自动转换，不需手动指定转换方式。
+&lt;p&gt;添加可视化渲染模块nvdsosd，该模块接收RGBA格式，故还需加两个转换器。由于是进行帧格式转换，故这两个转换器的开销很小。转换器会根据其前后模块的Cap类型（消息类型）自动转换，不需手动指定转换方式。&lt;br /&gt;
 
 
 
@@ -495,7 +495,7 @@ if not osdsinkpad:
 osdsinkpad.add_probe(Gst.PadProbeType.BUFFER, osd_sink_pad_buffer_probe, 0)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;buffer的数据结构的层次关系如下所示。
+&lt;p&gt;buffer的数据结构的层次关系如下所示。&lt;br /&gt;
 
 
 
@@ -531,7 +531,7 @@ osdsinkpad.add_probe(Gst.PadProbeType.BUFFER, osd_sink_pad_buffer_probe, 0)
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 在main函数的最后，启动整个pipeline。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# start play back and listen to events
@@ -582,7 +582,7 @@ if __name__ == &#39;__main__&#39;:
       <guid>https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8latexdiff%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%AE%BA%E6%96%87%E5%8F%98%E6%9B%B4/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#简介&#34;&gt;简介&lt;/a&gt;&lt;/li&gt;
@@ -593,8 +593,8 @@ if __name__ == &#39;__main__&#39;:
 
 &lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 
-&lt;p&gt;Ref： &lt;a href=&#34;https://www.overleaf.com/learn/latex/Articles/Using_Latexdiff_For_Marking_Changes_To_Tex_Documents&#34;&gt;Using Latexdiff For Marking Changes To Tex Documents&lt;/a&gt;
-latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之间的变更情况，生成diff.tex文件，对diff.tex进行编译即可获得可视化的变更标注，如下图所示：
+&lt;p&gt;Ref： &lt;a href=&#34;https://www.overleaf.com/learn/latex/Articles/Using_Latexdiff_For_Marking_Changes_To_Tex_Documents&#34;&gt;Using Latexdiff For Marking Changes To Tex Documents&lt;/a&gt;&lt;br /&gt;
+latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之间的变更情况，生成diff.tex文件，对diff.tex进行编译即可获得可视化的变更标注，如下图所示：&lt;br /&gt;
 
 
 
@@ -634,7 +634,7 @@ latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之�
 
 &lt;h1 id=&#34;使用方法&#34;&gt;使用方法&lt;/h1&gt;
 
-&lt;p&gt;对修改前tex文件original.tex和修改后tex文件modify.tex进行对比：
+&lt;p&gt;对修改前tex文件original.tex和修改后tex文件modify.tex进行对比：&lt;br /&gt;
 命令行（powershell）中执行：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;latexdiff 【original.tex】【modify.tex】&amp;gt; diff.tex
@@ -644,9 +644,9 @@ latexdiff是CTEX套件中的一款工具，可以自动分析两个tex文件之�
 
 &lt;h1 id=&#34;latexdiff-git&#34;&gt;latexdiff+git&lt;/h1&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git&#34;&gt;https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git&lt;/a&gt;
-为实现使用latexdiff工具对比git管理的tex工程的版本，这里编写了一个脚本，定义git ldiff命令，调用latexdiff实现git diff，并用chrome浏览器打开生成的对比文件。
-进入git配置文件所在路径，windows为C:\Users\【用户名】
+&lt;p&gt;Ref: &lt;a href=&#34;https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git&#34;&gt;https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git&lt;/a&gt;&lt;br /&gt;
+为实现使用latexdiff工具对比git管理的tex工程的版本，这里编写了一个脚本，定义git ldiff命令，调用latexdiff实现git diff，并用chrome浏览器打开生成的对比文件。&lt;br /&gt;
+进入git配置文件所在路径，windows为C:\Users\【用户名】&lt;br /&gt;
 编辑配置文件.gitconfig，在末尾添加：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# https://tex.stackexchange.com/questions/1325/using-latexdiff-with-git	
@@ -684,7 +684,7 @@ echo &amp;quot;[INFO] removing temp files...&amp;quot;
 rm -rf $TMPDIR
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;用法：bash（powershell）中执行：
+&lt;p&gt;用法：bash（powershell）中执行：&lt;br /&gt;
 其中HEAD~x表示同上x个版本对比&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git ldiff HEAD~1
@@ -699,7 +699,7 @@ rm -rf $TMPDIR
       <guid>https://leidawt.github.io/post/transfer-learning-toolkit-tlt-&#43;-deepstream-ds%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B%E4%B8%BA%E4%BE%8B/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#简介&#34;&gt;简介&lt;/a&gt;
@@ -723,9 +723,9 @@ rm -rf $TMPDIR
 
 &lt;h2 id=&#34;tlt&#34;&gt;TLT&lt;/h2&gt;
 
-&lt;p&gt;如何快速训练和部署深度学习模型是工业界关注的重点问题，英伟达推出的TLT+DS工具链为训练自有数据集进而进行快速部署提供了端到端的解决方案。
-其中，TLT是英伟达迁移学习工具，提供对预训练模型的迁移训练、模型剪纸、量化，的一站式解决方案。&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt; &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/archive/tlt-getting-started-guide/index.html&#34;&gt;指南&lt;/a&gt;
-Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC&amp;amp;pageNumber=0&amp;amp;query=tlt&amp;amp;quickFilter=models&amp;amp;filters=&#34;&gt;NGC仓库&lt;/a&gt;中提供了一组为TLT工具维护的预训练模型，囊括了常见CV任务的经典模型（人脸识别、目标检测、语义分割、人体姿态估计、分类等）：
+&lt;p&gt;如何快速训练和部署深度学习模型是工业界关注的重点问题，英伟达推出的TLT+DS工具链为训练自有数据集进而进行快速部署提供了端到端的解决方案。&lt;br /&gt;
+其中，TLT是英伟达迁移学习工具，提供对预训练模型的迁移训练、模型剪纸、量化，的一站式解决方案。&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt; &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/archive/tlt-getting-started-guide/index.html&#34;&gt;指南&lt;/a&gt;&lt;br /&gt;
+Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC&amp;amp;pageNumber=0&amp;amp;query=tlt&amp;amp;quickFilter=models&amp;amp;filters=&#34;&gt;NGC仓库&lt;/a&gt;中提供了一组为TLT工具维护的预训练模型，囊括了常见CV任务的经典模型（人脸识别、目标检测、语义分割、人体姿态估计、分类等）：&lt;br /&gt;
 
 
 
@@ -765,16 +765,16 @@ Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC
 
 &lt;h2 id=&#34;ds&#34;&gt;DS&lt;/h2&gt;
 
-&lt;p&gt;DeepStream（DS）则是一套经高度优化的推理系统，提供完整的检测流水线实现，包含高速编解码器、预处理器、模板跟踪器、TensorRT推理引擎等组件，并配套有完善的可视化、精度校验工具。
-- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。
- - &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
- - &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。
- - &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
-- 官方示例：
- （1）&lt;a href=&#34;https://developer.nvidia.com/blog/creating-a-human-pose-estimation-application-with-deepstream-sdk/&#34;&gt;Creating a Human Pose Estimation Application with NVIDIA DeepStream
-&lt;/a&gt;
-(2) &lt;a href=&#34;https://developer.nvidia.com/blog/building-iva-apps-using-deepstream-5-0-updated-for-ga/&#34;&gt;Building Intelligent Video Analytics Apps Using NVIDIA DeepStream 5.0 (Updated for GA)
-&lt;/a&gt;
+&lt;p&gt;DeepStream（DS）则是一套经高度优化的推理系统，提供完整的检测流水线实现，包含高速编解码器、预处理器、模板跟踪器、TensorRT推理引擎等组件，并配套有完善的可视化、精度校验工具。&lt;br /&gt;
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。&lt;br /&gt;
+ - &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。&lt;br /&gt;
+ - &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。&lt;br /&gt;
+ - &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。&lt;br /&gt;
+- 官方示例：&lt;br /&gt;
+ （1）&lt;a href=&#34;https://developer.nvidia.com/blog/creating-a-human-pose-estimation-application-with-deepstream-sdk/&#34;&gt;Creating a Human Pose Estimation Application with NVIDIA DeepStream&lt;br /&gt;
+&lt;/a&gt;&lt;br /&gt;
+(2) &lt;a href=&#34;https://developer.nvidia.com/blog/building-iva-apps-using-deepstream-5-0-updated-for-ga/&#34;&gt;Building Intelligent Video Analytics Apps Using NVIDIA DeepStream 5.0 (Updated for GA)&lt;br /&gt;
+&lt;/a&gt;&lt;br /&gt;
 
 
 
@@ -810,8 +810,8 @@ Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC
 
 
 &lt;/figure&gt;
-
-&lt;strong&gt;本文主要参照官方提供的口罩检测&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;对使用TLT+DS进行深度学习模型训练、部署的方法进行初步探索，并对&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;缺少的细节进行补充，修正&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;的部分bug，添加部分配置文件。&lt;/strong&gt;
+&lt;br /&gt;
+&lt;strong&gt;本文主要参照官方提供的口罩检测&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;对使用TLT+DS进行深度学习模型训练、部署的方法进行初步探索，并对&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;缺少的细节进行补充，修正&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo&lt;/a&gt;的部分bug，添加部分配置文件。&lt;/strong&gt;&lt;br /&gt;
 
 
 
@@ -853,11 +853,11 @@ Nvidia在&lt;a href=&#34;https://ngc.nvidia.com/catalog/models?orderBy=scoreDESC
 
 &lt;h2 id=&#34;环境准备&#34;&gt;环境准备&lt;/h2&gt;
 
-&lt;p&gt;使用Docker镜像是获取TLT和DS工具的最佳方式。
-本文使用的运行环境：
-- Ubuntu 18.04
-- Docker 19.04
-- &lt;a href=&#34;https://github.com/NVIDIA/nvidia-docker&#34;&gt;nvidia-docker&lt;/a&gt;(提供GPU的Docker虚拟化支持)
+&lt;p&gt;使用Docker镜像是获取TLT和DS工具的最佳方式。&lt;br /&gt;
+本文使用的运行环境：&lt;br /&gt;
+- Ubuntu 18.04&lt;br /&gt;
+- Docker 19.04&lt;br /&gt;
+- &lt;a href=&#34;https://github.com/NVIDIA/nvidia-docker&#34;&gt;nvidia-docker&lt;/a&gt;(提供GPU的Docker虚拟化支持)&lt;br /&gt;
 - GTX 2080Ti&lt;/p&gt;
 
 &lt;p&gt;首先拉取官方镜像：&lt;/p&gt;
@@ -868,7 +868,7 @@ docker pull nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3
 docker pull nvcr.io/nvidia/deepstream:5.0.1-20.09-samples
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;注册一个NGC账户，并获取一个API Key，API key将用于访问NGC相关的服务（如预训练模型下载）：
+&lt;p&gt;注册一个NGC账户，并获取一个API Key，API key将用于访问NGC相关的服务（如预训练模型下载）：&lt;br /&gt;
 
 
 
@@ -904,10 +904,10 @@ docker pull nvcr.io/nvidia/deepstream:5.0.1-20.09-samples
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 API key仅显示一次，请注意保存，如丢失可以重新生成一个。&lt;/p&gt;
 
-&lt;p&gt;为便于陈述，下文使用xxx/tlt-demo指代项目根路径，目录结构如下：
+&lt;p&gt;为便于陈述，下文使用xxx/tlt-demo指代项目根路径，目录结构如下：&lt;br /&gt;
 
 
 
@@ -943,19 +943,19 @@ API key仅显示一次，请注意保存，如丢失可以重新生成一个。&
 
 
 &lt;/figure&gt;
-
-其中原始数据集data/raw_data、代码部分face-mask-detection、最终训练好的模型data/experiment_dir_final和预训练模型data/pretrained_resnet18已经打包上传到网盘，其他文件可通过代码生成。
-&lt;strong&gt;链接：&lt;a href=&#34;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&#34;&gt;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&lt;/a&gt;
+&lt;br /&gt;
+其中原始数据集data/raw_data、代码部分face-mask-detection、最终训练好的模型data/experiment_dir_final和预训练模型data/pretrained_resnet18已经打包上传到网盘，其他文件可通过代码生成。&lt;br /&gt;
+&lt;strong&gt;链接：&lt;a href=&#34;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&#34;&gt;https://pan.baidu.com/s/1VCp5nPF5NHGtD00GNPmiPA&lt;/a&gt;&lt;br /&gt;
 提取码：7sxb&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;如已下载上面的文件，则下面git clone 和数据集下载两步可跳过。
+&lt;p&gt;如已下载上面的文件，则下面git clone 和数据集下载两步可跳过。&lt;br /&gt;
 拉取&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;demo项目&lt;/a&gt;（face-mask-detection）github仓库到xxx/tlt-demo路径&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd xxx/tlt-demo
 git clone https://github.com/NVIDIA-AI-IOT/face-mask-detection.git
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;下载数据集文件，存放到xxx/tlt_demo/data路径下。
+&lt;p&gt;下载数据集文件，存放到xxx/tlt_demo/data路径下。&lt;br /&gt;
 &lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/face-mask-detection&#34;&gt;face-mask-detection&lt;/a&gt;同时使用了四个公共数据集作为训练数据。&lt;/p&gt;
 
 &lt;h2 id=&#34;模型训练&#34;&gt;模型训练&lt;/h2&gt;
@@ -965,18 +965,18 @@ git clone https://github.com/NVIDIA-AI-IOT/face-mask-detection.git
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker login nvcr.io
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;填入：
-Username: $oauthtoken
-Password: 【Your Key】
+&lt;p&gt;填入：&lt;br /&gt;
+Username: $oauthtoken&lt;br /&gt;
+Password: 【Your Key】&lt;br /&gt;
 启动TLT训练容器：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run --gpus all --name tlt_train -it -v &amp;quot;xxx/tlt-demo&amp;quot;:&amp;quot;/tlt-demo&amp;quot; \
               -p 8888:8888 nvcr.io/nvidia/tlt-streamanalytics:v2.0_py3 /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;参数解释：
--  &amp;ndash;gpus all 指定使用的GPU
--  -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo; 映射宿主机文件
+&lt;p&gt;参数解释：&lt;br /&gt;
+-  &amp;ndash;gpus all 指定使用的GPU&lt;br /&gt;
+-  -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo; 映射宿主机文件&lt;br /&gt;
 -  -p 8888:8888 绑定8888端口方便访问jupyter notebook&lt;/p&gt;
 
 &lt;p&gt;进入容器后，首先运行数据集转换脚本。&lt;/p&gt;
@@ -992,8 +992,8 @@ python data2kitti.py --kaggle-dataset-path /tlt-demo/data/raw_dataset/Kaggle-Med
 
 &lt;p&gt;该脚本将四种数据集合并，转换为kitti数据格式，并存放在容器的/tlt-demo/data/kitti_dataset路径（即宿主机xxx/tlt-demo/data/kitti_dataset路径）下。转换中产生的警告可忽略。&lt;/p&gt;
 
-&lt;p&gt;对data2kitti.py的补充说明：
-用于目标检测的kitti数据集格式具有如下组织结构：
+&lt;p&gt;对data2kitti.py的补充说明：&lt;br /&gt;
+用于目标检测的kitti数据集格式具有如下组织结构：&lt;br /&gt;
 
 
 
@@ -1029,9 +1029,9 @@ python data2kitti.py --kaggle-dataset-path /tlt-demo/data/raw_dataset/Kaggle-Med
 
 
 &lt;/figure&gt;
-
-其中kitti_seq_to_map.json文件是可选的，用于描述训练集/测试集的划分。
-labels文件中每一行描述一个边界框的信息，具有如下字段：
+&lt;br /&gt;
+其中kitti_seq_to_map.json文件是可选的，用于描述训练集/测试集的划分。&lt;br /&gt;
+labels文件中每一行描述一个边界框的信息，具有如下字段：&lt;br /&gt;
 
 
 
@@ -1067,7 +1067,7 @@ labels文件中每一行描述一个边界框的信息，具有如下字段：
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;Mask 0 0 0 5 299 121 465 0 0 0 0 0 0 0
@@ -1121,12 +1121,12 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 启动后，访问【宿主机ip】:8888即可。其中token可在jupyter-notebook的启动消息中获得。&lt;/p&gt;
 
 &lt;p&gt;下面对face-mask-detection.ipynb中的主要步骤进行简要说明和补充。&lt;/p&gt;
 
-&lt;p&gt;设置一些环境变量，注意修改路径和KEY:
+&lt;p&gt;设置一些环境变量，注意修改路径和KEY:&lt;br /&gt;
 
 
 
@@ -1162,8 +1162,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-执行数据集转换和切分：
+&lt;br /&gt;
+执行数据集转换和切分：&lt;br /&gt;
 
 
 
@@ -1199,7 +1199,7 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 其中使用的配置文件detectnet_v2_tfrecords_kitti_trainval.txt 内容如下：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;kitti_config {
@@ -1213,8 +1213,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
   num_shards: 10 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;ref: &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&#34;&gt;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&lt;/a&gt;
-参数如下：
+&lt;p&gt;ref: &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&#34;&gt;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/preparing_data_input.html#conversion-to-tfrecords&lt;/a&gt;&lt;br /&gt;
+参数如下：&lt;br /&gt;
 
 
 
@@ -1250,10 +1250,10 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 因此在detectnet_v2_tfrecords_kitti_trainval.txt 表示我们以数据集/tlt-demo/data/kitti_dataset/train/为输入，切分20%作为验证集，其余为训练集。&lt;/p&gt;
 
-&lt;p&gt;下载与训练模型：
+&lt;p&gt;下载与训练模型：&lt;br /&gt;
 
 
 
@@ -1289,10 +1289,10 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 此处使用英伟达的detectnet_v2模型，鉴于数据集不大，任务也比较简单，选用较为精简的resnet18作为骨架网络。&lt;/p&gt;
 
-&lt;p&gt;启动训练：
+&lt;p&gt;启动训练：&lt;br /&gt;
 
 
 
@@ -1328,12 +1328,12 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-这里对配置文件detectnet_v2_train_resnet18_kitti.txt的内容进行简单解释。
-配置文件约定所使用的数据增强方法和训练参数，其参数说明见：
+&lt;br /&gt;
+这里对配置文件detectnet_v2_train_resnet18_kitti.txt的内容进行简单解释。&lt;br /&gt;
+配置文件约定所使用的数据增强方法和训练参数，其参数说明见：&lt;br /&gt;
 &lt;a href=&#34;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2&#34;&gt;https://docs.nvidia.com/metropolis/TLT/tlt-getting-started-guide/text/creating_experiment_spec.html#specification-file-for-detectnet-v2&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;我仅修改了路径相关的几行：
+&lt;p&gt;我仅修改了路径相关的几行：&lt;br /&gt;
 
 
 
@@ -1369,7 +1369,7 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -1409,7 +1409,7 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 &lt;p&gt;笔者使用2块2080Ti训练的用时为1:32:42.382548.&lt;/p&gt;
 
-&lt;p&gt;模型剪枝：
+&lt;p&gt;模型剪枝：&lt;br /&gt;
 
 
 
@@ -1445,10 +1445,10 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 笔者此处设置剪纸阈值为0.1（参数越大，剪的越狠），效果不错，精度没有降低。&lt;/p&gt;
 
-&lt;p&gt;剪枝后还需要再重新训一下：
+&lt;p&gt;剪枝后还需要再重新训一下：&lt;br /&gt;
 
 
 
@@ -1484,9 +1484,9 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-配置文件detectnet_v2_retrain_resnet18_kitti.txt的修改方法和detectnet_v2_train_resnet18_kitti.txt相似。
-最终精度是
+&lt;br /&gt;
+配置文件detectnet_v2_retrain_resnet18_kitti.txt的修改方法和detectnet_v2_train_resnet18_kitti.txt相似。&lt;br /&gt;
+最终精度是&lt;br /&gt;
 
 
 
@@ -1522,11 +1522,11 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-可视化检查：
+&lt;br /&gt;
+可视化检查：&lt;br /&gt;
 在宿主机xxx/tlt-demo/data/test_images路径中放入待检图片。&lt;/p&gt;
 
-&lt;p&gt;对test_images中的图片执行推理：
+&lt;p&gt;对test_images中的图片执行推理：&lt;br /&gt;
  
 
 
@@ -1562,8 +1562,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-可视化：
+&lt;br /&gt;
+可视化：&lt;br /&gt;
 
 
 
@@ -1599,11 +1599,11 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-注意在箭头处需加个int修复源程序bug。
+&lt;br /&gt;
+注意在箭头处需加个int修复源程序bug。&lt;br /&gt;
 可见训练效果非常理想。&lt;/p&gt;
 
-&lt;p&gt;最后，导出模型，格式为etlt,etlt格式可被转换为trt或tensorRT的engine文件，亦可被DeepStream加载并自动转化为所需的trt格式模型。
+&lt;p&gt;最后，导出模型，格式为etlt,etlt格式可被转换为trt或tensorRT的engine文件，亦可被DeepStream加载并自动转化为所需的trt格式模型。&lt;br /&gt;
 
 
 
@@ -1639,8 +1639,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-我们也可进一步将其转换成TensorRT的engine文件：
+&lt;br /&gt;
+我们也可进一步将其转换成TensorRT的engine文件：&lt;br /&gt;
 
 
 
@@ -1676,8 +1676,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-上面导出的模型是Float32类型的，为了追求更快的推理速度，可将Float32类型的模型量化int8模型。为了解决解决参数转换为int8类型后动态范围下降的问题，量化的一个关键步骤是确定float32到int8的量化映射，映射参数是根据模型对数据集的响应进行的，下面的命令抽取40个batch的数据生成calibration tensorfile。
+&lt;br /&gt;
+上面导出的模型是Float32类型的，为了追求更快的推理速度，可将Float32类型的模型量化int8模型。为了解决解决参数转换为int8类型后动态范围下降的问题，量化的一个关键步骤是确定float32到int8的量化映射，映射参数是根据模型对数据集的响应进行的，下面的命令抽取40个batch的数据生成calibration tensorfile。&lt;br /&gt;
 
 
 
@@ -1713,8 +1713,8 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-随后我们调用tlt-convert导出int8推理engine：
+&lt;br /&gt;
+随后我们调用tlt-convert导出int8推理engine：&lt;br /&gt;
 
 
 
@@ -1750,61 +1750,61 @@ Mask 0 0 0 443 196 508 257 0 0 0 0 0 0 0
 
 
 &lt;/figure&gt;
-
-engine文件是平台相关的，比如3080系显卡上执行tlt-convert导出的engine并不能在10系显卡上运行，需注意。Nvidia也提供了不同平台的tlt-convert工具供使用。
-至此我们已经得到了如下文件：
-- /tlt-demo/data/experiment_dir_unpruned/下存放原始训练模型
-- /tlt-demo/data/experiment_dir_pruned/存放经过剪枝的模型
-- /tlt-demo/data/experiment_dir_retrain/存放经过再次训练后的剪枝模型
+&lt;br /&gt;
+engine文件是平台相关的，比如3080系显卡上执行tlt-convert导出的engine并不能在10系显卡上运行，需注意。Nvidia也提供了不同平台的tlt-convert工具供使用。&lt;br /&gt;
+至此我们已经得到了如下文件：&lt;br /&gt;
+- /tlt-demo/data/experiment_dir_unpruned/下存放原始训练模型&lt;br /&gt;
+- /tlt-demo/data/experiment_dir_pruned/存放经过剪枝的模型&lt;br /&gt;
+- /tlt-demo/data/experiment_dir_retrain/存放经过再次训练后的剪枝模型&lt;br /&gt;
 - /tlt-demo/data/experiment_dir_final/存放导出模型，包括原始的resnet18_detector.etlt模型文件和经过int8量化并转化为tensorRT推理引擎的resnet18_detector_int8.engine文件，未经过int8量化但转化为tensorRT推理引擎的resnet18_detector.engine文件。还有保存有int8映射信息的calibration.bin文件。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;2021/1/12注：为了查看不同剪枝阈值的影响，对pth=[0.15,0.2,0.25,0.3,0.35,0.45]分别进行了实验：&lt;/strong&gt;
-| pth  |   mask  | no-mask | mean AP |
-|&amp;mdash;&amp;mdash;|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|
-| 0.15 | 84.7971 | 81.9967 | 83.3969 |
-| 0.2  | 84.8928 | 81.5916 | 83.2422 |
-| 0.25 | 83.9029 | 81.9541 | 82.9285 |
-| 0.3  | 84.6431 | 82.0092 | 83.3262 |
-| 0.35 | 84.9796 | 82.394  | 83.6868 |
-| 0.45 | 83.9478 | 81.4966 | 82.7222 |
+&lt;p&gt;&lt;strong&gt;2021/1/12注：为了查看不同剪枝阈值的影响，对pth=[0.15,0.2,0.25,0.3,0.35,0.45]分别进行了实验：&lt;/strong&gt;&lt;br /&gt;
+| pth  |   mask  | no-mask | mean AP |&lt;br /&gt;
+|&amp;mdash;&amp;mdash;|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;-:|&lt;br /&gt;
+| 0.15 | 84.7971 | 81.9967 | 83.3969 |&lt;br /&gt;
+| 0.2  | 84.8928 | 81.5916 | 83.2422 |&lt;br /&gt;
+| 0.25 | 83.9029 | 81.9541 | 82.9285 |&lt;br /&gt;
+| 0.3  | 84.6431 | 82.0092 | 83.3262 |&lt;br /&gt;
+| 0.35 | 84.9796 | 82.394  | 83.6868 |&lt;br /&gt;
+| 0.45 | 83.9478 | 81.4966 | 82.7222 |&lt;br /&gt;
 可见在本例中，对pth的裕度是很大的。但有些模型对pth很敏感，需仔细调整。&lt;/p&gt;
 
 &lt;p&gt;下一节将探讨如何在DS框架上部署这些模型。&lt;/p&gt;
 
 &lt;h1 id=&#34;基于ds的模型部署&#34;&gt;基于DS的模型部署&lt;/h1&gt;
 
-&lt;p&gt;DeepStream SDK提供了完整的流分析工具链，可用于基于AI的视频和图像理解以及多传感器处理。
-如前所述，DeepStream的相关资料较少，尚未由较为详细的中文技术博客对其进行介绍，DS开发的主要的参考来源是官方文档和例子：
-- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。
-- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。
-- &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。
-- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/python-api/&#34;&gt;python API&lt;/a&gt;
-- &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。
+&lt;p&gt;DeepStream SDK提供了完整的流分析工具链，可用于基于AI的视频和图像理解以及多传感器处理。&lt;br /&gt;
+如前所述，DeepStream的相关资料较少，尚未由较为详细的中文技术博客对其进行介绍，DS开发的主要的参考来源是官方文档和例子：&lt;br /&gt;
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_quick_start.html#wwpID0E0GI0HA&#34;&gt;文档&lt;/a&gt;中包含了基本概念的介绍。&lt;br /&gt;
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html&#34;&gt;手册&lt;/a&gt;描述了DeepStream的配置方法及其提供的GStreamer插件的输入、输出和控制参数。&lt;br /&gt;
+- &lt;a href=&#34;https://developer.download.nvidia.cn/embedded/webinars/webinar-deepstream-sdk-improve-video-analytics.pdf?QivB9Twne-PQYs45rHfOzd2ZPUOn07ykYYj_6UoFMVW1c-pD-98TVETrRe8hEnQrN18gDcmkBOPN18f0lfUdhkahZZZwuY4-Guk6YaUNlLdobiPKbQEFJNDcT---DAfN9vL5jiCJ6iGrtRw12Y-GnQ6N9n5wrBy6ryIE9NaaKyFSKX8&#34;&gt;宣传PPT&lt;/a&gt;给出了DS的基本特性和DS配置文件的简要编写方法。&lt;br /&gt;
+- &lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/python-api/&#34;&gt;python API&lt;/a&gt;&lt;br /&gt;
+- &lt;a href=&#34;https://gstreamer.freedesktop.org/documentation/index.html?gi-language=c&#34;&gt;GStreamer&lt;/a&gt;是DeepStream的底层依赖，阅读其文档可以帮助理解DeepStream的相关概念。&lt;br /&gt;
 依旧通过容器运行DeepStream，摆脱繁琐的环境配置工作：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;xhost +
 docker run --rm --gpus all --name ds_test --device=/dev/video0 -it -p 8554:8554  -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 -v &amp;quot;xxx/tlt-demo&amp;quot;:&amp;quot;/tlt-demo&amp;quot; -w /tlt-demo/face-mask-detection/ds_configs nvcr.io/nvidia/deepstream:5.0.1-20.09-samples /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;其中xhost +用于开放宿主机图形界面的接入权限
-参数解释：
-- &amp;ndash;gpus all 指定容器可见的GPU
-- &amp;ndash;device=/dev/video0 将摄像头1映射进入容器
-- -it -p 8554:8554 映射RTSPStreaming RTSP端口（可选）
-- -p 5400:5400/udp 映射RTSPStreaming UDP端口（可选）
-- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机
-- -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo;  映射宿主机文件夹
+&lt;p&gt;其中xhost +用于开放宿主机图形界面的接入权限&lt;br /&gt;
+参数解释：&lt;br /&gt;
+- &amp;ndash;gpus all 指定容器可见的GPU&lt;br /&gt;
+- &amp;ndash;device=/dev/video0 将摄像头1映射进入容器&lt;br /&gt;
+- -it -p 8554:8554 映射RTSPStreaming RTSP端口（可选）&lt;br /&gt;
+- -p 5400:5400/udp 映射RTSPStreaming UDP端口（可选）&lt;br /&gt;
+- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机&lt;br /&gt;
+- -v &amp;ldquo;xxx/tlt-demo&amp;rdquo;:&amp;ldquo;/tlt-demo&amp;rdquo;  映射宿主机文件夹&lt;br /&gt;
 - -w /tlt-demo/face-mask-detection/ds_configs 设置进入容器后开启的路径&lt;/p&gt;
 
 &lt;p&gt;注意这里使用的是deepstream:5.0.1-20.09-samples版本镜像而非更精简的deepstream:5.0.1-20.09-base，该镜像包含重要的例程文件（deepstream-app）。&lt;/p&gt;
 
-&lt;p&gt;进入容器后，我们运行demo写好的配置文件（有改动）。
+&lt;p&gt;进入容器后，我们运行demo写好的配置文件（有改动）。&lt;br /&gt;
 通过指定的配置文件启动deepstream-app检测程序：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deepstream-app -c deepstream_app_source1_camera_masknet_gpu_int8.txt
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;这个配置文件以640*480的分辨率，30fps的帧率从/dev/video0这个usb摄像头读入视频流，进行推理，跟踪，并渲染检测结果，最后推送到宿主机的图形界面，同时发送RTSP流。
+&lt;p&gt;这个配置文件以640*480的分辨率，30fps的帧率从/dev/video0这个usb摄像头读入视频流，进行推理，跟踪，并渲染检测结果，最后推送到宿主机的图形界面，同时发送RTSP流。&lt;br /&gt;
 RTSP是流行的流传输协议，使用VLC，potplayer等视频播放器均可访问，其地址是&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;rtsp://[容器所在宿主机IP]:8554/ds-test
@@ -1847,18 +1847,18 @@ RTSP是流行的流传输协议，使用VLC，potplayer等视频播放器均可�
 &lt;/figure&gt;
 
 
-&lt;p&gt;其他配置文件说明：
-- deepstream_app_source1_camera_masknet_gpu_fp32.txt 加载fp32推理模型、摄像头0为输入
-- deepstream_app_source1_camera_masknet_gpu_int8.txt 加载int8推理模型、摄像头0为输入
-- deepstream_app_source1_video_masknet_gpu_fp32.txt 加载fp32推理模型、/tlt-demo/test.mp4为输入
+&lt;p&gt;其他配置文件说明：&lt;br /&gt;
+- deepstream_app_source1_camera_masknet_gpu_fp32.txt 加载fp32推理模型、摄像头0为输入&lt;br /&gt;
+- deepstream_app_source1_camera_masknet_gpu_int8.txt 加载int8推理模型、摄像头0为输入&lt;br /&gt;
+- deepstream_app_source1_video_masknet_gpu_fp32.txt 加载fp32推理模型、/tlt-demo/test.mp4为输入&lt;br /&gt;
 - deepstream_app_source1_video_masknet_gpu_int8.txt 加载int8推理模型、/tlt-demo/test.mp4为输入&lt;/p&gt;
 
 &lt;p&gt;若一切正常，则可通过GUI或视频浏览器看到标注由检测结果的输出视频流，整个检测流水线运行速度很快，显卡的占用率也很低。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;下面简要分析一下demo中配置文件的编写方法。&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;DeepStream的底层是GStreamer，GStreamer是用于创建流媒体应用程序的极其强大且通用的框架。  GStreamer框架的核心优点来自其模块化，视频处理的各个环节均有丰富的插件进行支撑，基于GStreamer进行开发的核心内容就是合理的将各个环节的模块串接为一个处理管线。GStreamer是纯C编写的，底层基于Glib库，并使用G-object提供对C语言的面向对象支持（暗黑科技）。
-DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成器等）的基础上，又为深度学习的应用场景实现了一组&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream%20Plugins%20Development%20Guide/deepstream_plugin_details.3.01.html#&#34;&gt;插件&lt;/a&gt;：
+&lt;p&gt;DeepStream的底层是GStreamer，GStreamer是用于创建流媒体应用程序的极其强大且通用的框架。  GStreamer框架的核心优点来自其模块化，视频处理的各个环节均有丰富的插件进行支撑，基于GStreamer进行开发的核心内容就是合理的将各个环节的模块串接为一个处理管线。GStreamer是纯C编写的，底层基于Glib库，并使用G-object提供对C语言的面向对象支持（暗黑科技）。&lt;br /&gt;
+DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成器等）的基础上，又为深度学习的应用场景实现了一组&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream%20Plugins%20Development%20Guide/deepstream_plugin_details.3.01.html#&#34;&gt;插件&lt;/a&gt;：&lt;br /&gt;
 
 
 
@@ -1894,10 +1894,10 @@ DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成�
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 如nvinfer用于支持tensorRT推理，nvtracker用于边界框的跟踪，nvdsosd用于渲染检测结果。&lt;/p&gt;
 
-&lt;p&gt;看DS提供的例程是学习DS开发的最佳途径：
+&lt;p&gt;看DS提供的例程是学习DS开发的最佳途径：&lt;br /&gt;
 
 
 
@@ -1933,22 +1933,22 @@ DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成�
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 其中C语言版本位于容器的如下路径：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;/opt/nvidia/deepstream/deepstream-5.0/sources/apps/sample_apps
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;python语言版本可在&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/deepstream_python_apps&#34;&gt;这里&lt;/a&gt;下载。
-更多例程可见&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_C_Sample_Apps.html&#34;&gt;这里&lt;/a&gt;。
-其中一个很重要的例程是&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_ref_app_test5.html&#34;&gt;deepstream-test5 app&lt;/a&gt;。
-除常规推理管道外，Test5应用程序还支持以下功能：
-- 将消息发送到后端服务器。
-- 充当使用者以从后端服务器接收消息。
-- 基于从服务器收到的消息触发基于事件的记录。
+&lt;p&gt;python语言版本可在&lt;a href=&#34;https://github.com/NVIDIA-AI-IOT/deepstream_python_apps&#34;&gt;这里&lt;/a&gt;下载。&lt;br /&gt;
+更多例程可见&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_C_Sample_Apps.html&#34;&gt;这里&lt;/a&gt;。&lt;br /&gt;
+其中一个很重要的例程是&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_ref_app_test5.html&#34;&gt;deepstream-test5 app&lt;/a&gt;。&lt;br /&gt;
+除常规推理管道外，Test5应用程序还支持以下功能：&lt;br /&gt;
+- 将消息发送到后端服务器。&lt;br /&gt;
+- 充当使用者以从后端服务器接收消息。&lt;br /&gt;
+- 基于从服务器收到的消息触发基于事件的记录。&lt;br /&gt;
 - OTA模型更新。&lt;/p&gt;
 
-&lt;p&gt;除此之外。鉴于通过DS的底层C接口和Python接口构建检测流水线仍有些繁琐，Nvidia针对最常见的深度学习模型处理流程提炼并设计了参考程序deepstream-app，该程序允许用户通过传入配置文件描述检测流水线，deepstream-app会根据配置文件的描述调用相应DS插件，构建流水线。因此，虽然deepstream-app是个参考程序，但&lt;strong&gt;常被当做DS的CLI工具使用&lt;/strong&gt;。
+&lt;p&gt;除此之外。鉴于通过DS的底层C接口和Python接口构建检测流水线仍有些繁琐，Nvidia针对最常见的深度学习模型处理流程提炼并设计了参考程序deepstream-app，该程序允许用户通过传入配置文件描述检测流水线，deepstream-app会根据配置文件的描述调用相应DS插件，构建流水线。因此，虽然deepstream-app是个参考程序，但&lt;strong&gt;常被当做DS的CLI工具使用&lt;/strong&gt;。&lt;br /&gt;
 如下是deepstream-app提供的流水线的结构框图，其中很多组件是可选的（如secondary classifiers）：
 
 
@@ -1984,7 +1984,7 @@ DeepStream在GStreamer提供的基础模块（如编解码，文件I/O，合成�
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 首先，前端使用decode插件读入视频流（来源可以是RTSP、文件、usb摄像头等），多个摄像头经过MUX进行合并，组成batch，送入主检测器（目标检测）获得边界框，随后送入tracker进行跟踪，每个跟踪的边界框继续送入次级检测器（一般是分类器），检测结果发送到tilter形成2D帧数组，进而用osd插件渲染检测结果。最后，要输出结果（sink），DeepStream提供了各种选项：在屏幕上用边框显示输出，将输出保存到本地磁盘，通过RTSP进行流传输或仅将元数据发送到云。为了将元数据发送到云，DeepStream使用Gst-nvmsgconv和Gst-nvmsgbroker插件。  Gst-nvmsgconv将元数据转换为架构有效负载，而Gst-nvmsgbroker建立与云的连接并发送遥测数据。 有几种内置的代理协议，例如Kafka，MQTT，AMQP和Azure IoT。 可以创建自定义代理适配器。&lt;/p&gt;
 
 &lt;p&gt;deepstream-app的配置文件使用&lt;a href=&#34;https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html#comments&#34;&gt;freedesktop&lt;/a&gt;格式，是一种非常精简的键值对描述文件，形如：&lt;/p&gt;
@@ -2011,8 +2011,8 @@ Name=Create a new Foo!
 Icon=fooview-new
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;描述文件由若干个组（Group ）组成，[groupname]表示参数组的名字，每行用Key=Value的形式描述一个键值。使用“# ”表明注释行。
-deepstream-app的配置文件有如下可选的&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_app_config.3.2.html#&#34;&gt;配置组&lt;/a&gt;。
+&lt;p&gt;描述文件由若干个组（Group ）组成，[groupname]表示参数组的名字，每行用Key=Value的形式描述一个键值。使用“# ”表明注释行。&lt;br /&gt;
+deepstream-app的配置文件有如下可选的&lt;a href=&#34;https://docs.nvidia.com/metropolis/deepstream/5.0DP/dev-guide/index.html#page/DeepStream_Development_Guide/deepstream_app_config.3.2.html#&#34;&gt;配置组&lt;/a&gt;。&lt;br /&gt;
 
 
 
@@ -2048,13 +2048,13 @@ deepstream-app的配置文件有如下可选的&lt;a href=&#34;https://docs.nvid
 
 
 &lt;/figure&gt;
-
-本文的口罩检测demo程序正是使用deepstream-app来构建DS流水线的。我们以调用int8推理模型的配置文件为例进行说明。
-int8推理的配置包含两个文件：
-- deepstream_app_source1_camera_masknet_gpu_int8.txt
+&lt;br /&gt;
+本文的口罩检测demo程序正是使用deepstream-app来构建DS流水线的。我们以调用int8推理模型的配置文件为例进行说明。&lt;br /&gt;
+int8推理的配置包含两个文件：&lt;br /&gt;
+- deepstream_app_source1_camera_masknet_gpu_int8.txt&lt;br /&gt;
 - config_infer_primary_masknet_gpu_int8.txt&lt;/p&gt;
 
-&lt;p&gt;前者描述流水线的配置情况，后者对流水线的nvinfer推理模块进行配置（因nvinfer参数比较多，故单独拆分为一个配置文件），下面分别说明两个文件中配置项的含义。
+&lt;p&gt;前者描述流水线的配置情况，后者对流水线的nvinfer推理模块进行配置（因nvinfer参数比较多，故单独拆分为一个配置文件），下面分别说明两个文件中配置项的含义。&lt;br /&gt;
 deepstream_app_source1_camera_masknet_gpu_int8.txt：&lt;/p&gt;
 
 &lt;p&gt;application配置组指定是否在命令行打印性能评估信息：&lt;/p&gt;
@@ -2099,7 +2099,7 @@ perf-measurement-interval-sec=1
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 source组指定输入源，这里指定两个输入源同时输入：摄像头和视频文件&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[source0]
@@ -2223,7 +2223,7 @@ rtsp-port=8554
 file-loop=1
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;config_infer_primary_masknet_gpu_int8.txt文件则有三个配置组。
+&lt;p&gt;config_infer_primary_masknet_gpu_int8.txt文件则有三个配置组。&lt;br /&gt;
 property组对推理引擎进行设置，包括engine文件路径、推理模型类型、输入大小、推理batch大小、int8映射文件路径、分类阈值等。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[property]
@@ -2280,7 +2280,7 @@ detected-max-h=0
 
 &lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
 
-&lt;p&gt;总体来看，TLT和DS构成的工具链将模型的训练和部署变得极为方便，唯一需要编程的部分仅仅是一些数据集转换脚本。最关键的是，借助DS框架，算法可以达到极高的帧率，TLT+DS绝对是做工（heng）程(xiang)的利器！
+&lt;p&gt;总体来看，TLT和DS构成的工具链将模型的训练和部署变得极为方便，唯一需要编程的部分仅仅是一些数据集转换脚本。最关键的是，借助DS框架，算法可以达到极高的帧率，TLT+DS绝对是做工（heng）程(xiang)的利器！&lt;br /&gt;
 当然，使用deepstream-app+配置文件仍然有很多限制，后续有机会将探索DS的python接口的使用方法。&lt;/p&gt;
 </description>
     </item>
@@ -2292,7 +2292,7 @@ detected-max-h=0
       <guid>https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8docker%E9%95%9C%E5%83%8F%E8%AE%AD%E7%BB%83yolov4/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#镜像制作&#34;&gt;镜像制作&lt;/a&gt;&lt;/li&gt;
@@ -2306,7 +2306,7 @@ detected-max-h=0
 
 &lt;h1 id=&#34;镜像制作&#34;&gt;镜像制作&lt;/h1&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;https://github.com/alexeyab/darknet&#34;&gt;https://github.com/alexeyab/darknet&lt;/a&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;https://github.com/alexeyab/darknet&#34;&gt;https://github.com/alexeyab/darknet&lt;/a&gt;&lt;br /&gt;
 &lt;strong&gt;注：制作好的镜像已上传至docker hub，可直接拉取使用：&lt;/strong&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker pull leidawt/darknet-yolov4
@@ -2315,9 +2315,10 @@ detected-max-h=0
 &lt;p&gt;依赖环境：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Ubuntu 18.04&lt;/li&gt;
-&lt;li&gt;Docker &amp;gt;19.04&lt;/li&gt;
-&lt;li&gt;nvidia-container-toolkit&lt;/li&gt;
+&lt;li&gt;Ubuntu 18.04&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Docker &amp;gt;19.04&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;nvidia-container-toolkit&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;为建立镜像，编写如下Dockerfile脚本文件，以nvidia/cuda:10.1-cudnn7-deve为基础镜像开始构建：&lt;/p&gt;
@@ -2348,7 +2349,7 @@ COPY ./darknet-master/ .
 # RUN ./build.sh
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：&lt;/strong&gt;&lt;br /&gt;
 链接: &lt;a href=&#34;https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw&#34;&gt;https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw&lt;/a&gt; 提取码: n8xx&lt;/p&gt;
 
 &lt;p&gt;执行镜像构建：&lt;/p&gt;
@@ -2367,7 +2368,7 @@ COPY ./darknet-master/ .
 ./build
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;编译成功后，按ctrl+D退出容器。
+&lt;p&gt;编译成功后，按ctrl+D退出容器。&lt;br /&gt;
 commit容器变更到镜像，并删除临时容器:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker commit temp_yolo leidawt/darknet-yolov4:v1
@@ -2378,7 +2379,7 @@ docker container rm temp_yolo
 
 &lt;h1 id=&#34;准备数据集和配置文件&#34;&gt;准备数据集和配置文件&lt;/h1&gt;
 
-&lt;p&gt;YOLO的数据集构成结构如下：
+&lt;p&gt;YOLO的数据集构成结构如下：&lt;br /&gt;
 
 
 
@@ -2414,16 +2415,16 @@ docker container rm temp_yolo
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 每张数据图片对于一个同名的txt标注文件，标注文件格式如下：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;&amp;lt;object-class&amp;gt; &amp;lt;x_center&amp;gt; &amp;lt;y_center&amp;gt; &amp;lt;width&amp;gt; &amp;lt;height&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;object-class：所属类号，如 0，1，2，3
-x_center：边界框中心x坐标的相对值（x/imageWidth）
-y_center：边界框中心y坐标的相对值（y/imageHeight）
-width: 边界框宽度的相对值（w/imageWidth）
+&lt;p&gt;object-class：所属类号，如 0，1，2，3&lt;br /&gt;
+x_center：边界框中心x坐标的相对值（x/imageWidth）&lt;br /&gt;
+y_center：边界框中心y坐标的相对值（y/imageHeight）&lt;br /&gt;
+width: 边界框宽度的相对值（w/imageWidth）&lt;br /&gt;
 height: 边界框高度的相对值（h/imageHeight）&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;0 0.5583817829457363 0.791343669250646 0.05644327860159183 0.07525770480212245
@@ -2447,14 +2448,14 @@ height: 边界框高度的相对值（h/imageHeight）&lt;/p&gt;
 0 0.361328125 0.5132378472222221 0.026971726190476216 0.04991319444444445
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;做好数据集后，下一步准备所需的配置文件
-- obj.names（类名）:
-    形如：
+&lt;p&gt;做好数据集后，下一步准备所需的配置文件&lt;br /&gt;
+- obj.names（类名）:&lt;br /&gt;
+    形如：&lt;br /&gt;
     &lt;code&gt;
     button
-&lt;/code&gt;
-- test.txt（测试集路径索引）:
-    形如：
+&lt;/code&gt;&lt;br /&gt;
+- test.txt（测试集路径索引）:&lt;br /&gt;
+    形如：&lt;br /&gt;
     &lt;code&gt;
     data/obj/73.jpg 
     data/obj/28.jpg 
@@ -2463,7 +2464,7 @@ height: 边界框高度的相对值（h/imageHeight）&lt;/p&gt;
 &lt;/code&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;train.txt（训练集路径索引）:
+&lt;li&gt;&lt;p&gt;train.txt（训练集路径索引）:&lt;br /&gt;
 形如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;data/obj/34.jpg
@@ -2480,8 +2481,8 @@ data/obj/50.jpg
     names = data/obj.names
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;yolov4-custom.cfg （配置文件）
-从Github&lt;a href=&#34;https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg&#34;&gt;下载&lt;/a&gt;yolov4-custom.cfg文件，按&lt;a href=&#34;https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects&#34;&gt;此处&lt;/a&gt;说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：
+&lt;li&gt;&lt;p&gt;yolov4-custom.cfg （配置文件）&lt;br /&gt;
+从Github&lt;a href=&#34;https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg&#34;&gt;下载&lt;/a&gt;yolov4-custom.cfg文件，按&lt;a href=&#34;https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects&#34;&gt;此处&lt;/a&gt;说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：&lt;br /&gt;
 util_yolo_cfg_builder.py:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# -*- coding: utf-8 -*-
@@ -2521,7 +2522,7 @@ with open(&#39;./yolov4-custom.cfg&#39;, &#39;w&#39;) as f:
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;准备预训练权重文件yolov4.conv.137
+&lt;p&gt;准备预训练权重文件yolov4.conv.137&lt;br /&gt;
 下载：链接: &lt;a href=&#34;https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g&#34;&gt;https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g&lt;/a&gt; 提取码: g6en&lt;/p&gt;
 
 &lt;h1 id=&#34;训练&#34;&gt;训练&lt;/h1&gt;
@@ -2531,7 +2532,7 @@ with open(&#39;./yolov4-custom.cfg&#39;, &#39;w&#39;) as f:
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run --rm --gpus all -p 8888:8888 -v 【数据集和配置文件所在文件夹】:/my_cfgs -it leidawt/darknet-yolov4:v1 /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&amp;ndash;gpus all指定所需使用的GPU。
+&lt;p&gt;其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&amp;ndash;gpus all指定所需使用的GPU。&lt;br /&gt;
 进入镜像后，执行下述命令把各文件拷贝到正确的路径：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /my_cfgs
@@ -2552,7 +2553,7 @@ cd -
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector train data/obj.data cfg/yolov4-custom.cfg.cfg yolov4.conv.137 -dont_show -mjpeg_port 8888 -map
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。
+&lt;p&gt;通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。&lt;br /&gt;
 训练参数文件将自动保存在../backup路径下。&lt;/p&gt;
 
 &lt;h1 id=&#34;推理&#34;&gt;推理&lt;/h1&gt;
@@ -2562,7 +2563,7 @@ cd -
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&amp;lt;xxxxxx&amp;gt;.weights -dont_show data/obj/1.jpg   
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;该命令生成一个带预测框的predictions.jpg文件。
+&lt;p&gt;该命令生成一个带预测框的predictions.jpg文件。&lt;br /&gt;
 批量图片推理：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&amp;lt;xxxxxx&amp;gt;.weights -ext_output -dont_show -out test_result.json &amp;lt; data/test.txt
@@ -2577,7 +2578,7 @@ cd -
       <guid>https://leidawt.github.io/post/tagslam%E5%85%89%E5%AD%A6%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%B0%83%E8%AF%95/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#usb摄像头使用与矫正&#34;&gt;USB摄像头使用与矫正&lt;/a&gt;&lt;/li&gt;
@@ -2593,53 +2594,53 @@ cd -
 &lt;h1 id=&#34;usb摄像头使用与矫正&#34;&gt;USB摄像头使用与矫正&lt;/h1&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Ubuntu下查看USB摄像头设备
-Ref: &lt;a href=&#34;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&#34;&gt;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&lt;/a&gt;
-可通过v4l2-ctl &amp;ndash;list-devices命令来确认设备号&lt;/li&gt;
+&lt;li&gt;Ubuntu下查看USB摄像头设备&lt;br /&gt;
+Ref: &lt;a href=&#34;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&#34;&gt;http://www.1zlab.com/wiki/python-opencv-tutorial/ubuntu-check-usb-camera-device/&lt;/a&gt;&lt;br /&gt;
+可通过v4l2-ctl &amp;ndash;list-devices命令来确认设备号&lt;br /&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;摄像头接入ROS
+&lt;li&gt;&lt;p&gt;摄像头接入ROS&lt;br /&gt;
 安装usb_cam包&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install ros-melodic-usb-cam
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://wiki.ros.org/usb_cam#Parameters&#34;&gt;http://wiki.ros.org/usb_cam#Parameters&lt;/a&gt;
-软件包提供了实例launch文件usb_cam-test.launch，可从安装位置拷贝出来修改
+&lt;p&gt;&lt;a href=&#34;http://wiki.ros.org/usb_cam#Parameters&#34;&gt;http://wiki.ros.org/usb_cam#Parameters&lt;/a&gt;&lt;br /&gt;
+软件包提供了实例launch文件usb_cam-test.launch，可从安装位置拷贝出来修改&lt;br /&gt;
 3. 校准&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install ros-melodic-camera-calibration
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/camera_calibration&#34;&gt;http://wiki.ros.org/camera_calibration&lt;/a&gt;
-&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&lt;/a&gt;
-棋盘格板下载：
-&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&lt;/a&gt;
+&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/camera_calibration&#34;&gt;http://wiki.ros.org/camera_calibration&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration&lt;/a&gt;&lt;br /&gt;
+棋盘格板下载：&lt;br /&gt;
+&lt;a href=&#34;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&#34;&gt;http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration?action=AttachFile&amp;amp;do=view&amp;amp;target=check-108.pdf&lt;/a&gt;&lt;br /&gt;
 开启摄像头节点后，执行下面命令开启校准程序&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/usb_cam/image_raw camera:=/usb_cam
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;参数解释：
-&amp;ndash;size &amp;ndash;square表明所使用了棋盘格板类型
-image:=为相机图像消息（需rostopic list找出来对应一下，有时发布时会重映射）
-camera:=为相机命名空间（需rostopic list找出来对应一下，有时发布时会重映射）
+&lt;p&gt;参数解释：&lt;br /&gt;
+&amp;ndash;size &amp;ndash;square表明所使用了棋盘格板类型&lt;br /&gt;
+image:=为相机图像消息（需rostopic list找出来对应一下，有时发布时会重映射）&lt;br /&gt;
+camera:=为相机命名空间（需rostopic list找出来对应一下，有时发布时会重映射）&lt;br /&gt;
 移动标定板收集不同视角图像后，点击校准计算，再点击commit将校准文件保存到~/.ros/camera_info/下&lt;/p&gt;
 
 &lt;h1 id=&#34;tagslam安装&#34;&gt;Tagslam安装&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://github.com/berndpfrommer/tagslam_root&#34;&gt;https://github.com/berndpfrommer/tagslam_root&lt;/a&gt;
-手册
-&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/getting_started/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/getting_started/&lt;/a&gt;
-注意：tagslam项目使用最新的catkin build编译，而非catkin_make，catkin build是catkin_make下一代，不兼容，必须使用不同的工作空间。
-对于X86+ubuntu18.04，只需follow上面官网的安装流程即可，若在树莓派上安装，则需编译gtsam依赖库并修改部分源代码：
-&lt;strong&gt;附：修改后的源程序代码&lt;/strong&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/berndpfrommer/tagslam_root&#34;&gt;https://github.com/berndpfrommer/tagslam_root&lt;/a&gt;&lt;br /&gt;
+手册&lt;br /&gt;
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/getting_started/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/getting_started/&lt;/a&gt;&lt;br /&gt;
+注意：tagslam项目使用最新的catkin build编译，而非catkin_make，catkin build是catkin_make下一代，不兼容，必须使用不同的工作空间。&lt;br /&gt;
+对于X86+ubuntu18.04，只需follow上面官网的安装流程即可，若在树莓派上安装，则需编译gtsam依赖库并修改部分源代码：&lt;br /&gt;
+&lt;strong&gt;附：修改后的源程序代码&lt;/strong&gt;&lt;br /&gt;
 链接: &lt;a href=&#34;https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA&#34;&gt;https://pan.baidu.com/s/1RgEhi9P9uDfm9OhOFm6kNA&lt;/a&gt; 提取码: 16fa&lt;/p&gt;
 
-&lt;p&gt;首先，由于tagslam系统依赖的gtsam库没有arm二进制包，我们需要手动编译安装它
-&lt;a href=&#34;https://github.com/borglab/gtsam&#34;&gt;https://github.com/borglab/gtsam&lt;/a&gt;
-&lt;a href=&#34;https://gtsam.org/&#34;&gt;https://gtsam.org/&lt;/a&gt;
-临时开辟一块虚拟内存以避免内存溢出
+&lt;p&gt;首先，由于tagslam系统依赖的gtsam库没有arm二进制包，我们需要手动编译安装它&lt;br /&gt;
+&lt;a href=&#34;https://github.com/borglab/gtsam&#34;&gt;https://github.com/borglab/gtsam&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://gtsam.org/&#34;&gt;https://gtsam.org/&lt;/a&gt;&lt;br /&gt;
+临时开辟一块虚拟内存以避免内存溢出&lt;br /&gt;
 &lt;a href=&#34;https://blog.csdn.net/qq__590980/article/details/102556740&#34;&gt;https://blog.csdn.net/qq__590980/article/details/102556740&lt;/a&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo mkdir /swap 
@@ -2651,7 +2652,7 @@ sudo swapon swapfile
 free -h
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;重启后交换空间就会消失，届时直接删去swapfile文件即可
+&lt;p&gt;重启后交换空间就会消失，届时直接删去swapfile文件即可&lt;br /&gt;
 编译gtsam（约需要4h）：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/borglab/gtsam.git
@@ -2662,7 +2663,7 @@ make -j1
 make install
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;注意这里指定了编译类型为Release，以提高运行速度
+&lt;p&gt;注意这里指定了编译类型为Release，以提高运行速度&lt;br /&gt;
 下面开始编译安装tagslam，直接使用修改好的源码src.zip，主要针对boost::irange函数在32位arm平台的错误调用进行了适应性修正&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir xxx/tagslam_root
@@ -2674,7 +2675,7 @@ catkin config -DCMAKE_BUILD_TYPE=Release
 catkin build -j1
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;编译约需要8h。
+&lt;p&gt;编译约需要8h。&lt;br /&gt;
 注：若提示找不到Python.h则补充安装如下包即可（注意替换3.5为所使用的python版本）：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install python3.5-dev
@@ -2682,9 +2683,9 @@ catkin build -j1
 
 &lt;h1 id=&#34;ros多工作空间覆盖导致部分工作空间环境变量不生效问题&#34;&gt;ROS多工作空间覆盖导致部分工作空间环境变量不生效问题&lt;/h1&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;https://blog.csdn.net/qq_38441692/article/details/105936291&#34;&gt;https://blog.csdn.net/qq_38441692/article/details/105936291&lt;/a&gt;
-假设~/catkin_make是主工作空间（其他工作空间由本空间source）
-则修改~/catkin_make/devel/_setup_util.py：
+&lt;p&gt;Ref: &lt;a href=&#34;https://blog.csdn.net/qq_38441692/article/details/105936291&#34;&gt;https://blog.csdn.net/qq_38441692/article/details/105936291&lt;/a&gt;&lt;br /&gt;
+假设~/catkin_make是主工作空间（其他工作空间由本空间source）&lt;br /&gt;
+则修改~/catkin_make/devel/_setup_util.py：&lt;br /&gt;
 
 
 
@@ -2720,8 +2721,8 @@ catkin build -j1
 
 
 &lt;/figure&gt;
-
-更改完后再次编译下工作空间就能实现这个工作空间对其他工作空间进行统一管理了
+&lt;br /&gt;
+更改完后再次编译下工作空间就能实现这个工作空间对其他工作空间进行统一管理了&lt;br /&gt;
 可以通过&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;echo $ROS_PACKAGE_PATH 
@@ -2731,7 +2732,7 @@ catkin build -j1
 
 &lt;h1 id=&#34;tagslam配置&#34;&gt;Tagslam配置&lt;/h1&gt;
 
-&lt;p&gt;基本思想
+&lt;p&gt;基本思想&lt;br /&gt;
 
 
 
@@ -2767,27 +2768,27 @@ catkin build -j1
 
 
 &lt;/figure&gt;
-
-要使用该系统进行全局定位，首先需要确定相机参数（标定）。其次，在tagslam中所有tag应固定不动，它们相对于lab坐标系（名字其实无所谓）。我们只需指定某个tag相对lab坐标系的位姿即可，当相机同时看到两个以上tag时，其相对位姿会被自动测出并记录下来，非常方便。下面的配置中我指定tag0在lab坐标系远点，tag类型为边长8cm的36h11二维码，使用一只640*480的usb摄像头。
-1. 修改apriltag_detector_node.launch文件：
-找到工作空间中tagslam项目的launch文件地址（xxx/tagslam_root/src/tagslam/launch/）
-编辑apriltag_detector_node.launch文件，将最后的remap按相机节点的消息名称修改,
-如：
-&lt;remap from=&#34;~image/compressed&#34; to=&#34;/usb_cam/image_raw/compressed&#34;/&gt;
-找到工作空间中tagslam项目的example目录（tagslam_root/src/tagslam/example/），这是官方的demo，写好了一些配置文件，为方便，我们直接将其略加修改即可使用，不必另起炉灶。
-2. 编辑cameras.yaml文件：参考
-&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&lt;/a&gt;
-这个文件的作用是确定相机内参等信息。注意rostopic字段要填写上自己摄像头的消息名（和apriltag_detector_node.launch中的一致）
-3. 编辑tagslam.yaml文件：
-这个文件描述tagslam系统的主要选项，详见
-&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/input_files/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/input_files/&lt;/a&gt;
-其中大部分不需调整，仅需注意一下几个选项：
-default_tag_size: 0.08
-size: 0.08
-这两个参数单位是米，要和使用的apriltag二维码尺寸相对应起来
-4. 最后我们准备需要使用的二维码：
-&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/making_tags/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/making_tags/&lt;/a&gt;
-测试表明，对于640*480分辨率的摄像头，制作（打印）一些8cm的二维码就足以满足的检测需要
+&lt;br /&gt;
+要使用该系统进行全局定位，首先需要确定相机参数（标定）。其次，在tagslam中所有tag应固定不动，它们相对于lab坐标系（名字其实无所谓）。我们只需指定某个tag相对lab坐标系的位姿即可，当相机同时看到两个以上tag时，其相对位姿会被自动测出并记录下来，非常方便。下面的配置中我指定tag0在lab坐标系远点，tag类型为边长8cm的36h11二维码，使用一只640*480的usb摄像头。&lt;br /&gt;
+1. 修改apriltag_detector_node.launch文件：&lt;br /&gt;
+找到工作空间中tagslam项目的launch文件地址（xxx/tagslam_root/src/tagslam/launch/）&lt;br /&gt;
+编辑apriltag_detector_node.launch文件，将最后的remap按相机节点的消息名称修改,&lt;br /&gt;
+如：&lt;br /&gt;
+&lt;remap from=&#34;~image/compressed&#34; to=&#34;/usb_cam/image_raw/compressed&#34;/&gt;&lt;br /&gt;
+找到工作空间中tagslam项目的example目录（tagslam_root/src/tagslam/example/），这是官方的demo，写好了一些配置文件，为方便，我们直接将其略加修改即可使用，不必另起炉灶。&lt;br /&gt;
+2. 编辑cameras.yaml文件：参考&lt;br /&gt;
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/intrinsic_calibration/&lt;/a&gt;&lt;br /&gt;
+这个文件的作用是确定相机内参等信息。注意rostopic字段要填写上自己摄像头的消息名（和apriltag_detector_node.launch中的一致）&lt;br /&gt;
+3. 编辑tagslam.yaml文件：&lt;br /&gt;
+这个文件描述tagslam系统的主要选项，详见&lt;br /&gt;
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/input_files/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/input_files/&lt;/a&gt;&lt;br /&gt;
+其中大部分不需调整，仅需注意一下几个选项：&lt;br /&gt;
+default_tag_size: 0.08&lt;br /&gt;
+size: 0.08&lt;br /&gt;
+这两个参数单位是米，要和使用的apriltag二维码尺寸相对应起来&lt;br /&gt;
+4. 最后我们准备需要使用的二维码：&lt;br /&gt;
+&lt;a href=&#34;https://berndpfrommer.github.io/tagslam_web/making_tags/&#34;&gt;https://berndpfrommer.github.io/tagslam_web/making_tags/&lt;/a&gt;&lt;br /&gt;
+测试表明，对于640*480分辨率的摄像头，制作（打印）一些8cm的二维码就足以满足的检测需要&lt;br /&gt;
 注：2，3两步修改过的文件可在文末下载&lt;/p&gt;
 
 &lt;h1 id=&#34;tagslam实验&#34;&gt;Tagslam实验&lt;/h1&gt;
@@ -2813,7 +2814,7 @@ roslaunch tagslam apriltag_detector_node.launch
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rviz -d `rospack find tagslam`/example/tagslam_example.rviz &amp;amp;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;方便起见，将这些命令写为launch文件保存到
+&lt;p&gt;方便起见，将这些命令写为launch文件保存到&lt;br /&gt;
 xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;launch&amp;gt;
@@ -2833,8 +2834,8 @@ xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;roslaunch tagslam example_main.launch
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;即可。
-最后附上配置文件：
+&lt;p&gt;即可。&lt;br /&gt;
+最后附上配置文件：&lt;br /&gt;
 链接: &lt;a href=&#34;https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA&#34;&gt;https://pan.baidu.com/s/1gDKZ1iPiN5OGHUsnms6kKA&lt;/a&gt; 提取码: wev2&lt;/p&gt;
 </description>
     </item>
@@ -2846,7 +2847,7 @@ xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
       <guid>https://leidawt.github.io/post/%E5%9C%A8stm32%E4%B8%8A%E8%BF%90%E8%A1%8Cros%E8%8A%82%E7%82%B9-rosserial-stm32%E5%BC%80%E5%8F%91%E5%8F%8A%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#基本原理&#34;&gt;基本原理&lt;/a&gt;&lt;/li&gt;
@@ -2866,14 +2867,14 @@ xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/nav&gt;&lt;/p&gt;
 
-&lt;p&gt;近期接手了一些ROS机器人项目，这里将开发中遇到的问题和解决方法记录下来。
+&lt;p&gt;近期接手了一些ROS机器人项目，这里将开发中遇到的问题和解决方法记录下来。&lt;br /&gt;
 本文简述借助rosserial在stm32系列中运行ROS节点的方法，stm32强大的外设资源为机器人底层设备控制带来了极大的便利&lt;/p&gt;
 
 &lt;h1 id=&#34;基本原理&#34;&gt;基本原理&lt;/h1&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/rosserial&#34;&gt;http://wiki.ros.org/rosserial&lt;/a&gt;
-简言之，rosserial提供一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。
-要使用rosserial，显然需要分别在嵌入式板卡和主控PC上部署，当前支持的板卡有：
+&lt;p&gt;Ref: &lt;a href=&#34;http://wiki.ros.org/rosserial&#34;&gt;http://wiki.ros.org/rosserial&lt;/a&gt;&lt;br /&gt;
+简言之，rosserial提供一种嵌入式节点和运行在主控PC上的ros master通信的方式，使得在嵌入式节点上编写、运行ros节点成为可能，主要用于转接IO和各类传感器，运行底层控制算法。&lt;br /&gt;
+要使用rosserial，显然需要分别在嵌入式板卡和主控PC上部署，当前支持的板卡有：&lt;br /&gt;
 
 
 
@@ -2921,26 +2922,26 @@ xxx/tagslam_root/src/tagslam/example/example_main.launch&lt;/p&gt;
 sudo apt-get install ros-melodic-rosserial-arduino
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;将库&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt; clone到catkin_ws/src
+&lt;p&gt;将库&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt; clone到catkin_ws/src&lt;br /&gt;
 这些软件包提供转发功能&lt;/p&gt;
 
 &lt;h2 id=&#34;嵌入式端安装配置-stm32模板工程的建立&#34;&gt;嵌入式端安装配置（stm32模板工程的建立）&lt;/h2&gt;
 
-&lt;p&gt;Rosserial在嵌入式端的文件有两部分，一是STM32Hardware.h 和ros.h，这两个文件涉及硬件底层串口的实现，另一部分是ros头文件组，这些文件和在ROS PC端调用的并无区别，官方提供脚本生成这些头文件，使用时只需拷入自己的嵌入式工程目录即可。
-因此，关键在于适应性的修改STM32Hardware.h 和ros.h使得rosserial能够调用嵌入式板卡的串口，对此，官方已经提供修改好的文件及样板工程：
-&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt;
-官方工程基于stm32 HAL库+cubeMX配置
-接下来在官方文件的基础上，在最新的STM32CubeIDE1.4.0上建立工程。
+&lt;p&gt;Rosserial在嵌入式端的文件有两部分，一是STM32Hardware.h 和ros.h，这两个文件涉及硬件底层串口的实现，另一部分是ros头文件组，这些文件和在ROS PC端调用的并无区别，官方提供脚本生成这些头文件，使用时只需拷入自己的嵌入式工程目录即可。&lt;br /&gt;
+因此，关键在于适应性的修改STM32Hardware.h 和ros.h使得rosserial能够调用嵌入式板卡的串口，对此，官方已经提供修改好的文件及样板工程：&lt;br /&gt;
+&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32&#34;&gt;https://github.com/yoneken/rosserial_stm32&lt;/a&gt;&lt;br /&gt;
+官方工程基于stm32 HAL库+cubeMX配置&lt;br /&gt;
+接下来在官方文件的基础上，在最新的STM32CubeIDE1.4.0上建立工程。&lt;br /&gt;
 &lt;strong&gt;注：关于STM32CubeIDE：近年，ST公司将STM32CubeMX进一步升级，集成到全新的STM32CubeIDE中，STM32CubeIDE是基于eclipse开发的完整且全面的集成环境&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;如下是两个关于cubeMX工具和HAL库的极好教程，本文不再赘述：
-&lt;a href=&#34;http://www.mculover666.cn/posts/578764034/&#34;&gt;http://www.mculover666.cn/posts/578764034/&lt;/a&gt;
+&lt;p&gt;如下是两个关于cubeMX工具和HAL库的极好教程，本文不再赘述：&lt;br /&gt;
+&lt;a href=&#34;http://www.mculover666.cn/posts/578764034/&#34;&gt;http://www.mculover666.cn/posts/578764034/&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&#34;https://www.waveshare.net/study/portal.php?mod=list&amp;amp;catid=40&#34;&gt;https://www.waveshare.net/study/portal.php?mod=list&amp;amp;catid=40&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;此外，STM32CubeIDE默认的代码提示的触发条件比较严苛，可参考&lt;a href=&#34;https://blog.csdn.net/nopear6/article/details/106255311的方法调整STM32CubeIDE的代码补全策略，提高开发效率。&#34;&gt;https://blog.csdn.net/nopear6/article/details/106255311的方法调整STM32CubeIDE的代码补全策略，提高开发效率。&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;下面开始建立工程：Ref: &lt;a href=&#34;https://blog.csdn.net/qq_37416258/article/details/84844051&#34;&gt;https://blog.csdn.net/qq_37416258/article/details/84844051&lt;/a&gt;
-事实上，我们只需要开启并配置串口2即可，官方提供的文件使用串口2实现rosserial通信接口，注意开启串口DMA和中断。
+&lt;p&gt;下面开始建立工程：Ref: &lt;a href=&#34;https://blog.csdn.net/qq_37416258/article/details/84844051&#34;&gt;https://blog.csdn.net/qq_37416258/article/details/84844051&lt;/a&gt;&lt;br /&gt;
+事实上，我们只需要开启并配置串口2即可，官方提供的文件使用串口2实现rosserial通信接口，注意开启串口DMA和中断。&lt;br /&gt;
 
 
 
@@ -2976,7 +2977,7 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3012,7 +3013,7 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3048,18 +3049,18 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
-注：上面引用的博客中，开启TIM2是没有必要的，后半部分也有过时的地方，如头文件的修改，详见本文文件夹下建立好的模板工程
-串口配置搞定后，我们进一步生成ros头文件并添加到stm32工程中，这些头文件用于提供自定义消息、ros标准消息的支持：
+&lt;br /&gt;
+注：上面引用的博客中，开启TIM2是没有必要的，后半部分也有过时的地方，如头文件的修改，详见本文文件夹下建立好的模板工程&lt;br /&gt;
+串口配置搞定后，我们进一步生成ros头文件并添加到stm32工程中，这些头文件用于提供自定义消息、ros标准消息的支持：&lt;br /&gt;
 在服务端：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun rosserial_stm32 make_libraries.py .
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;这将在当前目录生成Inc/文件夹，里面包含需所有头文件，将这些文件拷贝到工程即可，本文模板工程中放置于RosLibs文件夹
-&lt;strong&gt;注意，当PC端添加新包后，需再次执行以更新这些头文件&lt;/strong&gt;
-之后，在工程中建立User文件夹，将mainpp.h，mainpp.cpp拷入，后续自行编写的节点逻辑在此存放。最后，在工程main.c中调用即可。这里同时存在mainpp 和 main 两个“入口”的目的是方便C/C++混合编译。
-最后的最后，设置查找路径：
+&lt;p&gt;这将在当前目录生成Inc/文件夹，里面包含需所有头文件，将这些文件拷贝到工程即可，本文模板工程中放置于RosLibs文件夹&lt;br /&gt;
+&lt;strong&gt;注意，当PC端添加新包后，需再次执行以更新这些头文件&lt;/strong&gt;&lt;br /&gt;
+之后，在工程中建立User文件夹，将mainpp.h，mainpp.cpp拷入，后续自行编写的节点逻辑在此存放。最后，在工程main.c中调用即可。这里同时存在mainpp 和 main 两个“入口”的目的是方便C/C++混合编译。&lt;br /&gt;
+最后的最后，设置查找路径：&lt;br /&gt;
 
 
 
@@ -3095,7 +3096,7 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3131,7 +3132,7 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3167,17 +3168,17 @@ sudo apt-get install ros-melodic-rosserial-arduino
 
 
 &lt;/figure&gt;
-
-&lt;strong&gt;注：这里截图中使用了绝对路径，后续已修正为相对路径&lt;/strong&gt;
-&lt;strong&gt;附：模板工程下载&lt;/strong&gt;
+&lt;br /&gt;
+&lt;strong&gt;注：这里截图中使用了绝对路径，后续已修正为相对路径&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;附：模板工程下载&lt;/strong&gt;&lt;br /&gt;
 链接: &lt;a href=&#34;https://pan.baidu.com/s/1SNI_tKaFUS6zXoIS0GWRCw&#34;&gt;https://pan.baidu.com/s/1SNI_tKaFUS6zXoIS0GWRCw&lt;/a&gt; 提取码: exq5&lt;/p&gt;
 
 &lt;h1 id=&#34;ros节点编写&#34;&gt;ROS节点编写&lt;/h1&gt;
 
-&lt;p&gt;Ref: &lt;a href=&#34;https://sudonull.com/post/31955-Rosserial-STM32&#34;&gt;https://sudonull.com/post/31955-Rosserial-STM32&lt;/a&gt;
-官方例程：
-&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&#34;&gt;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&lt;/a&gt;
-为控制节点发送频率，我们借助cubeMX默认开启的sysTick定时器实现频率控制。
+&lt;p&gt;Ref: &lt;a href=&#34;https://sudonull.com/post/31955-Rosserial-STM32&#34;&gt;https://sudonull.com/post/31955-Rosserial-STM32&lt;/a&gt;&lt;br /&gt;
+官方例程：&lt;br /&gt;
+&lt;a href=&#34;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&#34;&gt;https://github.com/yoneken/rosserial_stm32/tree/master/src/ros_lib/examples&lt;/a&gt;&lt;br /&gt;
+为控制节点发送频率，我们借助cubeMX默认开启的sysTick定时器实现频率控制。&lt;br /&gt;
 Ref: &lt;a href=&#34;http://www.mculover666.cn/posts/4283984198/&#34;&gt;http://www.mculover666.cn/posts/4283984198/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;节点的逻辑在mainpp.c中实现，其中setup()函数放置初始化工作，loop()中编写周期性消息发送指令，如：&lt;/p&gt;
@@ -3199,10 +3200,10 @@ Ref: &lt;a href=&#34;http://www.mculover666.cn/posts/4283984198/&#34;&gt;http://
 
 &lt;h1 id=&#34;联合调试&#34;&gt;联合调试&lt;/h1&gt;
 
-&lt;p&gt;首先在PC端给权限，USB串口插上后，通常挂载在/dev/ttyUSB0，需要线给下777权限：
-sudo chmod 777 /dev/ttyUSB0
-也可直接添加用户组，一劳永逸：
-&lt;a href=&#34;https://blog.csdn.net/qq_32618327/article/details/106222196&#34;&gt;https://blog.csdn.net/qq_32618327/article/details/106222196&lt;/a&gt;
+&lt;p&gt;首先在PC端给权限，USB串口插上后，通常挂载在/dev/ttyUSB0，需要线给下777权限：&lt;br /&gt;
+sudo chmod 777 /dev/ttyUSB0&lt;br /&gt;
+也可直接添加用户组，一劳永逸：&lt;br /&gt;
+&lt;a href=&#34;https://blog.csdn.net/qq_32618327/article/details/106222196&#34;&gt;https://blog.csdn.net/qq_32618327/article/details/106222196&lt;/a&gt;&lt;br /&gt;
 启动服务端桥接节点：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;rosrun rosserial_python serial_node.py
@@ -3212,19 +3213,19 @@ sudo chmod 777 /dev/ttyUSB0
 
 &lt;h2 id=&#34;开发ros-srv时error-service-topic-responded-with-an-error-service-cannot-process-request-service-handler-returned-none错误的处理方法&#34;&gt;开发ros srv时ERROR: service [/topic] responded with an error: service cannot process request: service handler returned None错误的处理方法&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://github.com/ros-drivers/rosserial/pull/414&#34;&gt;https://github.com/ros-drivers/rosserial/pull/414&lt;/a&gt;
-where you find working ServiceClient.py (&lt;a href=&#34;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&#34;&gt;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&lt;/a&gt;)
-don&amp;rsquo;t forget to update the Arduino ros_lib after step 8
-Step 8.1 Delete Arduino/libraries/ros_lib
-Step 8.2 Install ros_lib again (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&lt;/a&gt;)
-Step 8.3 Make Headers agian (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&lt;/a&gt;)
-Step 8.4 Restart Arduino IDE( If it was Open)
-Step 9
+&lt;p&gt;&lt;a href=&#34;https://github.com/ros-drivers/rosserial/pull/414&#34;&gt;https://github.com/ros-drivers/rosserial/pull/414&lt;/a&gt;&lt;br /&gt;
+where you find working ServiceClient.py (&lt;a href=&#34;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&#34;&gt;https://github.com/ros-drivers/rosserial/releases/tag/0.7.7&lt;/a&gt;)&lt;br /&gt;
+don&amp;rsquo;t forget to update the Arduino ros_lib after step 8&lt;br /&gt;
+Step 8.1 Delete Arduino/libraries/ros_lib&lt;br /&gt;
+Step 8.2 Install ros_lib again (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup&lt;/a&gt;)&lt;br /&gt;
+Step 8.3 Make Headers agian (&lt;a href=&#34;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&#34;&gt;https://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages&lt;/a&gt;)&lt;br /&gt;
+Step 8.4 Restart Arduino IDE( If it was Open)&lt;br /&gt;
+Step 9&lt;br /&gt;
 即：将现有ServiceClient.py替换为更老版本的，当前版本库的ServiceClient.py存在Bug&lt;/p&gt;
 
 &lt;h2 id=&#34;tried-to-publish-before-configured-topic-id-125错误的解决&#34;&gt;tried to publish before configured topic id 125错误的解决&lt;/h2&gt;
 
-&lt;p&gt;扩大预设缓冲区，原为512
+&lt;p&gt;扩大预设缓冲区，原为512&lt;br /&gt;
 
 
 
@@ -3260,7 +3261,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3346,7 +3347,7 @@ Step 9
       <guid>https://leidawt.github.io/post/matlab%E9%A9%AC%E6%B0%8F%E9%93%BE%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#基本性质&#34;&gt;基本性质&lt;/a&gt;&lt;/li&gt;
@@ -3361,7 +3362,7 @@ Step 9
 
 &lt;h1 id=&#34;基本性质&#34;&gt;基本性质&lt;/h1&gt;
 
-&lt;p&gt;为进行状态分类，先引入一组重要性质和定义
+&lt;p&gt;为进行状态分类，先引入一组重要性质和定义&lt;br /&gt;
 
 
 
@@ -3397,7 +3398,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3468,7 +3469,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3504,7 +3505,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3540,7 +3541,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3576,7 +3577,7 @@ Step 9
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -3688,9 +3689,9 @@ Step 9
 
 
 &lt;/figure&gt;
-
-式子7-94为平衡方程：$\pi=\pi*P$
-不可约且正常返的马氏链一定存在平稳分布，更一般的，只要马氏链存在一个闭的不可约子集，并且该集合中的状态均是正常返的，则存在平稳分布。
+&lt;br /&gt;
+式子7-94为平衡方程：$\pi=\pi*P$&lt;br /&gt;
+不可约且正常返的马氏链一定存在平稳分布，更一般的，只要马氏链存在一个闭的不可约子集，并且该集合中的状态均是正常返的，则存在平稳分布。&lt;br /&gt;
 
 
 
@@ -3730,7 +3731,7 @@ Step 9
 
 &lt;h1 id=&#34;混合时间-mixing-time&#34;&gt;混合时间（mixing time）&lt;/h1&gt;
 
-&lt;p&gt;在概率论中，马尔可夫链的混合时间是马尔可夫链“接近”其稳态分布的所需时间。
+&lt;p&gt;在概率论中，马尔可夫链的混合时间是马尔可夫链“接近”其稳态分布的所需时间。&lt;br /&gt;
 
 
 
@@ -3766,15 +3767,15 @@ Step 9
 
 
 &lt;/figure&gt;
-
-对于遍历链，任何初始分布都以第二大特征值模量（SLEM）$\mu$确定的速率收敛到平稳分布。 谱间隙$1-\mu$，提供了一种可视化的测量方法，具有较大的间隙（较小的SLEM圆），可产生更快的收敛。matlab中估计mixing time的式子是：
+&lt;br /&gt;
+对于遍历链，任何初始分布都以第二大特征值模量（SLEM）$\mu$确定的速率收敛到平稳分布。 谱间隙$1-\mu$，提供了一种可视化的测量方法，具有较大的间隙（较小的SLEM圆），可产生更快的收敛。matlab中估计mixing time的式子是：&lt;br /&gt;
 $$tMix=-\frac{1}{\log{\mu}}$$&lt;/p&gt;
 
 &lt;h1 id=&#34;matlab马氏链工具包&#34;&gt;MATLAB马氏链工具包&lt;/h1&gt;
 
-&lt;p&gt;MATLAB在Econometrics Toolbox中提供&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-chain-models.html&#34;&gt;dtmc&lt;/a&gt;类，可绘制状态转移图、判断遍历性等等
-1. 生成马氏链
-直接输入一步状态转移矩阵即可
+&lt;p&gt;MATLAB在Econometrics Toolbox中提供&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-chain-models.html&#34;&gt;dtmc&lt;/a&gt;类，可绘制状态转移图、判断遍历性等等&lt;br /&gt;
+1. 生成马氏链&lt;br /&gt;
+直接输入一步状态转移矩阵即可&lt;br /&gt;
     &lt;code&gt;
     P = [ 0   0  1/2 1/4 1/4  0   0 ;
           0   0  1/3  0  2/3  0   0 ;
@@ -3784,12 +3785,12 @@ $$tMix=-\frac{1}{\log{\mu}}$$&lt;/p&gt;
          1/2 1/2  0   0   0   0   0 ;
          1/4 3/4  0   0   0   0   0 ];
     mc = dtmc(P);
-&lt;/code&gt;
-2. 状态类的判断
-    通过绘制状态转移图即可判断马氏链中state类型：
+&lt;/code&gt;&lt;br /&gt;
+2. 状态类的判断&lt;br /&gt;
+    通过绘制状态转移图即可判断马氏链中state类型：&lt;br /&gt;
     &lt;code&gt;
     graphplot(mc,&#39;ColorNodes&#39;,true);
-&lt;/code&gt;
+&lt;/code&gt;&lt;br /&gt;
 
 
 
@@ -3834,7 +3835,7 @@ $$tMix=-\frac{1}{\log{\mu}}$$&lt;/p&gt;
 tfErg = isergodic(mc)
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;周期性
+&lt;li&gt;&lt;p&gt;周期性&lt;br /&gt;
 周期性可以状态分布概率直观的看出来&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;X1 = redistribute(mc,20);
@@ -3879,7 +3880,7 @@ distplot(mc,X1);
 &lt;/figure&gt;
 &lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;平稳分布及混合时间
+&lt;li&gt;&lt;p&gt;平稳分布及混合时间&lt;br /&gt;
 直接调用下面命令即可&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[xFix,tMix] = asymptotics(mc)
@@ -3926,12 +3927,12 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 其中粉色阴影表示最大特征值和第二大特征值之间的gap，越大则收敛越快（mixing time越小），若存在周期=k，则半径为1的圆上会有k个点，即存在k个模为1的特征值。&lt;/p&gt;
 
 &lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&#34;&gt;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&lt;/a&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&#34;&gt;https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav&lt;/a&gt;&lt;br /&gt;
 《随机过程及其应用》第二版 陆大金&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
@@ -3944,7 +3945,7 @@ eigplot(mc);
       <guid>https://leidawt.github.io/post/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BBprobabilistic-terrain-mapping-for-mobile-robots-with-uncertain-localization/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#1-整体框架&#34;&gt;1. 整体框架&lt;/a&gt;&lt;/li&gt;
@@ -3992,12 +3993,12 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 “Probabilistic Terrain Mapping for Mobile Robots With Uncertain Localization”是ETH的四足机器人组的一个研究子项目，其动机是研究如何用机器人摄像机逐帧相对运动和3D点云观测对机器人的局部地面地形进行重构建模，用来做局部规划和四足里面的足迹落点控制。该文发在2018 RA-L上，有ROS代码。&lt;/p&gt;
 
 &lt;h1 id=&#34;1-整体框架&#34;&gt;1. 整体框架&lt;/h1&gt;
 
-&lt;p&gt;该文在他们先前工作“ROBOT-CENTRIC ELEVATION MAPPING WITH UNCERTAINTY ESTIMATES”上改进得到，局部地形评估有一个经典工作是2007年的“Real-time localization and elevation mapping within urban search and rescue scenarios”，发表在著名应用期刊Journal of Field Robotics上，写的很好。
+&lt;p&gt;该文在他们先前工作“ROBOT-CENTRIC ELEVATION MAPPING WITH UNCERTAINTY ESTIMATES”上改进得到，局部地形评估有一个经典工作是2007年的“Real-time localization and elevation mapping within urban search and rescue scenarios”，发表在著名应用期刊Journal of Field Robotics上，写的很好。&lt;br /&gt;
 该文主要框架是
 
 
@@ -4033,7 +4034,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 一共三个模块，一是把观测信息融合到栅格地图，二是把机器人移动融合到栅格地图，即是把位姿估计不确定性体现到栅格地图里。最后是地图融合模块，这个模块的存在是因为第一二步处理的栅格地图是自定义的概率栅格地图，每个点（x,y）包含各自期望和方差，这一步把期望，置信上下界确定出来，导出我们常见的二维栅格地图（类似costmap）。&lt;/p&gt;
 
 &lt;h1 id=&#34;2-符号与坐标系定义&#34;&gt;2. 符号与坐标系定义&lt;/h1&gt;
@@ -4073,8 +4074,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-如上定义4个坐标系$\mathbf{I,B,S,M}$，惯性系$\mathbf{I}$固定在真实世界地形上，机器人base系$\mathbf{B}$和传感器系$\mathbf{S}$固定连接。$\mathbf{I}$和$\mathbf{B}$之间关系有姿态估计确定：平移$r_{IB}$和旋转$\Phi _{IB}$，并由6维协方差阵表示不确定性：
+&lt;br /&gt;
+如上定义4个坐标系$\mathbf{I,B,S,M}$，惯性系$\mathbf{I}$固定在真实世界地形上，机器人base系$\mathbf{B}$和传感器系$\mathbf{S}$固定连接。$\mathbf{I}$和$\mathbf{B}$之间关系有姿态估计确定：平移$r_{IB}$和旋转$\Phi _{IB}$，并由6维协方差阵表示不确定性：&lt;br /&gt;
 
 
 
@@ -4110,8 +4111,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-为了后面好处理，这里的旋转拆分为两部分：
+&lt;br /&gt;
+为了后面好处理，这里的旋转拆分为两部分：&lt;br /&gt;
 
 
 
@@ -4147,13 +4148,13 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-前者包含yaw变换，后面包含pitch和roll。
+&lt;br /&gt;
+前者包含yaw变换，后面包含pitch和roll。&lt;br /&gt;
 最后看地图坐标系$\mathbf{M}$。$\Phi _{BM}$规定为：yaw方向随着$\mathbf{B}$转，pitch，roll方向和$\mathbf{I}$保持一致。而$r_{BM}$原文没有明确说明，不过按上下文推应该是某个固定值，这并无关系。&lt;/p&gt;
 
 &lt;h1 id=&#34;3-由观测更新地图&#34;&gt;3. 由观测更新地图&lt;/h1&gt;
 
-&lt;p&gt;传感器是realsense这类RGB-D相机的点云，观测结果用$_sr_{sp}$表示（传感器到P点距离sp在s坐标系下的表示）。地图M是2.5d栅格地图，即每个元素是用$(x_i,y_i,\tilde{p_i})表达的。其中$$\tilde{p} \sim \mathcal{N}(p,\sigma^2_p)$是$_sr_{sp}$映射到地图坐标系后的高。那么有：
+&lt;p&gt;传感器是realsense这类RGB-D相机的点云，观测结果用$_sr_{sp}$表示（传感器到P点距离sp在s坐标系下的表示）。地图M是2.5d栅格地图，即每个元素是用$(x_i,y_i,\tilde{p_i})表达的。其中$$\tilde{p} \sim \mathcal{N}(p,\sigma^2_p)$是$_sr_{sp}$映射到地图坐标系后的高。那么有：&lt;br /&gt;
 
 
 
@@ -4189,9 +4190,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-其中P是映射阵：P=[0,0,1]。
-而方差$\sigma^2_p$稍微难求一点，涉及到方差传播（可见上一博客）：
+&lt;br /&gt;
+其中P是映射阵：P=[0,0,1]。&lt;br /&gt;
+而方差$\sigma^2_p$稍微难求一点，涉及到方差传播（可见上一博客）：&lt;br /&gt;
 
 
 
@@ -4227,8 +4228,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-其中：
+&lt;br /&gt;
+其中：&lt;br /&gt;
 
 
 
@@ -4264,9 +4265,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-这个偏导数并非普通矩阵求导，我们处理的是参数化的旋转矩阵，其微分应用李代数解决。&lt;strong&gt;通过阅读文献《A Primer on the Differential Calculus of 3D Orientations》得知其推导方法&lt;/strong&gt;
-该文献推了一遍与旋转阵相关的所有式子，首先介绍其符号体系：
+&lt;br /&gt;
+这个偏导数并非普通矩阵求导，我们处理的是参数化的旋转矩阵，其微分应用李代数解决。&lt;strong&gt;通过阅读文献《A Primer on the Differential Calculus of 3D Orientations》得知其推导方法&lt;/strong&gt;&lt;br /&gt;
+该文献推了一遍与旋转阵相关的所有式子，首先介绍其符号体系：&lt;br /&gt;
 
 
 
@@ -4302,7 +4303,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -4338,8 +4339,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-注意，从后文可知这里映射C是广义的，也表示欧拉角或单位四元数参数化的旋转到其$\mathbb{R}^{3\times3}$矩阵表示的映射！！公式1 2 3是向量对应的反对称阵的三条小性质。略去中间大量内容直接看偏导数推导：
+&lt;br /&gt;
+注意，从后文可知这里映射C是广义的，也表示欧拉角或单位四元数参数化的旋转到其$\mathbb{R}^{3\times3}$矩阵表示的映射！！公式1 2 3是向量对应的反对称阵的三条小性质。略去中间大量内容直接看偏导数推导：&lt;br /&gt;
 
 
 
@@ -4375,9 +4376,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-上面推导是拿出向量导数每一元素推的，每个元素都一样，这样写省纸。第五个等号是叉乘的反交换率
-上面推导用到的性质20,14,5,12在此摘录下来：
+&lt;br /&gt;
+上面推导是拿出向量导数每一元素推的，每个元素都一样，这样写省纸。第五个等号是叉乘的反交换率&lt;br /&gt;
+上面推导用到的性质20,14,5,12在此摘录下来：&lt;br /&gt;
 
 
 
@@ -4413,8 +4414,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-为简化书写定义的两个二元运算符（box add与box sub）
+&lt;br /&gt;
+为简化书写定义的两个二元运算符（box add与box sub）&lt;br /&gt;
 
 
 
@@ -4450,7 +4451,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -4486,9 +4487,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-注：式5看做算子方程即可理解，并不是旋转矩阵
-最后是著名的罗氏公式：
+&lt;br /&gt;
+注：式5看做算子方程即可理解，并不是旋转矩阵&lt;br /&gt;
+最后是著名的罗氏公式：&lt;br /&gt;
 
 
 
@@ -4524,9 +4525,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-至此解决了对上面雅克比矩阵的疑问，回到原文献，还有两个问题需要说明，一是$\Sigma_S$是相机误差模型，实际就是通过实验把深度相机测的点云在x,y,z三方向的误差测出来。二是$\Sigma_{\Phi_{IS}}$，这仅包含旋转估计的不确定性，而平移估计不确定性在后面的由运动更新的部分考虑。
-推出$(p,\sigma^2_p)$后，用经典的卡尔曼滤波做一下地图和观测的融合：
+&lt;br /&gt;
+至此解决了对上面雅克比矩阵的疑问，回到原文献，还有两个问题需要说明，一是$\Sigma_S$是相机误差模型，实际就是通过实验把深度相机测的点云在x,y,z三方向的误差测出来。二是$\Sigma_{\Phi_{IS}}$，这仅包含旋转估计的不确定性，而平移估计不确定性在后面的由运动更新的部分考虑。&lt;br /&gt;
+推出$(p,\sigma^2_p)$后，用经典的卡尔曼滤波做一下地图和观测的融合：&lt;br /&gt;
 
 
 
@@ -4562,12 +4563,12 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 此处有个小细节，当相机看到一堵墙，导致一堆点摞在一起映射到同一(x,y)咋办？解决方法大概是，取最高的那个，剩下的扔了，这是仿照了《Real-time localization and elevation mapping within urban search and rescue scenarios》的做法。&lt;/p&gt;
 
 &lt;h1 id=&#34;4-由运动更新地图&#34;&gt;4. 由运动更新地图&lt;/h1&gt;
 
-&lt;p&gt;现在处理由于运动估计不准确导致的地图不确定性。由于两帧之间姿态估计肯定会有偏差，故测到的地图会越来越飘，这可以通过栅格地图元素x,y方向的方差体现。作者扩展经典栅格地图，对每一元素记录x,y和高度三个方差，当观测到点p得到其测量结果时，将协方差阵赋值为如下初值：
+&lt;p&gt;现在处理由于运动估计不准确导致的地图不确定性。由于两帧之间姿态估计肯定会有偏差，故测到的地图会越来越飘，这可以通过栅格地图元素x,y方向的方差体现。作者扩展经典栅格地图，对每一元素记录x,y和高度三个方差，当观测到点p得到其测量结果时，将协方差阵赋值为如下初值：&lt;br /&gt;
 
 
 
@@ -4603,9 +4604,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-这是因为之前设定地图坐标系和base坐标系是随动的，观测精度是很高的，因此每次观测就可消除对应点的位置不确定性。$\sigma^2_{x,min}，\sigma^2_{y,min}$ 是两个小量，作者设为$(d/2)^2$其中d为栅格边长。
-下面推导两帧之间位姿变换的误差传播：
+&lt;br /&gt;
+这是因为之前设定地图坐标系和base坐标系是随动的，观测精度是很高的，因此每次观测就可消除对应点的位置不确定性。$\sigma^2_{x,min}，\sigma^2_{y,min}$ 是两个小量，作者设为$(d/2)^2$其中d为栅格边长。&lt;br /&gt;
+下面推导两帧之间位姿变换的误差传播：&lt;br /&gt;
 
 
 
@@ -4641,7 +4642,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -4677,8 +4678,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-（8）式给出点P位置在$M_1,M_2$俩参考系之间的传播。亦可等价写作：
+&lt;br /&gt;
+（8）式给出点P位置在$M_1,M_2$俩参考系之间的传播。亦可等价写作：&lt;br /&gt;
 
 
 
@@ -4714,8 +4715,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-这时作者提出可如下指定参考系$M_2$：
+&lt;br /&gt;
+这时作者提出可如下指定参考系$M_2$：&lt;br /&gt;
 
 
 
@@ -4751,8 +4752,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-使得凑出如下性质：
+&lt;br /&gt;
+使得凑出如下性质：&lt;br /&gt;
 
 
 
@@ -4788,8 +4789,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-也就是说$M_1,M_2$便重合了，于是可统一到一个固定的$M$系下。那么和之前一样，设不确定模型为高斯，研究协方差传播方程：
+&lt;br /&gt;
+也就是说$M_1,M_2$便重合了，于是可统一到一个固定的$M$系下。那么和之前一样，设不确定模型为高斯，研究协方差传播方程：&lt;br /&gt;
 
 
 
@@ -4825,9 +4826,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-其中$\Sigma_P,\Sigma_\Phi$是由$\Sigma_{IB}$导出的，并不简单，详见原文附录。
-类似之前雅克比阵求法，可推出：
+&lt;br /&gt;
+其中$\Sigma_P,\Sigma_\Phi$是由$\Sigma_{IB}$导出的，并不简单，详见原文附录。&lt;br /&gt;
+类似之前雅克比阵求法，可推出：&lt;br /&gt;
 
 
 
@@ -4867,7 +4868,7 @@ eigplot(mc);
 
 &lt;h1 id=&#34;5-地图融合&#34;&gt;5. 地图融合&lt;/h1&gt;
 
-&lt;p&gt;也就是如下过程：
+&lt;p&gt;也就是如下过程：&lt;br /&gt;
 
 
 
@@ -4903,14 +4904,14 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-这块相对简单，对cell i，考虑其附近的cell j（附近指在对方$2\sigma$椭圆内），类似混合高斯，加权求和便可得cell i 的概率分布函数，然后置信上下界便好求了。
+&lt;br /&gt;
+这块相对简单，对cell i，考虑其附近的cell j（附近指在对方$2\sigma$椭圆内），类似混合高斯，加权求和便可得cell i 的概率分布函数，然后置信上下界便好求了。&lt;br /&gt;
 这一步骤只在需要查询地图的时候执行，也就是说平时观测和融合都只需在$(\hat{h_i},\Sigma_{P_i})$这个图上维护即可，省了很多计算量，这个地图融合步骤有点观测器的意味。&lt;/p&gt;
 
 &lt;h1 id=&#34;6-拓展到动态环境&#34;&gt;6. 拓展到动态环境&lt;/h1&gt;
 
-&lt;p&gt;为处理环境动态变化，比如地上凳子忽然被撤走，作者搞了两个trick。
-第一是发现传感器测距值忽然变小（对应真实地面变高）超过一定阈值（采用马氏距离为依据），那么就人为给地图加噪，降低对地图的信任，让卡尔曼滤波器尽快信任传感器加速响应：
+&lt;p&gt;为处理环境动态变化，比如地上凳子忽然被撤走，作者搞了两个trick。&lt;br /&gt;
+第一是发现传感器测距值忽然变小（对应真实地面变高）超过一定阈值（采用马氏距离为依据），那么就人为给地图加噪，降低对地图的信任，让卡尔曼滤波器尽快信任传感器加速响应：&lt;br /&gt;
 
 
 
@@ -4946,8 +4947,8 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-第二是遇到上面相反的情景时候（对应真实地面变低）：
+&lt;br /&gt;
+第二是遇到上面相反的情景时候（对应真实地面变低）：&lt;br /&gt;
 
 
 
@@ -4983,9 +4984,9 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
-提出一种可视化检查的方法。具体做法是是发现传感器测距值忽然变大（对应真实地面变低）超过一定程度时，就丢弃地图上对应老点，很巧妙。这俩trick同时使用，互补的，基本就可解决动态环境适应问题。
-最后作者的实验主要是在自己的四足上弄的，图画的很漂亮，很值得学习：
+&lt;br /&gt;
+提出一种可视化检查的方法。具体做法是是发现传感器测距值忽然变大（对应真实地面变低）超过一定程度时，就丢弃地图上对应老点，很巧妙。这俩trick同时使用，互补的，基本就可解决动态环境适应问题。&lt;br /&gt;
+最后作者的实验主要是在自己的四足上弄的，图画的很漂亮，很值得学习：&lt;br /&gt;
 
 
 
@@ -5021,7 +5022,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -5057,7 +5058,7 @@ eigplot(mc);
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 源代码可见&lt;a href=&#34;https://github.com/ANYbotics/elevation_mapping用了他们自己的写的一个ROS包https://github.com/anybotics/grid_map，这个包拓展了ROS里的costmap到一个多层的，方便把方差什么的放进去，并提供到costmap消息的转换。&#34;&gt;https://github.com/ANYbotics/elevation_mapping用了他们自己的写的一个ROS包https://github.com/anybotics/grid_map，这个包拓展了ROS里的costmap到一个多层的，方便把方差什么的放进去，并提供到costmap消息的转换。&lt;/a&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
@@ -5068,9 +5069,9 @@ eigplot(mc);
 &lt;p&gt;我们已经提出了一种新的海拔映射方法，该方法解决了在带有本体感受状态估计的移动机器人上经常发生的定位漂移问题。 提出的方法估计了以机器人为中心的坐标系中的高程图，使得将新测量结果集成到该图中的过程仅受范围传感器噪声以及可观察到的侧倾角和俯仰角的不确定性影响。 地图中的数据基于机器人移动时增量运动的不确定性进行更新 。这可以使机器人在任何时间点从其局部角度估计地形。 通过将方法拆分为数据收集（从距离测量和机器人运动中进行地图更新）和地图融合步骤，我们降低了映射过程的计算负担。这使得能够可靠地进行实时高程映射，而与视听定位方法无关。 我们将说明制图过程如何估计具有相应置信区间的地形剖面，并显示估计的分布如何与模拟和真实实验中的地面真实情况参考相匹配。当与腿式机器人一起使用时，这项工作的当前局限性是突出的。 在机器人采取许多步骤的情况下，由于定位的漂移，机器人下方的地形图不确定性增加，这给机器人的地形感知控制带来了困难。 在我们当前的工作中，我们通过面朝下的深度传感器，更准确的定位以及将立足点与地形图进行匹配以提供定位反馈来应对这一挑战。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;总的来看，在slam和机器人相关领域，搞清楚旋转矩阵很有必要，可参考：
-Diﬀerential Geometry and Lie Groups A Computational Perspective
-Diﬀerential Geometry and Lie Groups A Second Course
+&lt;p&gt;总的来看，在slam和机器人相关领域，搞清楚旋转矩阵很有必要，可参考：&lt;br /&gt;
+Diﬀerential Geometry and Lie Groups A Computational Perspective&lt;br /&gt;
+Diﬀerential Geometry and Lie Groups A Second Course&lt;br /&gt;
 State Estimation for Robotics&lt;/p&gt;
 </description>
     </item>
@@ -5082,7 +5083,7 @@ State Estimation for Robotics&lt;/p&gt;
       <guid>https://leidawt.github.io/post/%E8%AF%AF%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#0-绝对误差与相对误差&#34;&gt;0. 绝对误差与相对误差&lt;/a&gt;
@@ -5107,18 +5108,18 @@ State Estimation for Robotics&lt;/p&gt;
 
 &lt;h2 id=&#34;0-1绝对误差-简称误差&#34;&gt;0.1绝对误差（简称误差）：&lt;/h2&gt;
 
-&lt;p&gt;绝对误差（简称误差）: $e(x^*)=x-x^*$
+&lt;p&gt;绝对误差（简称误差）: $e(x^*)=x-x^*$&lt;br /&gt;
 为方便起见，取其一上界$\epsilon$使满足$|x-x^*|\le\epsilon$（这个上界不唯一），由此我们最常见的误差写法就可写成$x=x^*\pm\epsilon$，即准确值$x$必在区间$[x^*-\epsilon,x^*+\epsilon]$内。&lt;/p&gt;
 
 &lt;h2 id=&#34;0-2相对误差&#34;&gt;0.2相对误差&lt;/h2&gt;
 
-&lt;p&gt;考虑真值本身的数量大小，相对误差是衡量精度的更好指标，定义为：
+&lt;p&gt;考虑真值本身的数量大小，相对误差是衡量精度的更好指标，定义为：&lt;br /&gt;
 $e_r(x^*)=\frac{x-x^*}{x}$，相似的，我们亦可取一个上界为$\epsilon_r$，称之为相对误差限。&lt;/p&gt;
 
 &lt;h1 id=&#34;1-误差的传播&#34;&gt;1. 误差的传播&lt;/h1&gt;
 
-&lt;p&gt;误差的传播系指分析在形如$y=f(x_1,x_2,&amp;hellip;,x_n)$的关系中，参量误差对变量误差的影响有多大。误差的传播与函数的微分紧密相关，本质是在利用当$\Delta x$不大时，$\Delta y\approx \frac{\partial f}{\partial x}\Delta x$。
-若$f$在$(x^*_1,&amp;hellip;x^*_n)$可微，则不难得到:
+&lt;p&gt;误差的传播系指分析在形如$y=f(x_1,x_2,&amp;hellip;,x_n)$的关系中，参量误差对变量误差的影响有多大。误差的传播与函数的微分紧密相关，本质是在利用当$\Delta x$不大时，$\Delta y\approx \frac{\partial f}{\partial x}\Delta x$。&lt;br /&gt;
+若$f$在$(x^*_1,&amp;hellip;x^*_n)$可微，则不难得到:&lt;br /&gt;
 
 
 
@@ -5154,7 +5155,7 @@ $e_r(x^*)=\frac{x-x^*}{x}$，相似的，我们亦可取一个上界为$\epsilon
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 
 
 
@@ -5190,11 +5191,11 @@ $e_r(x^*)=\frac{x-x^*}{x}$，相似的，我们亦可取一个上界为$\epsilon
 
 
 &lt;/figure&gt;
-
-这实际上就是一阶泰勒展开。多变量泰勒公式为：
-$f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
-移项，令$\bf a$为$(x^*_1,&amp;hellip;x^*_n)$并带入$e(x^*)=x-x^*$，$e(y^*)=y-y^*$即可得误差公式。
-按照上面的式子求导，可给出最常见 和 差 积 商 误差公式：
+&lt;br /&gt;
+这实际上就是一阶泰勒展开。多变量泰勒公式为：&lt;br /&gt;
+$f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$&lt;br /&gt;
+移项，令$\bf a$为$(x^*_1,&amp;hellip;x^*_n)$并带入$e(x^*)=x-x^*$，$e(y^*)=y-y^*$即可得误差公式。&lt;br /&gt;
+按照上面的式子求导，可给出最常见 和 差 积 商 误差公式：&lt;br /&gt;
 
 
 
@@ -5230,8 +5231,8 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
-相应的，误差限可如下给出：
+&lt;br /&gt;
+相应的，误差限可如下给出：&lt;br /&gt;
 
 
 
@@ -5279,8 +5280,8 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 &lt;h2 id=&#34;2-2-复杂函数&#34;&gt;2.2 复杂函数&lt;/h2&gt;
 
-&lt;p&gt;对绝大多数函数，尤其是非线性函数，一般只能寻求其期望和方差的近似求法。这里解决问题的工具依旧是泰勒展开。
-&lt;strong&gt;先考虑简单的一维情形&lt;/strong&gt;：设随机变量$X$，其期望和方差分别为$\mu,\sigma^2$，变量$Y=g(X)$是其函数。则有：
+&lt;p&gt;对绝大多数函数，尤其是非线性函数，一般只能寻求其期望和方差的近似求法。这里解决问题的工具依旧是泰勒展开。&lt;br /&gt;
+&lt;strong&gt;先考虑简单的一维情形&lt;/strong&gt;：设随机变量$X$，其期望和方差分别为$\mu,\sigma^2$，变量$Y=g(X)$是其函数。则有：&lt;br /&gt;
 
 
 
@@ -5316,8 +5317,8 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
-证明此关系只需将$Y$在$\mu$处局部线性化即可。
+&lt;br /&gt;
+证明此关系只需将$Y$在$\mu$处局部线性化即可。&lt;br /&gt;
 
 
 
@@ -5353,11 +5354,11 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 相似的，方差公式的证明可进行一阶展开后得到。虽避免了求积分，但此处导数往往也得不到解析解，可通过数值差分近似导数得到（一般倾向于使用中心差分公式）。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;再看二维情形&lt;/strong&gt;。一维到二维是一个质变，从两个变量开始，变量相关性和协方差的概念被引入。设随机变量向量$[X,Y]^T$中的变量$X,Y$的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma _y^2$，并设二元函数$Z=g(X,Y)$。则仍仿照上面单变量的方法，将$Z$在自变量期望处进行局部线性化然后两边同取期望/方差即可，只不过换为了多变量的泰勒展开。
-&lt;strong&gt;注： 多变量泰勒展开&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;再看二维情形&lt;/strong&gt;。一维到二维是一个质变，从两个变量开始，变量相关性和协方差的概念被引入。设随机变量向量$[X,Y]^T$中的变量$X,Y$的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma _y^2$，并设二元函数$Z=g(X,Y)$。则仍仿照上面单变量的方法，将$Z$在自变量期望处进行局部线性化然后两边同取期望/方差即可，只不过换为了多变量的泰勒展开。&lt;br /&gt;
+&lt;strong&gt;注： 多变量泰勒展开&lt;/strong&gt;&lt;br /&gt;
 
 
 
@@ -5393,8 +5394,8 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
-更常见的是向量形式：
+&lt;br /&gt;
+更常见的是向量形式：&lt;br /&gt;
 
 
 
@@ -5430,8 +5431,8 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
-最后结果是：
+&lt;br /&gt;
+最后结果是：&lt;br /&gt;
 
 
 
@@ -5467,11 +5468,11 @@ $f(x)=f(\bf{a})+\nabla{f(\bf{a})\cdot(\bf{x}-\bf{a})}+&amp;hellip;$
 
 
 &lt;/figure&gt;
-
-可以看到依赖于变量的协方差。
-&lt;strong&gt;除了上面直接将函数局部线性化的方法，亦可以使用类似“自底向下”的方法，从方差原始定义入手得到上面的结果。&lt;/strong&gt;
-仍设随机变量$X$及其一组观测${X_1,X_2,&amp;hellip;X_n}$,$Y$及其一组观测${Y_1,Y_2,&amp;hellip;Y_n}$，他们的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma _y^2$，二元函数$Z=g(X,Y)$。
-则按方差定义
+&lt;br /&gt;
+可以看到依赖于变量的协方差。&lt;br /&gt;
+&lt;strong&gt;除了上面直接将函数局部线性化的方法，亦可以使用类似“自底向下”的方法，从方差原始定义入手得到上面的结果。&lt;/strong&gt;&lt;br /&gt;
+仍设随机变量$X$及其一组观测${X_1,X_2,&amp;hellip;X_n}$,$Y$及其一组观测${Y_1,Y_2,&amp;hellip;Y_n}$，他们的期望，方差分别为$\mu _x, \mu _y, \sigma _x^2, \sigma _y^2$，二元函数$Z=g(X,Y)$。&lt;br /&gt;
+则按方差定义&lt;br /&gt;
 $$\sigma_Z=\frac{1}{n-1}\sum_{i=1}^{n}{(Z_i-\bar Z)^2}$$&lt;/p&gt;
 
 &lt;p&gt;通过对$Z=g(X,Y)$在期望处求一阶泰勒展开，可知$$Z_i-\bar Z=(X_i-\bar X)\frac{\partial g}{\partial X}+(Y_i-\bar Y)\frac{\partial g}{\partial Y}$$带回上式，并带入协方差定义：$$cov(X,Y)=\frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar X)(Y_i-\bar Y)$$&lt;/p&gt;
@@ -5482,11 +5483,11 @@ $$\sigma_Z=\frac{1}{n-1}\sum_{i=1}^{n}{(Z_i-\bar Z)^2}$$&lt;/p&gt;
 
 &lt;p&gt;$$=\sigma_x^2(\frac{\partial g}{\partial X})^2+\sigma_y^2(\frac{\partial g}{\partial Y})^2+2cov(X,Y)\frac{\partial g}{\partial X}\frac{\partial g}{\partial Y}$$&lt;/p&gt;
 
-&lt;p&gt;写成向量形式即为：
+&lt;p&gt;写成向量形式即为：&lt;br /&gt;
 $$\sigma_Z^2=J\Sigma J^T$$&lt;/p&gt;
 
-&lt;p&gt;其中$J=[\frac{\partial g}{\partial X},\frac{\partial g}{\partial Y}]$为Jacobian matrix,
-中间$\Sigma$是协方差矩阵
+&lt;p&gt;其中$J=[\frac{\partial g}{\partial X},\frac{\partial g}{\partial Y}]$为Jacobian matrix,&lt;br /&gt;
+中间$\Sigma$是协方差矩阵&lt;br /&gt;
 
 
 
@@ -5522,8 +5523,8 @@ $$\sigma_Z^2=J\Sigma J^T$$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
-一些计算实例：
+&lt;br /&gt;
+一些计算实例：&lt;br /&gt;
 
 
 
@@ -5559,9 +5560,9 @@ $$\sigma_Z^2=J\Sigma J^T$$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
-对于线性函数和二次函数, 由于其二阶以上各阶导数为0, 近似计算公式与严密计算公式等价。对于非线性更强的函数，由于我们是以期望为中心展开的，$X_i$很多时候并不在展开点$\bar X$“附近”，会有不小的误差，可适时地考虑使用蒙特卡洛模拟暴力计算得到更优的结果。
-一个常被用于测试的强非线性函数是$Z=Xe^Y$，图像长这样：
+&lt;br /&gt;
+对于线性函数和二次函数, 由于其二阶以上各阶导数为0, 近似计算公式与严密计算公式等价。对于非线性更强的函数，由于我们是以期望为中心展开的，$X_i$很多时候并不在展开点$\bar X$“附近”，会有不小的误差，可适时地考虑使用蒙特卡洛模拟暴力计算得到更优的结果。&lt;br /&gt;
+一个常被用于测试的强非线性函数是$Z=Xe^Y$，图像长这样：&lt;br /&gt;
 
 
 
@@ -5601,8 +5602,8 @@ $$\sigma_Z^2=J\Sigma J^T$$&lt;/p&gt;
 
 &lt;h1 id=&#34;3-协方差传播&#34;&gt;3. 协方差传播&lt;/h1&gt;
 
-&lt;p&gt;当上面问题中的函数值域亦是多维的，方差传播就升格为协方差传播。
-&lt;strong&gt;先看线性情形&lt;/strong&gt;，设多维随机变量X:
+&lt;p&gt;当上面问题中的函数值域亦是多维的，方差传播就升格为协方差传播。&lt;br /&gt;
+&lt;strong&gt;先看线性情形&lt;/strong&gt;，设多维随机变量X:&lt;br /&gt;
 
 
 
@@ -5638,19 +5639,19 @@ $$\sigma_Z^2=J\Sigma J^T$$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
-设$Z=[k_1,k_2,&amp;hellip;,k_n]X+k_0$为$X$的一线性函数，根据前面方差传播的知识可知有：
+&lt;br /&gt;
+设$Z=[k_1,k_2,&amp;hellip;,k_n]X+k_0$为$X$的一线性函数，根据前面方差传播的知识可知有：&lt;br /&gt;
 $$E(Z)=K\mu_x+k_0 ; D_{ZZ}=KD_{XX}K^T$$&lt;/p&gt;
 
-&lt;p&gt;将其中的$Z$扩展到多维，即设$Z=[z_1,z_2,&amp;hellip;,z_t]^T$，其中每个$z_i$均是$X$的线性函数（$z_i=[k&lt;em&gt;{i,1},&amp;hellip;,k&lt;/em&gt;{i,n}]X_i$）
-那么对:
+&lt;p&gt;将其中的$Z$扩展到多维，即设$Z=[z_1,z_2,&amp;hellip;,z_t]^T$，其中每个$z_i$均是$X$的线性函数（$z_i=[k&lt;em&gt;{i,1},&amp;hellip;,k&lt;/em&gt;{i,n}]X_i$）&lt;br /&gt;
+那么对:&lt;br /&gt;
 $$Z=KX+K_0$$&lt;/p&gt;
 
-&lt;p&gt;其中$K$为$t*n$矩阵，$K_0$为$t*1$矩阵，依旧有相同的结论：
+&lt;p&gt;其中$K$为$t*n$矩阵，$K_0$为$t*1$矩阵，依旧有相同的结论：&lt;br /&gt;
 $$E(Z)=K\mu_x+k_0 ; D_{ZZ}=KD_{XX}K^T$$&lt;/p&gt;
 
-&lt;p&gt;只不过这里$D_{ZZ}$升格为了$t*t$矩阵，称之为协方差传播。
-若另有Y：
+&lt;p&gt;只不过这里$D_{ZZ}$升格为了$t*t$矩阵，称之为协方差传播。&lt;br /&gt;
+若另有Y：&lt;br /&gt;
 
 
 
@@ -5686,19 +5687,19 @@ $$E(Z)=K\mu_x+k_0 ; D_{ZZ}=KD_{XX}K^T$$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
-并有关于$Y$的函数$W=FY+F_0$，则相似的可获知一系列关系常用协方差传播律：
-$D_{ZZ}=KD_{XX}K^T$
-$D_{WW}=FD_{YY}F^T$
-$D_{ZW}=KD_{XY}F^T$
+&lt;br /&gt;
+并有关于$Y$的函数$W=FY+F_0$，则相似的可获知一系列关系常用协方差传播律：&lt;br /&gt;
+$D_{ZZ}=KD_{XX}K^T$&lt;br /&gt;
+$D_{WW}=FD_{YY}F^T$&lt;br /&gt;
+$D_{ZW}=KD_{XY}F^T$&lt;br /&gt;
 $D_{WZ}=FD_{YX}K^T$&lt;/p&gt;
 
 &lt;h1 id=&#34;4-参考文献&#34;&gt;4. 参考文献&lt;/h1&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf&#34;&gt;https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf&lt;/a&gt;
-&lt;a href=&#34;https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html&#34;&gt;https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html&lt;/a&gt;
-&lt;a href=&#34;https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html&#34;&gt;https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html&lt;/a&gt;
-&lt;a href=&#34;https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html&#34;&gt;https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html&lt;/a&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf&#34;&gt;https://www.cnas.org.cn/fwzl/images/tc261sc1sysrkfjswyh/tzgg/2015/03/24/70E459F9EA361F6C3F4C675277B5CF3C.pdf&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html&#34;&gt;https://wenku.baidu.com/view/960f3cd7b8f67c1cfbd6b826.html&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html&#34;&gt;https://wenku.baidu.com/view/4d8b1945581b6bd97f19eaab.html&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html&#34;&gt;https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch10.html&lt;/a&gt;&lt;br /&gt;
 概率论与数理统计教程(茆诗松)&lt;/p&gt;
 </description>
     </item>
@@ -7716,7 +7717,7 @@ MCMC方法利用了MC链会收敛到确定分布的性质，即如果我们能�
       <guid>https://leidawt.github.io/post/kalman-and-bayesian-filters-in-python-%E5%8D%A1%E5%B0%94%E6%9B%BC%E4%B8%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%AC%94%E8%AE%B0/</guid>
       <description>
 
-&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;
+&lt;p&gt;&lt;h2&gt;目录&lt;/h2&gt;&lt;br /&gt;
 &lt;nav id=&#34;TableOfContents&#34;&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#1-g-h滤波器&#34;&gt;1.g-h滤波器&lt;/a&gt;&lt;/li&gt;
@@ -7736,12 +7737,12 @@ MCMC方法利用了MC链会收敛到确定分布的性质，即如果我们能�
 &lt;/ul&gt;
 &lt;/nav&gt;&lt;/p&gt;
 
-&lt;p&gt;此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点
+&lt;p&gt;此书从实践角度讲了卡尔曼等一系列贝叶斯滤波器，没有从线控视角入手，提供了大量直观解读和代码实例，看着玩玩摘录些重点&lt;br /&gt;
 @[TOC]&lt;/p&gt;
 
 &lt;h1 id=&#34;1-g-h滤波器&#34;&gt;1.g-h滤波器&lt;/h1&gt;
 
-&lt;p&gt;又称Alpha beta filter，f-g filter，是一类融合观测和估计的滤波器中形式上最朴素的。原书表达不清晰，下为wiki的。g-h滤波器只考虑 x x&amp;rsquo; 作为状态变量
+&lt;p&gt;又称Alpha beta filter，f-g filter，是一类融合观测和估计的滤波器中形式上最朴素的。原书表达不清晰，下为wiki的。g-h滤波器只考虑 x x&amp;rsquo; 作为状态变量&lt;br /&gt;
 
 
 
@@ -7777,10 +7778,10 @@ MCMC方法利用了MC链会收敛到确定分布的性质，即如果我们能�
 
 
 &lt;/figure&gt;
-
-其中$x_k$是观测，此算法很简单，（1）（2）按模型更新状态，（3）步融合观测来得到残差，（4）（5）根据残差修订状态。显然其中两个参数是决定的是融合比例。
-&lt;strong&gt;参数的选择&lt;/strong&gt;
-g的影响
+&lt;br /&gt;
+其中$x_k$是观测，此算法很简单，（1）（2）按模型更新状态，（3）步融合观测来得到残差，（4）（5）根据残差修订状态。显然其中两个参数是决定的是融合比例。&lt;br /&gt;
+&lt;strong&gt;参数的选择&lt;/strong&gt;&lt;br /&gt;
+g的影响&lt;br /&gt;
 
 
 
@@ -7816,8 +7817,8 @@ g的影响
 
 
 &lt;/figure&gt;
-
-h的影响
+&lt;br /&gt;
+h的影响&lt;br /&gt;
 
 
 
@@ -7857,7 +7858,7 @@ h的影响
 
 &lt;h1 id=&#34;2-离散贝叶斯滤波器&#34;&gt;2. 离散贝叶斯滤波器&lt;/h1&gt;
 
-&lt;p&gt;这是卡尔曼滤波，例子滤波等一类滤波器的基本框架
+&lt;p&gt;这是卡尔曼滤波，例子滤波等一类滤波器的基本框架&lt;br /&gt;
 
 
 
@@ -7893,26 +7894,26 @@ h的影响
 
 
 &lt;/figure&gt;
-
-核心思想如下
+&lt;br /&gt;
+核心思想如下&lt;br /&gt;
 $$\begin{aligned} \bar {\mathbf x} &amp;amp;= \mathbf x \ast f_{\mathbf x}(\bullet)\, \, &amp;amp;\text{Predict Step} &lt;br /&gt;
-\mathbf x &amp;amp;= |\mathcal L \cdot \bar{\mathbf x}|\, \, &amp;amp;\text{Update Step}\end{aligned}$$
-$\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率与先验的乘积标准化以确保$x$是一个和为1的概率分布。
+\mathbf x &amp;amp;= |\mathcal L \cdot \bar{\mathbf x}|\, \, &amp;amp;\text{Update Step}\end{aligned}$$&lt;br /&gt;
+$\mathcal L$是似然函数。$||$符号表示取范数。我们需要将概率与先验的乘积标准化以确保$x$是一个和为1的概率分布。&lt;br /&gt;
 流程伪代码如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;初始化&lt;/strong&gt;
-初始化我们对状态的信念。
-&lt;strong&gt;预测&lt;/strong&gt;
-根据系统行为，预测下一步的状态
-调整信念，以解释预测中的不确定性
-&lt;strong&gt;更新&lt;/strong&gt;
-获取测量并给一个对其精度的信念
-计算测量值对每个状态匹配的程度（likelihood）
+&lt;p&gt;&lt;strong&gt;初始化&lt;/strong&gt;&lt;br /&gt;
+初始化我们对状态的信念。&lt;br /&gt;
+&lt;strong&gt;预测&lt;/strong&gt;&lt;br /&gt;
+根据系统行为，预测下一步的状态&lt;br /&gt;
+调整信念，以解释预测中的不确定性&lt;br /&gt;
+&lt;strong&gt;更新&lt;/strong&gt;&lt;br /&gt;
+获取测量并给一个对其精度的信念&lt;br /&gt;
+计算测量值对每个状态匹配的程度（likelihood）&lt;br /&gt;
 用这种可能性更新状态信念&lt;/p&gt;
 
-&lt;p&gt;这种形式的算法有时也叫预测校正。
-&lt;strong&gt;例子：&lt;/strong&gt;
-背景陈述：假设追踪狗在走廊里的位置，为了方便，离散化为10个位置，其中三个位置由门，其他位置没有。我们对狗的行为一无所知，故采用平坦先验，即认为狗在任意位置出现等可能。不过我们能获得狗身上声呐传感器的数据，故可以知道狗是否在有门的位置。
+&lt;p&gt;这种形式的算法有时也叫预测校正。&lt;br /&gt;
+&lt;strong&gt;例子：&lt;/strong&gt;&lt;br /&gt;
+背景陈述：假设追踪狗在走廊里的位置，为了方便，离散化为10个位置，其中三个位置由门，其他位置没有。我们对狗的行为一无所知，故采用平坦先验，即认为狗在任意位置出现等可能。不过我们能获得狗身上声呐传感器的数据，故可以知道狗是否在有门的位置。&lt;br /&gt;
 先看主函数逻辑：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def discrete_bayes_sim(prior, kernel, measurements, z_prob, hallway):
@@ -7935,11 +7936,11 @@ priors, posteriors = discrete_bayes_sim(prior, kernel, zs, z_prob, hallway)
 interact(animate_discrete_bayes, step=IntSlider(value=12, max=len(zs)*2));
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;predict函数根据上次位置预测结果为先验进行预测，预测方法是假设其以kernel（）的概率向左或向右移动1个位置。为了计算方便，是通过卷积实现的，是个小trick
-convolve(np.roll(pdf, offset), kernel, mode=&amp;lsquo;wrap&amp;rsquo;)
+&lt;p&gt;predict函数根据上次位置预测结果为先验进行预测，预测方法是假设其以kernel（）的概率向左或向右移动1个位置。为了计算方便，是通过卷积实现的，是个小trick&lt;br /&gt;
+convolve(np.roll(pdf, offset), kernel, mode=&amp;lsquo;wrap&amp;rsquo;)&lt;br /&gt;
 此步骤实际是全概率公式的应用：$$P(X_i^t) = \sum_j P(X_j^{t-1})  P(x_i | x_j)$$&lt;/p&gt;
 
-&lt;p&gt;得到新的prior 后，计算观测的likelihood（对每个点）。
+&lt;p&gt;得到新的prior 后，计算观测的likelihood（对每个点）。&lt;br /&gt;
 这个玩意在不同具体任务中计算方式不同，本问题中算法很朴素：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;  try:
@@ -7952,12 +7953,12 @@ convolve(np.roll(pdf, offset), kernel, mode=&amp;lsquo;wrap&amp;rsquo;)
   return likelihood
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;z_prob 表示相信传感器的程度。例子中何为1表示完全相信，故当z=1时强烈加大在三个有门位置的likelihood，z=0时表示一定没门，强烈加大其余位置likelihood。
-最后的update步骤实为应用下面的贝叶斯公式产生新息，其将likelihood和prior相乘并归一化
-$$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
+&lt;p&gt;z_prob 表示相信传感器的程度。例子中何为1表示完全相信，故当z=1时强烈加大在三个有门位置的likelihood，z=0时表示一定没门，强烈加大其余位置likelihood。&lt;br /&gt;
+最后的update步骤实为应用下面的贝叶斯公式产生新息，其将likelihood和prior相乘并归一化&lt;br /&gt;
+$$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$&lt;br /&gt;
 其中p(x)即prior，p(z|x)即算得的likelihood。分母仅仅是个norm项，顾不必计算，只需归一化一下即可。&lt;/p&gt;
 
-&lt;p&gt;最后运行起来如下：
+&lt;p&gt;最后运行起来如下：&lt;br /&gt;
 
 
 
@@ -7993,10 +7994,10 @@ $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 
 
 &lt;/figure&gt;
-
-可以看到两件事，一是因为predict的不确定，分布在预测阶段发散，但由于观测的帮助，弥补了纯预测的信度损失。
-此方法几大缺陷：
-1.此filter是多峰的（multimodal），不能给出唯一确定的答案，不过这在很多场景下反而不是问题
+&lt;br /&gt;
+可以看到两件事，一是因为predict的不确定，分布在预测阶段发散，但由于观测的帮助，弥补了纯预测的信度损失。&lt;br /&gt;
+此方法几大缺陷：&lt;br /&gt;
+1.此filter是多峰的（multimodal），不能给出唯一确定的答案，不过这在很多场景下反而不是问题&lt;br /&gt;
 2.需要直接测量状态变化&lt;/p&gt;
 
 &lt;h1 id=&#34;3-概率-高斯和贝叶斯&#34;&gt;3.概率，高斯和贝叶斯&lt;/h1&gt;
@@ -8004,34 +8005,34 @@ $$p(x_i \mid z) = \frac{p(z \mid x_i) p(x_i)}{p(z)}$$
 &lt;p&gt;俩高斯分布相乘:&lt;/p&gt;
 
 &lt;p&gt;$$\begin{aligned}\mu &amp;amp;=\frac{\sigma_1^2\mu_2 + \sigma_2^2\mu_1}{\sigma_1^2+\sigma_2^2}&lt;br /&gt;
-\sigma^2 &amp;amp;=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}
+\sigma^2 &amp;amp;=\frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2}&lt;br /&gt;
 \end{aligned}$$&lt;/p&gt;
 
 &lt;p&gt;俩高斯分布相加&lt;/p&gt;
 
 &lt;p&gt;$$\begin{gathered}\mu = \mu_1 + \mu_2 &lt;br /&gt;
-\sigma^2 = \sigma^2_1 + \sigma^2_2
+\sigma^2 = \sigma^2_1 + \sigma^2_2&lt;br /&gt;
 \end{gathered}$$&lt;/p&gt;
 
 &lt;p&gt;在前一章的离散分布情形下，我们使用了 element-wise成来updata后验分布，计算比较麻烦，如果分布写作高斯分布形式，即可用上面的公式大大简单计算。&lt;/p&gt;
 
 &lt;h1 id=&#34;4-一维卡尔曼滤波&#34;&gt;4. 一维卡尔曼滤波&lt;/h1&gt;
 
-&lt;p&gt;背景问题描述：狗位置预测，传感器返回狗位置，带高斯噪声。
+&lt;p&gt;背景问题描述：狗位置预测，传感器返回狗位置，带高斯噪声。&lt;br /&gt;
 我们以高斯建模传感器观测，套用离散贝叶斯滤波器的基本形式如下&lt;/p&gt;
 
-&lt;p&gt;$$\begin{array}{l|l|c}
+&lt;p&gt;$$\begin{array}{l|l|c}&lt;br /&gt;
 \text{discrete Bayes} &amp;amp; \text{Gaussian} &amp;amp; \text{Step}&lt;br /&gt;
-\hline
-\bar {\mathbf x} = \mathbf x \ast f(\mathbf x) &amp;amp;
-\bar {x}&lt;em&gt;\mathcal{N} =  x&lt;/em&gt;\mathcal{N} \, \oplus \, f&lt;em&gt;{x&lt;/em&gt;\mathcal{N}}(\bullet) &amp;amp;
+\hline&lt;br /&gt;
+\bar {\mathbf x} = \mathbf x \ast f(\mathbf x) &amp;amp;&lt;br /&gt;
+\bar {x}&lt;em&gt;\mathcal{N} =  x&lt;/em&gt;\mathcal{N} \, \oplus \, f&lt;em&gt;{x&lt;/em&gt;\mathcal{N}}(\bullet) &amp;amp;&lt;br /&gt;
 \text{Predict} &lt;br /&gt;
-\mathbf x = |\mathcal L \bar{\mathbf x}| &amp;amp; x&lt;em&gt;\mathcal{N} = L \, \otimes \, \bar{x}&lt;/em&gt;\mathcal{N} &amp;amp; \text{Update}
+\mathbf x = |\mathcal L \bar{\mathbf x}| &amp;amp; x&lt;em&gt;\mathcal{N} = L \, \otimes \, \bar{x}&lt;/em&gt;\mathcal{N} &amp;amp; \text{Update}&lt;br /&gt;
 \end{array}$$&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;具体predict方法&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;具体predict方法&lt;/strong&gt;&lt;br /&gt;
 $$ \begin{aligned}\bar{x}&lt;em&gt;k &amp;amp;= x&lt;/em&gt;{k-1} + v&lt;em&gt;k \Delta t &lt;br /&gt;
- &amp;amp;= x&lt;/em&gt;{k-1} + f_x\end{aligned}$$
+ &amp;amp;= x&lt;/em&gt;{k-1} + f_x\end{aligned}$$&lt;br /&gt;
  其中$f_x,x$均为高斯分布。编程上用python的具名数组做了一下，比较规范，还改了repr魔法方法&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from collections import namedtuple
@@ -8047,12 +8048,12 @@ def predict(pos, movement):
     return gaussian(pos.mean + movement.mean, pos.var + movement.var)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;具体update方法&lt;/strong&gt;
-likelihood是给定当前状态下测量的概率，此处likelihood就是我们的measurement，也用高斯表示。
-$$\begin{aligned}
+&lt;p&gt;&lt;strong&gt;具体update方法&lt;/strong&gt;&lt;br /&gt;
+likelihood是给定当前状态下测量的概率，此处likelihood就是我们的measurement，也用高斯表示。&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
 \mathcal N(\mu, \sigma^2) &amp;amp;= | prior \cdot likelihood |&lt;br /&gt;
 &amp;amp;= | \mathcal{N}(\bar\mu, \bar\sigma^2)\cdot \mathcal{N}(\mu_z, \sigma_z^2) |&lt;br /&gt;
-&amp;amp;= \mathcal N(\frac{\bar\sigma^2 \mu_z + \sigma_z^2 \bar\mu}{\bar\sigma^2 + \sigma_z^2},\frac{\bar\sigma^2\sigma_z^2}{\bar\sigma^2 + \sigma_z^2})
+&amp;amp;= \mathcal N(\frac{\bar\sigma^2 \mu_z + \sigma_z^2 \bar\mu}{\bar\sigma^2 + \sigma_z^2},\frac{\bar\sigma^2\sigma_z^2}{\bar\sigma^2 + \sigma_z^2})&lt;br /&gt;
 \end{aligned}$$&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def gaussian_multiply(g1, g2):
@@ -8111,15 +8112,15 @@ for z in zs:
 
 
 &lt;/figure&gt;
-
-开始方差很大是因为设的初始系统方差很大，可以看到收敛非常快。
-以上程序就是一维卡尔曼的实现，下面将其数学表达转换为更传统的表达方式，不过此形式下贝叶斯滤波的意思不再那么明显：
+&lt;br /&gt;
+开始方差很大是因为设的初始系统方差很大，可以看到收敛非常快。&lt;br /&gt;
+以上程序就是一维卡尔曼的实现，下面将其数学表达转换为更传统的表达方式，不过此形式下贝叶斯滤波的意思不再那么明显：&lt;br /&gt;
 We see that the filter works. Now let&amp;rsquo;s go back to the math to understand what is happening. The posterior $x$ is computed as the likelihood times the prior ($\mathcal L \bar x$), where both are Gaussians.&lt;/p&gt;
 
 &lt;p&gt;Therefore the mean of the posterior is given by:&lt;/p&gt;
 
-&lt;p&gt;$$
-\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2}
+&lt;p&gt;$$&lt;br /&gt;
+\mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2}&lt;br /&gt;
 $$&lt;/p&gt;
 
 &lt;p&gt;I use the subscript $z$ to denote the measurement. We can rewrite this as:&lt;/p&gt;
@@ -8132,9 +8133,9 @@ $$&lt;/p&gt;
 
 &lt;p&gt;The weights sum to one because the denominator is a normalization term. We introduce a new term, $K=W_1$, giving us:&lt;/p&gt;
 
-&lt;p&gt;$$\begin{aligned}
+&lt;p&gt;$$\begin{aligned}&lt;br /&gt;
 \mu &amp;amp;= K \mu_z + (1-K) \bar\mu&lt;br /&gt;
-&amp;amp;= \bar\mu + K(\mu_z - \bar\mu)
+&amp;amp;= \bar\mu + K(\mu_z - \bar\mu)&lt;br /&gt;
 \end{aligned}$$&lt;/p&gt;
 
 &lt;p&gt;where&lt;/p&gt;
@@ -8145,30 +8146,30 @@ $$&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s work a few examples. If the measurement is nine times more accurate than the prior, then $\bar\sigma^2 = 9\sigma_z^2$, and&lt;/p&gt;
 
-&lt;p&gt;$$\begin{aligned}
+&lt;p&gt;$$\begin{aligned}&lt;br /&gt;
 \mu&amp;amp;=\frac{9 \sigma_z^2 \mu_z + \sigma_z^2\, \bar\mu} {9 \sigma&lt;em&gt;z^2 + \sigma&lt;/em&gt;\mathtt{z}^2} &lt;br /&gt;
-&amp;amp;= \left(\frac{9}{10}\right) \mu_z + \left(\frac{1}{10}\right) \bar\mu
-\end{aligned}
+&amp;amp;= \left(\frac{9}{10}\right) \mu_z + \left(\frac{1}{10}\right) \bar\mu&lt;br /&gt;
+\end{aligned}&lt;br /&gt;
 $$&lt;/p&gt;
 
 &lt;p&gt;Hence $K = \frac 9 {10}$, and to form the posterior we take nine tenths of the measurement and one tenth of the prior.&lt;/p&gt;
 
 &lt;p&gt;If the measurement and prior are equally accurate, then $\bar\sigma^2 = \sigma_z^2$ and&lt;/p&gt;
 
-&lt;p&gt;$$\begin{gathered}
+&lt;p&gt;$$\begin{gathered}&lt;br /&gt;
 \mu=\frac{\sigma&lt;em&gt;z^2\,  (\bar\mu + \mu_z)}{2\sigma&lt;/em&gt;\mathtt{z}^2} &lt;br /&gt;
-= \left(\frac{1}{2}\right)\bar\mu + \left(\frac{1}{2}\right)\mu_z
+= \left(\frac{1}{2}\right)\bar\mu + \left(\frac{1}{2}\right)\mu_z&lt;br /&gt;
 \end{gathered}$$&lt;/p&gt;
 
 &lt;p&gt;which is the average of the two means. It makes intuitive sense to take the average of two equally accurate values.&lt;/p&gt;
 
 &lt;p&gt;We can also express the variance in terms of the Kalman gain:&lt;/p&gt;
 
-&lt;p&gt;$$\begin{aligned}
+&lt;p&gt;$$\begin{aligned}&lt;br /&gt;
 \sigma^2 &amp;amp;= \frac{\bar\sigma^2 \sigma_z^2 } {\bar\sigma^2 + \sigma_z^2} &lt;br /&gt;
 &amp;amp;= K\sigma_z^2 &lt;br /&gt;
-&amp;amp;= (1-K)\bar\sigma^2
-\end{aligned}$$
+&amp;amp;= (1-K)\bar\sigma^2&lt;br /&gt;
+\end{aligned}$$&lt;br /&gt;
 
 
 
@@ -8204,7 +8205,7 @@ $$&lt;/p&gt;
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 按此推导的等价实现如下：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def update(prior, measurement):
@@ -8230,42 +8231,42 @@ def predict(posterior, movement):
 
 &lt;p&gt;&lt;u&gt;Predict&lt;/u&gt;&lt;/p&gt;
 
-&lt;p&gt;$\begin{array}{|l|l|l|}
-\hline
+&lt;p&gt;$\begin{array}{|l|l|l|}&lt;br /&gt;
+\hline&lt;br /&gt;
 \text{Equation} &amp;amp; \text{Implementation} &amp;amp; \text{Kalman Form}&lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
  \bar x = x + f&lt;em&gt;x &amp;amp; \bar\mu = \mu + \mu&lt;/em&gt;{f&lt;em&gt;x} &amp;amp; \bar x = x + dx&lt;br /&gt;
 &amp;amp; \bar\sigma^2 = \sigma^2 + \sigma&lt;/em&gt;{f_x}^2 &amp;amp; \bar P = P + Q&lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 \end{array}$&lt;/p&gt;
 
 &lt;p&gt;&lt;u&gt;Update&lt;/u&gt;&lt;/p&gt;
 
-&lt;p&gt;$\begin{array}{|l|l|l|}
-\hline
+&lt;p&gt;$\begin{array}{|l|l|l|}&lt;br /&gt;
+\hline&lt;br /&gt;
 \text{Equation} &amp;amp; \text{Implementation}&amp;amp; \text{Kalman Form}&lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
  x = | \mathcal L\bar x| &amp;amp; y = z - \bar\mu &amp;amp; y = z - \bar x&lt;br /&gt;
  &amp;amp; K = \frac {\bar\sigma^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; K = \frac {\bar P}{\bar P+R}&lt;br /&gt;
  &amp;amp; \mu = \bar \mu + Ky &amp;amp; x = \bar x + Ky&lt;br /&gt;
  &amp;amp; \sigma^2 = \frac {\bar\sigma^2 \sigma_z^2} {\bar\sigma^2 + \sigma_z^2} &amp;amp; P = (1-K)\bar P&lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 \end{array}$&lt;/p&gt;
 
-&lt;p&gt;其他小问题：
-1.此方法难以处理非线性
+&lt;p&gt;其他小问题：&lt;br /&gt;
+1.此方法难以处理非线性&lt;br /&gt;
 2.在面临受限的硬件时，可以直接将K设为其最后的收敛值来简化计算。&lt;/p&gt;
 
 &lt;h1 id=&#34;5-多维高斯&#34;&gt;5.多维高斯&lt;/h1&gt;
 
-&lt;p&gt;$$
-f(\mathbf{x},\, \mu,\,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}\, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}
-$$
-由于其协方差矩阵包含变量关系的信息，因此对预测是有帮助的
-多维高斯相乘：
-$$\begin{aligned}
+&lt;p&gt;$$&lt;br /&gt;
+f(\mathbf{x},\, \mu,\,\Sigma) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}}\, \exp  \Big [{ -\frac{1}{2}(\mathbf{x}-\mu)^\mathsf{T}\Sigma^{-1}(\mathbf{x}-\mu) \Big ]}&lt;br /&gt;
+$$&lt;br /&gt;
+由于其协方差矩阵包含变量关系的信息，因此对预测是有帮助的&lt;br /&gt;
+多维高斯相乘：&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
 \mu &amp;amp;= \Sigma_2(\Sigma_1 + \Sigma_2)^{-1}\mu_1 + \Sigma_1(\Sigma_1 + \Sigma_2)^{-1}\mu_2 &lt;br /&gt;
-\Sigma &amp;amp;= \Sigma_1(\Sigma_1+\Sigma_2)^{-1}\Sigma_2
+\Sigma &amp;amp;= \Sigma_1(\Sigma_1+\Sigma_2)^{-1}\Sigma_2&lt;br /&gt;
 \end{aligned}$$&lt;/p&gt;
 
 &lt;h1 id=&#34;6-多维卡尔曼滤波&#34;&gt;6.多维卡尔曼滤波&lt;/h1&gt;
@@ -8274,14 +8275,14 @@ $$\begin{aligned}
 
 &lt;p&gt;&lt;u&gt;&lt;strong&gt;Predict&lt;/strong&gt;&lt;/u&gt;&lt;/p&gt;
 
-&lt;p&gt;$\begin{array}{|l|l|l|}
-\hline
+&lt;p&gt;$\begin{array}{|l|l|l|}&lt;br /&gt;
+\hline&lt;br /&gt;
 \text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}&lt;br /&gt;
 &amp;amp; \text{(Kalman form)} &amp;amp; &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 \bar \mu = \mu + \mu_{f_x} &amp;amp; \bar x = x + dx &amp;amp; \bar{\mathbf x} = \mathbf{Fx} + \mathbf{Bu}&lt;br /&gt;
 \bar\sigma^2 = \sigma&lt;em&gt;x^2 + \sigma&lt;/em&gt;{f_x}^2 &amp;amp; \bar P = P + Q &amp;amp; \bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 \end{array}$&lt;/p&gt;
 
 &lt;p&gt;$\mathbf x,\, \mathbf P$ 是状态均值和方差&lt;/p&gt;
@@ -8294,18 +8295,18 @@ $$\begin{aligned}
 
 &lt;p&gt;&lt;u&gt;&lt;strong&gt;Update&lt;/strong&gt;&lt;/u&gt;&lt;/p&gt;
 
-&lt;p&gt;$\begin{array}{|l|l|l|}
-\hline
+&lt;p&gt;$\begin{array}{|l|l|l|}&lt;br /&gt;
+\hline&lt;br /&gt;
 \text{Univariate} &amp;amp; \text{Univariate} &amp;amp; \text{Multivariate}&lt;br /&gt;
 &amp;amp; \text{(Kalman form)} &amp;amp; &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 &amp;amp; y = z - \bar x &amp;amp; \mathbf y = \mathbf z - \mathbf{H\bar x} &lt;br /&gt;
-&amp;amp; K = \frac{\bar P}{\bar P+R}&amp;amp;
+&amp;amp; K = \frac{\bar P}{\bar P+R}&amp;amp;&lt;br /&gt;
 \mathbf K = \mathbf{\bar{P}H}^\mathsf T (\mathbf{H\bar{P}H}^\mathsf T + \mathbf R)^{-1} &lt;br /&gt;
 \mu=\frac{\bar\sigma^2\, \mu_z + \sigma_z^2 \, \bar\mu} {\bar\sigma^2 + \sigma_z^2} &amp;amp; x = \bar x + Ky &amp;amp; \mathbf x = \bar{\mathbf x} + \mathbf{Ky} &lt;br /&gt;
-\sigma^2 = \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2} &amp;amp; P = (1-K)\bar P &amp;amp;
+\sigma^2 = \frac{\sigma_1^2\sigma_2^2}{\sigma_1^2+\sigma_2^2} &amp;amp; P = (1-K)\bar P &amp;amp;&lt;br /&gt;
 \mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar{P}} &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 \end{array}$&lt;/p&gt;
 
 &lt;p&gt;$\mathbf H$ 观测函数&lt;/p&gt;
@@ -8314,16 +8315,16 @@ $$\begin{aligned}
 
 &lt;p&gt;$\mathbf y$ ， $\mathbf K$ 残差，卡尔曼增益&lt;/p&gt;
 
-&lt;p&gt;与单变量相比，只是引入了矩阵，其他都一样：
-- 使用高斯函数来表示我们对状态和误差的估计
-- 使用高斯函数表示测量值及其误差
-- 使用高斯函数表示过程模型
-- 使用过程模型预测下一个状态(先验)
-- 在测量值和先验值之间形成一个估计
-&lt;strong&gt;注：细节的一些直观理解&lt;/strong&gt;
+&lt;p&gt;与单变量相比，只是引入了矩阵，其他都一样：&lt;br /&gt;
+- 使用高斯函数来表示我们对状态和误差的估计&lt;br /&gt;
+- 使用高斯函数表示测量值及其误差&lt;br /&gt;
+- 使用高斯函数表示过程模型&lt;br /&gt;
+- 使用过程模型预测下一个状态(先验)&lt;br /&gt;
+- 在测量值和先验值之间形成一个估计&lt;br /&gt;
+&lt;strong&gt;注：细节的一些直观理解&lt;/strong&gt;&lt;br /&gt;
 在predict步中，状态方差以$\mathbf{\bar P} = \mathbf{FPF}^\mathsf T + \mathbf Q$方式计算得到，而不是简单P+Q，这是因为要映射到相同空间才能运算。$\mathbf{FPF}^\mathsf T$将P从t-1状态空间映射变换到t的状态空间。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;下面以之前的狗追踪问题举例说明&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;下面以之前的狗追踪问题举例说明&lt;/strong&gt;&lt;br /&gt;
 这次试用位置和速度作为状态变量，其中位置可测，作为观测变量，速度作为隐变量，假设做匀速直线运动，并估测了初试位置和过程方差，如下，过程方差Q还未确定&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.kalman import predict
@@ -8336,7 +8337,7 @@ F = np.array([[1, dt], [0, 1]])
 x, P = predict(x=x, P=P, F=F, Q=0)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;预测结果如下：
+&lt;p&gt;预测结果如下：&lt;br /&gt;
 
 
 
@@ -8372,9 +8373,9 @@ x, P = predict(x=x, P=P, F=F, Q=0)
 
 
 &lt;/figure&gt;
-
-可以看到随着 predict的进行，不确定在增加，同时速度与位置的相关性在增加。
-过程噪声设计：
+&lt;br /&gt;
+可以看到随着 predict的进行，不确定在增加，同时速度与位置的相关性在增加。&lt;br /&gt;
+过程噪声设计：&lt;br /&gt;
 Q是表示系统受外界的干扰的，具体细节在下章讨论，现在先使用库函数计算&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.common import Q_discrete_white_noise
@@ -8386,8 +8387,8 @@ print(Q)
  &#39;&#39;&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;最后，我们加上控制项，这可以让我们得以控制对象。$\Delta\mathbf x = \mathbf{Bu}$，至此，完整的预测方程已经确定，次例子是无控的，故设u=0$$\mathbf{\bar x} = \mathbf{Fx} + \mathbf{Bu}$$
-之后来看updata步：
+&lt;p&gt;最后，我们加上控制项，这可以让我们得以控制对象。$\Delta\mathbf x = \mathbf{Bu}$，至此，完整的预测方程已经确定，次例子是无控的，故设u=0$$\mathbf{\bar x} = \mathbf{Fx} + \mathbf{Bu}$$&lt;br /&gt;
+之后来看updata步：&lt;br /&gt;
 为了求观测和预测之间的残差，需要一个观测函数（矩阵）H将状态空间映射到观测空间。本例中为[1,0]，最后设置好观测方差R，整个滤波器就完全确定好了&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.kalman import update
@@ -8399,9 +8400,9 @@ x, P = update(x, P, z, R, H)
 
 &lt;h1 id=&#34;7-卡尔曼滤波器数学细节&#34;&gt;7. 卡尔曼滤波器数学细节&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;动态系统的状态空间表达&lt;/strong&gt;
-一般建立系统微分方程后很容易得到连续状态方程$\dot{\mathbf x} = \mathbf{Ax} + \mathbf{Bu} + w$（w是噪声），接下来的问题是要离散化为$\mathbf x_k = \mathbf {Fx}_{k-1}$以让计算机得以运行。离散化实际上就是在解微分方程组，方法很多，工程上常用数值方法。如van Loan&amp;rsquo;s方法可求 $\mathbf F_k$ 并同时得到 $\mathbf Q_k$
-&lt;strong&gt;过程噪声Q的确定&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;动态系统的状态空间表达&lt;/strong&gt;&lt;br /&gt;
+一般建立系统微分方程后很容易得到连续状态方程$\dot{\mathbf x} = \mathbf{Ax} + \mathbf{Bu} + w$（w是噪声），接下来的问题是要离散化为$\mathbf x_k = \mathbf {Fx}_{k-1}$以让计算机得以运行。离散化实际上就是在解微分方程组，方法很多，工程上常用数值方法。如van Loan&amp;rsquo;s方法可求 $\mathbf F_k$ 并同时得到 $\mathbf Q_k$&lt;br /&gt;
+&lt;strong&gt;过程噪声Q的确定&lt;/strong&gt;&lt;br /&gt;
 相似的，我们也需要对噪声w离散化以确定Q，具体要看我们对噪声的假设，典型的有连续白噪声模型和分段白噪声模型，各有利弊，实践上通过实验来确定。其具体计算可调用如下：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.common import Q_continuous_white_noise
@@ -8411,35 +8412,35 @@ Q = Q_continuous_white_noise(dim=2, dt=1, spectral_density=1)
 Q = Q_discrete_white_noise(2, var=1.)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Q可以被简化。当时间步t很小的时候，我们大可以只保留最高阶状态变量对应的值，而将其他设为0。如
-$$\mathbf Q=\begin{bmatrix}0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;\sigma^2\end{bmatrix}$$
+&lt;p&gt;Q可以被简化。当时间步t很小的时候，我们大可以只保留最高阶状态变量对应的值，而将其他设为0。如&lt;br /&gt;
+$$\mathbf Q=\begin{bmatrix}0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;\sigma^2\end{bmatrix}$$&lt;br /&gt;
 对 $x=\begin{bmatrix}x &amp;amp; \dot x &amp;amp; \ddot{x} &amp;amp; y &amp;amp; \dot{y} &amp;amp; \ddot{y}\end{bmatrix}^\mathsf{T}$  Q 将为 6x6，这时可以保留$\ddot{x}$ ， $\ddot{y}$ ，其他都设为0.&lt;/p&gt;
 
-&lt;p&gt;$\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar P}$&lt;strong&gt;的计算稳定性问题&lt;/strong&gt;
-由于浮点数的精度损失，此式子在计算的时候可能使得P不再对称，由于P是协方差矩阵，其应该是严格对称的，这会导致滤波器发散等一系列错误。因此实际上使用了Joseph 方程计算P。$$\mathbf P = (\mathbf I-\mathbf {KH})\mathbf{\bar P}(\mathbf I-\mathbf{KH})^\mathsf T + \mathbf{KRK}^\mathsf T$$
+&lt;p&gt;$\mathbf P = (\mathbf I - \mathbf{KH})\mathbf{\bar P}$&lt;strong&gt;的计算稳定性问题&lt;/strong&gt;&lt;br /&gt;
+由于浮点数的精度损失，此式子在计算的时候可能使得P不再对称，由于P是协方差矩阵，其应该是严格对称的，这会导致滤波器发散等一系列错误。因此实际上使用了Joseph 方程计算P。$$\mathbf P = (\mathbf I-\mathbf {KH})\mathbf{\bar P}(\mathbf I-\mathbf{KH})^\mathsf T + \mathbf{KRK}^\mathsf T$$&lt;br /&gt;
 此方法不仅能解决因为浮点不对称引起的滤波器不稳定，亦可一定程度上解决因模型不精确和非高斯噪声等实际环境引起的滤波器发散问题。&lt;/p&gt;
 
 &lt;h1 id=&#34;8-面向实际问题的卡尔曼滤波器的设计&#34;&gt;8.面向实际问题的卡尔曼滤波器的设计&lt;/h1&gt;
 
-&lt;p&gt;以过滤来自有噪声传感器的(x,y)为例（人工数据，匀速直线运动）。显然可取状态变量和转移矩阵
-$$\mathbf x =
-\begin{bmatrix}x &amp;amp; \dot x &amp;amp; y &amp;amp; \dot y\end{bmatrix}^\mathsf T$$
-$$
-\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix} = \begin{bmatrix}1&amp;amp; \Delta t&amp;amp; 0&amp;amp; 0\0&amp;amp; 1&amp;amp; 0&amp;amp; 0\0&amp;amp; 0&amp;amp; 1&amp;amp; \Delta t\ 0&amp;amp; 0&amp;amp; 0&amp;amp; 1\end{bmatrix}\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix}$$
-之后设计过程噪声，采用离散白噪声模型，并认为x,y直接独立。
-系统无控制，故设B=0。
-确定观测矩阵：由于我们传感器返回$\begin{bmatrix}x &amp;amp; y\end{bmatrix}^\mathsf T$ ，且单位为英尺，故设:
-$$\mathbf H =
-\begin{bmatrix}
+&lt;p&gt;以过滤来自有噪声传感器的(x,y)为例（人工数据，匀速直线运动）。显然可取状态变量和转移矩阵&lt;br /&gt;
+$$\mathbf x =&lt;br /&gt;
+\begin{bmatrix}x &amp;amp; \dot x &amp;amp; y &amp;amp; \dot y\end{bmatrix}^\mathsf T$$&lt;br /&gt;
+$$&lt;br /&gt;
+\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix} = \begin{bmatrix}1&amp;amp; \Delta t&amp;amp; 0&amp;amp; 0\0&amp;amp; 1&amp;amp; 0&amp;amp; 0\0&amp;amp; 0&amp;amp; 1&amp;amp; \Delta t\ 0&amp;amp; 0&amp;amp; 0&amp;amp; 1\end{bmatrix}\begin{bmatrix}x \ \dot x \ y \ \dot y\end{bmatrix}$$&lt;br /&gt;
+之后设计过程噪声，采用离散白噪声模型，并认为x,y直接独立。&lt;br /&gt;
+系统无控制，故设B=0。&lt;br /&gt;
+确定观测矩阵：由于我们传感器返回$\begin{bmatrix}x &amp;amp; y\end{bmatrix}^\mathsf T$ ，且单位为英尺，故设:&lt;br /&gt;
+$$\mathbf H =&lt;br /&gt;
+\begin{bmatrix}&lt;br /&gt;
 \frac{1}{0.3048} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &lt;br /&gt;
-0 &amp;amp; 0 &amp;amp; \frac{1}{0.3048} &amp;amp; 0
-\end{bmatrix}
-$$
-观测噪声矩阵：认为x,y独立，假设高斯噪声，设：
-$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp;amp; \sigma_y\sigma_x \ \sigma_x\sigma&lt;em&gt;y &amp;amp; \sigma&lt;/em&gt;{y}^2\end{bmatrix}
-= \begin{bmatrix}5&amp;amp;0\0&amp;amp;5\end{bmatrix}$$
-最后设置下初始值，注意P初值习惯上给的较大。
-$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, \,
+0 &amp;amp; 0 &amp;amp; \frac{1}{0.3048} &amp;amp; 0&lt;br /&gt;
+\end{bmatrix}&lt;br /&gt;
+$$&lt;br /&gt;
+观测噪声矩阵：认为x,y独立，假设高斯噪声，设：&lt;br /&gt;
+$$\mathbf R = \begin{bmatrix}\sigma_x^2 &amp;amp; \sigma_y\sigma_x \ \sigma_x\sigma&lt;em&gt;y &amp;amp; \sigma&lt;/em&gt;{y}^2\end{bmatrix}&lt;br /&gt;
+= \begin{bmatrix}5&amp;amp;0\0&amp;amp;5\end{bmatrix}$$&lt;br /&gt;
+最后设置下初始值，注意P初值习惯上给的较大。&lt;br /&gt;
+$$ \mathbf x = \begin{bmatrix}0\0\0\0\end{bmatrix}, \,&lt;br /&gt;
 \mathbf P = \begin{bmatrix}500&amp;amp;0&amp;amp;0&amp;amp;0\0&amp;amp;500&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;500&amp;amp;0\0&amp;amp;0&amp;amp;0&amp;amp;500\end{bmatrix}$$&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.stats import plot_covariance_ellipse
@@ -8493,7 +8494,7 @@ plt.xlim(0, 20);
                                                           
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;效果尚可
+&lt;p&gt;效果尚可&lt;br /&gt;
 
 
 
@@ -8529,9 +8530,9 @@ plt.xlim(0, 20);
 
 
 &lt;/figure&gt;
-
-&lt;strong&gt;模型阶数选择&lt;/strong&gt;
-具体应该用多少阶的模型来描述实际问题？下面给出0,1,2阶的系统，并对其进行性能分析。具体分析方法是画出真实值与预测值直接的残差，并借助P矩阵的对角线画出置信域，如下是一阶的：
+&lt;br /&gt;
+&lt;strong&gt;模型阶数选择&lt;/strong&gt;&lt;br /&gt;
+具体应该用多少阶的模型来描述实际问题？下面给出0,1,2阶的系统，并对其进行性能分析。具体分析方法是画出真实值与预测值直接的残差，并借助P矩阵的对角线画出置信域，如下是一阶的：&lt;br /&gt;
 
 
 
@@ -8567,8 +8568,8 @@ plt.xlim(0, 20);
 
 
 &lt;/figure&gt;
-
-当换到二阶滤波器，虽然短期内不是很差，但可观察到长期发散。
+&lt;br /&gt;
+当换到二阶滤波器，虽然短期内不是很差，但可观察到长期发散。&lt;br /&gt;
 
 
 
@@ -8604,36 +8605,36 @@ plt.xlim(0, 20);
 
 
 &lt;/figure&gt;
-
-高阶数的过程模型很容易过拟合，我们可以选择采用较低阶数，同时适当加大过程噪声Q以达到统样不错的效果。
-&lt;strong&gt;检测和避免糟糕的测量值&lt;/strong&gt;
-显然实践中由于传感器故障等原因我们偶尔会得到很糟糕的观测值，这个需要被检测和剔除以避免其破坏性影响。一个朴素但有效的做法是gating。可以利用P矩阵中的状态方差来判断观测值的好坏。具体的，可以使用mahalanobis distance。mahalanobis distance判断一个点到分布的距离，其定义如下：
-$$D_m= \sqrt{(\mathbf x-\mu)^\mathsf T \mathbf S^{-1} (\mathbf x-\mu)}$$
-其中S是协方差矩阵。
-它其实很像欧氏距离:
-$$D_e= \sqrt{(\mathbf x-\mathbf y)^\mathsf T (\mathbf x-\mathbf y)}$$
-若S是对角阵，马氏距离可简化为：
-$$D_m = \sqrt{\sum_{i-1}^N \frac{(x_i - \mu_i)^2}{\sigma_i}}$$
-就是欧氏距离加了个方差做因子。
-&lt;strong&gt;滤波器性能评估&lt;/strong&gt;
-真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。
-1. Normalized Estimated Error Squared（NEES）
-这是当能获取状态变量ground-truth时的最佳选择。
+&lt;br /&gt;
+高阶数的过程模型很容易过拟合，我们可以选择采用较低阶数，同时适当加大过程噪声Q以达到统样不错的效果。&lt;br /&gt;
+&lt;strong&gt;检测和避免糟糕的测量值&lt;/strong&gt;&lt;br /&gt;
+显然实践中由于传感器故障等原因我们偶尔会得到很糟糕的观测值，这个需要被检测和剔除以避免其破坏性影响。一个朴素但有效的做法是gating。可以利用P矩阵中的状态方差来判断观测值的好坏。具体的，可以使用mahalanobis distance。mahalanobis distance判断一个点到分布的距离，其定义如下：&lt;br /&gt;
+$$D_m= \sqrt{(\mathbf x-\mu)^\mathsf T \mathbf S^{-1} (\mathbf x-\mu)}$$&lt;br /&gt;
+其中S是协方差矩阵。&lt;br /&gt;
+它其实很像欧氏距离:&lt;br /&gt;
+$$D_e= \sqrt{(\mathbf x-\mathbf y)^\mathsf T (\mathbf x-\mathbf y)}$$&lt;br /&gt;
+若S是对角阵，马氏距离可简化为：&lt;br /&gt;
+$$D_m = \sqrt{\sum_{i-1}^N \frac{(x_i - \mu_i)^2}{\sigma_i}}$$&lt;br /&gt;
+就是欧氏距离加了个方差做因子。&lt;br /&gt;
+&lt;strong&gt;滤波器性能评估&lt;/strong&gt;&lt;br /&gt;
+真实环境下的卡尔曼滤波器设计往往靠式，因此这里提几个滤波器性能的客观量化指标。&lt;br /&gt;
+1. Normalized Estimated Error Squared（NEES）&lt;br /&gt;
+这是当能获取状态变量ground-truth时的最佳选择。&lt;br /&gt;
 $$\tilde{\mathbf x} = \mathbf x - \hat{\mathbf x} \ \epsilon = \tilde{\mathbf x}^\mathsf T\mathbf P^{-1}\tilde{\mathbf x}$$&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from filterpy.stats import NEES
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;事实上这是一个假设检验方法。我们认定当NEES的均值&amp;lt;状态变量维度时是一个好的滤波器。
-2. 似然函数
-当无法获得ground-truth的时候，可计算似然，即观测符合当前模型假设的程度。
-$$\begin{aligned}
+&lt;p&gt;事实上这是一个假设检验方法。我们认定当NEES的均值&amp;lt;状态变量维度时是一个好的滤波器。&lt;br /&gt;
+2. 似然函数&lt;br /&gt;
+当无法获得ground-truth的时候，可计算似然，即观测符合当前模型假设的程度。&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
 \mathbf y &amp;amp;= \mathbf z - \mathbf{H \bar x}&lt;br /&gt;
 \mathbf S &amp;amp;= \mathbf{H\bar{P}H}^\mathsf T + \mathbf R&lt;br /&gt;
-\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf y^\mathsf T\mathbf S^{-1}\mathbf y]
-\end{aligned}
-$$
-这个也很适合用于剔除坏的测量，如下
+\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf y^\mathsf T\mathbf S^{-1}\mathbf y]&lt;br /&gt;
+\end{aligned}&lt;br /&gt;
+$$&lt;br /&gt;
+这个也很适合用于剔除坏的测量，如下&lt;br /&gt;
 
 
 
@@ -8673,14 +8674,14 @@ $$
 
 &lt;h1 id=&#34;9-非线性滤波&#34;&gt;9.非线性滤波&lt;/h1&gt;
 
-&lt;p&gt;原始的卡尔曼滤波器是线性的，我们生活在非线性的世界，需要一些非线性的技术。
-&lt;strong&gt;非线性&lt;/strong&gt;
-数学上的&lt;strong&gt;线性&lt;/strong&gt;要求以下两点：
-* additivity: $f(x+y) = f(x) + f(y)$
+&lt;p&gt;原始的卡尔曼滤波器是线性的，我们生活在非线性的世界，需要一些非线性的技术。&lt;br /&gt;
+&lt;strong&gt;非线性&lt;/strong&gt;&lt;br /&gt;
+数学上的&lt;strong&gt;线性&lt;/strong&gt;要求以下两点：&lt;br /&gt;
+* additivity: $f(x+y) = f(x) + f(y)$&lt;br /&gt;
 * homogeneity: $f(ax) = af(x)$&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;非线性的效果&lt;/strong&gt;
-考虑一个有噪声雷达跟踪系统，它向我们报告物体距离50km，方位90度，那么我们直觉上可能认为其绝对坐标应该是（50，0）。我们设距离方差为0.4，角度方差为0.35，并采样3000点如下，计算3000点的均值标记为星。
+&lt;p&gt;&lt;strong&gt;非线性的效果&lt;/strong&gt;&lt;br /&gt;
+考虑一个有噪声雷达跟踪系统，它向我们报告物体距离50km，方位90度，那么我们直觉上可能认为其绝对坐标应该是（50，0）。我们设距离方差为0.4，角度方差为0.35，并采样3000点如下，计算3000点的均值标记为星。&lt;br /&gt;
 
 
 
@@ -8716,9 +8717,9 @@ $$
 
 
 &lt;/figure&gt;
-
-可见由于非线性的缘故，我们的直觉失效了。
-下图绘出了分析函数对高斯分布的影响，可以看到虽然f(x)看起来还是挺线性的，但是影响巨大，这对卡尔曼滤波器的假设具有破坏性打击。
+&lt;br /&gt;
+可见由于非线性的缘故，我们的直觉失效了。&lt;br /&gt;
+下图绘出了分析函数对高斯分布的影响，可以看到虽然f(x)看起来还是挺线性的，但是影响巨大，这对卡尔曼滤波器的假设具有破坏性打击。&lt;br /&gt;
 
 
 
@@ -8754,56 +8755,56 @@ $$
 
 
 &lt;/figure&gt;
-
+&lt;br /&gt;
 UKF,EKF,例子滤波 是几种处理非线性滤波的有效手段，尤其UKF和粒子滤波器在实践中取得了非常好的效果。&lt;/p&gt;
 
 &lt;h1 id=&#34;9-无迹卡尔曼滤波器ukf&#34;&gt;9. 无迹卡尔曼滤波器UKF&lt;/h1&gt;
 
-&lt;p&gt;该技术与1997年提出，相对于EKF等算是比较新的。有趣的是其名称中的unscented一词并没有任何含义，而是源于发明者开的玩笑。。。
-上一章的例子使我们了解到由于非线性函数的存在，新状态已经难以解析的计算得到，因此需要引入采样方法进行数值求解。单纯使用大量随机采样（蒙特卡洛思路）是最朴素的方法，效果不错，能很好的近似原分布经过非线性函数后的均值和方差，但考虑到这个采样在每个时间步update中都要进行，计算量实在太大。更好的方法是使用加权采样。选择的采样点称之为sigma points，记为$\boldsymbol{\chi}$。当我们通过一些采样方法得到$\boldsymbol{\chi}$后，并可进行如下的计算
-$$\boldsymbol{\mathcal{Y}} = f(\boldsymbol{\chi})$$
-将$\boldsymbol{\chi}$通过非线性函数计算其对应的映射之后，计算均值和方差作为新的估计，拿到这些估计值后我们便可与标准的线性卡尔曼滤波方法接轨了。故UKF方法的精髓就是以加权采样近似估计状态在非线性变换之后的均值方差，借助于较好的采样算法，这个估计一般是不错的，故此方法可以在非线性系统中取得较好的性能。
-&lt;strong&gt;具体算法&lt;/strong&gt;
-$$\begin{array}{l|l}
+&lt;p&gt;该技术与1997年提出，相对于EKF等算是比较新的。有趣的是其名称中的unscented一词并没有任何含义，而是源于发明者开的玩笑。。。&lt;br /&gt;
+上一章的例子使我们了解到由于非线性函数的存在，新状态已经难以解析的计算得到，因此需要引入采样方法进行数值求解。单纯使用大量随机采样（蒙特卡洛思路）是最朴素的方法，效果不错，能很好的近似原分布经过非线性函数后的均值和方差，但考虑到这个采样在每个时间步update中都要进行，计算量实在太大。更好的方法是使用加权采样。选择的采样点称之为sigma points，记为$\boldsymbol{\chi}$。当我们通过一些采样方法得到$\boldsymbol{\chi}$后，并可进行如下的计算&lt;br /&gt;
+$$\boldsymbol{\mathcal{Y}} = f(\boldsymbol{\chi})$$&lt;br /&gt;
+将$\boldsymbol{\chi}$通过非线性函数计算其对应的映射之后，计算均值和方差作为新的估计，拿到这些估计值后我们便可与标准的线性卡尔曼滤波方法接轨了。故UKF方法的精髓就是以加权采样近似估计状态在非线性变换之后的均值方差，借助于较好的采样算法，这个估计一般是不错的，故此方法可以在非线性系统中取得较好的性能。&lt;br /&gt;
+&lt;strong&gt;具体算法&lt;/strong&gt;&lt;br /&gt;
+$$\begin{array}{l|l}&lt;br /&gt;
 \textrm{Kalman Filter} &amp;amp; \textrm{Unscented Kalman Filter} &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 &amp;amp; \boldsymbol{\mathcal Y} = f(\boldsymbol\chi) &lt;br /&gt;
-\mathbf{\bar x} = \mathbf{Fx} &amp;amp;
+\mathbf{\bar x} = \mathbf{Fx} &amp;amp;&lt;br /&gt;
 \mathbf{\bar x} = \sum w^m\boldsymbol{\mathcal Y}  &lt;br /&gt;
-\mathbf{\bar P} = \mathbf{FPF}^\mathsf T+\mathbf Q  &amp;amp;
+\mathbf{\bar P} = \mathbf{FPF}^\mathsf T+\mathbf Q  &amp;amp;&lt;br /&gt;
 \mathbf{\bar P} = \sum w^c({\boldsymbol{\mathcal Y} - \mathbf{\bar x})(\boldsymbol{\mathcal Y} - \mathbf{\bar x})^\mathsf T}+\mathbf Q &lt;br /&gt;
-\hline
+\hline&lt;br /&gt;
 &amp;amp; \boldsymbol{\mathcal Z} =  h(\boldsymbol{\mathcal{Y}}) &lt;br /&gt;
 &amp;amp; \boldsymbol\mu_z = \sum w^m\boldsymbol{\mathcal{Z}} &lt;br /&gt;
-\mathbf y = \mathbf z - \mathbf{Hx} &amp;amp;
+\mathbf y = \mathbf z - \mathbf{Hx} &amp;amp;&lt;br /&gt;
 \mathbf y = \mathbf z - \boldsymbol\mu_z &lt;br /&gt;
-\mathbf S = \mathbf{H\bar PH}^\mathsf{T} + \mathbf R &amp;amp;
-\mathbf P_z = \sum w^c{(\boldsymbol{\mathcal Z}-\boldsymbol\mu_z)(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}} + \mathbf R \
-\mathbf K = \mathbf{\bar PH}^\mathsf T \mathbf S^{-1} &amp;amp;
+\mathbf S = \mathbf{H\bar PH}^\mathsf{T} + \mathbf R &amp;amp;&lt;br /&gt;
+\mathbf P_z = \sum w^c{(\boldsymbol{\mathcal Z}-\boldsymbol\mu_z)(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}} + \mathbf R \&lt;br /&gt;
+\mathbf K = \mathbf{\bar PH}^\mathsf T \mathbf S^{-1} &amp;amp;&lt;br /&gt;
 \mathbf K = \left[\sum w^c(\boldsymbol{\mathcal Y}-\bar{\mathbf x})(\boldsymbol{\mathcal{Z}}-\boldsymbol\mu_z)^\mathsf{T}\right] \mathbf P_z^{-1} &lt;br /&gt;
 \mathbf x = \mathbf{\bar x} + \mathbf{Ky} &amp;amp; \mathbf x = \mathbf{\bar x} + \mathbf{Ky}&lt;br /&gt;
-\mathbf P = (\mathbf{I}-\mathbf{KH})\mathbf{\bar P} &amp;amp; \mathbf P = \bar{\mathbf P} - \mathbf{KP_z}\mathbf{K}^\mathsf{T}
-\end{array}$$
-可以看到仅是进行一些调整，其他完全符合卡尔曼滤波的思想。
-首先，由于非线性系统难以用状态方程描述，这里转而使用非线性函数$f$描述$F$。相应的，观测矩阵$H$也替换为了$h$函数。$w^m,w^c$分别是sigma points的均值权重和方差权重，在构造sigma points时生成。
-&lt;strong&gt;Sigma Point的采样方法&lt;/strong&gt;
-几十年来大家水了很多采样方法，目前大家用的最多的是Van der Merwe的方法，其能很好的平衡计算复杂度和精度。该方法由$\alpha$, $\beta$, $\kappa$三个参数控制。
-为了方便我们记$\lambda = \alpha^2(n+\kappa)-n$
-先看点的位置如何得到：
-首先一个特殊的采样点是
-$$ \mathcal{X}_0 = \mu$$
-之后其余点的计算
-$$
-\boldsymbol{\chi}&lt;em&gt;i = \begin{cases}
+\mathbf P = (\mathbf{I}-\mathbf{KH})\mathbf{\bar P} &amp;amp; \mathbf P = \bar{\mathbf P} - \mathbf{KP_z}\mathbf{K}^\mathsf{T}&lt;br /&gt;
+\end{array}$$&lt;br /&gt;
+可以看到仅是进行一些调整，其他完全符合卡尔曼滤波的思想。&lt;br /&gt;
+首先，由于非线性系统难以用状态方程描述，这里转而使用非线性函数$f$描述$F$。相应的，观测矩阵$H$也替换为了$h$函数。$w^m,w^c$分别是sigma points的均值权重和方差权重，在构造sigma points时生成。&lt;br /&gt;
+&lt;strong&gt;Sigma Point的采样方法&lt;/strong&gt;&lt;br /&gt;
+几十年来大家水了很多采样方法，目前大家用的最多的是Van der Merwe的方法，其能很好的平衡计算复杂度和精度。该方法由$\alpha$, $\beta$, $\kappa$三个参数控制。&lt;br /&gt;
+为了方便我们记$\lambda = \alpha^2(n+\kappa)-n$&lt;br /&gt;
+先看点的位置如何得到：&lt;br /&gt;
+首先一个特殊的采样点是&lt;br /&gt;
+$$ \mathcal{X}_0 = \mu$$&lt;br /&gt;
+之后其余点的计算&lt;br /&gt;
+$$&lt;br /&gt;
+\boldsymbol{\chi}&lt;em&gt;i = \begin{cases}&lt;br /&gt;
 \mu + \left[ \sqrt{(n+\lambda)\Sigma}\right ]&lt;/em&gt;{i}&amp;amp; \text{for i=1 .. n} &lt;br /&gt;
-\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]_{i-n} &amp;amp;\text{for i=(n+1) .. 2n}\end{cases}
-$$
-其中n是状态向量x的维数，$\Sigma$是协方差矩阵P。+-的形式保证了对称性。下标$i$表示取矩阵的第$i$列。此式子通俗理解是以$\mu$为中心，扩散$\Sigma$的一个系数大小的的值。这里的矩阵开方是个很神奇的东西，其定义不唯一，此处使用如下定义：若$\Sigma = \mathbf{SS}^\mathsf T$则 $S = \sqrt{\Sigma}$。具体的，使用$\mathbf S = \text{cholesky}(\mathbf P)$ 作为$\mathbf P$的开方。其中cholesky是cholesky分解。
-之后看权重的计算：
+\mu - \left[ \sqrt{(n+\lambda)\Sigma}\right]_{i-n} &amp;amp;\text{for i=(n+1) .. 2n}\end{cases}&lt;br /&gt;
+$$&lt;br /&gt;
+其中n是状态向量x的维数，$\Sigma$是协方差矩阵P。+-的形式保证了对称性。下标$i$表示取矩阵的第$i$列。此式子通俗理解是以$\mu$为中心，扩散$\Sigma$的一个系数大小的的值。这里的矩阵开方是个很神奇的东西，其定义不唯一，此处使用如下定义：若$\Sigma = \mathbf{SS}^\mathsf T$则 $S = \sqrt{\Sigma}$。具体的，使用$\mathbf S = \text{cholesky}(\mathbf P)$ 作为$\mathbf P$的开方。其中cholesky是cholesky分解。&lt;br /&gt;
+之后看权重的计算：&lt;br /&gt;
 $$W^m_0 = \frac{\lambda}{n+\lambda} &lt;br /&gt;
 W^c_0 = \frac{\lambda}{n+\lambda} + 1 -\alpha^2 + \beta &lt;br /&gt;
-W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$
-此方法的采样结形如下图：
+W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$&lt;br /&gt;
+此方法的采样结形如下图：&lt;br /&gt;
 
 
 
@@ -8839,10 +8840,10 @@ W^m_i = W^c_i = \frac{1}{2(n+\lambda)}\;\;\;i=1..2n$$
 
 
 &lt;/figure&gt;
-
-至于三个参数的选择，可如下进行：
-$\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the dimension of $\mathbf x$ is a good choice for $\kappa$, and $0 \le \alpha \le 1$ is an appropriate choice for $\alpha$, where a larger value for $\alpha$ spreads the sigma points further from the mean.
-&lt;strong&gt;一个例子：航班追踪&lt;/strong&gt;
+&lt;br /&gt;
+至于三个参数的选择，可如下进行：&lt;br /&gt;
+$\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the dimension of $\mathbf x$ is a good choice for $\kappa$, and $0 \le \alpha \le 1$ is an appropriate choice for $\alpha$, where a larger value for $\alpha$ spreads the sigma points further from the mean.&lt;br /&gt;
+&lt;strong&gt;一个例子：航班追踪&lt;/strong&gt;&lt;br /&gt;
 
 
 
@@ -8878,19 +8879,19 @@ $\beta=2$ is a good choice for Gaussian problems, $\kappa=3-n$ where $n$ is the 
 
 
 &lt;/figure&gt;
-
-此任务的目标是由雷达给出的距离和角度的观测，得到（x，y）。
-我们采用匀速直线运动假设：
-$$\mathbf x = \begin{bmatrix}\mathtt{distance} \\mathtt{velocity}\ \mathtt{altitude}\end{bmatrix}=    \begin{bmatrix}x \ \dot x\ y\end{bmatrix}$$
-显然转移矩阵是线性的：
-$$\mathbf{\bar x} = \begin{bmatrix} 1 &amp;amp; \Delta t &amp;amp; 0 \ 0&amp;amp; 1&amp;amp; 0 \ 0&amp;amp;0&amp;amp;1\end{bmatrix}
-\begin{bmatrix}x \ \dot x\ y\end{bmatrix}
-$$
-但本例中的观测函数就是非线性的了：
+&lt;br /&gt;
+此任务的目标是由雷达给出的距离和角度的观测，得到（x，y）。&lt;br /&gt;
+我们采用匀速直线运动假设：&lt;br /&gt;
+$$\mathbf x = \begin{bmatrix}\mathtt{distance} \\mathtt{velocity}\ \mathtt{altitude}\end{bmatrix}=    \begin{bmatrix}x \ \dot x\ y\end{bmatrix}$$&lt;br /&gt;
+显然转移矩阵是线性的：&lt;br /&gt;
+$$\mathbf{\bar x} = \begin{bmatrix} 1 &amp;amp; \Delta t &amp;amp; 0 \ 0&amp;amp; 1&amp;amp; 0 \ 0&amp;amp;0&amp;amp;1\end{bmatrix}&lt;br /&gt;
+\begin{bmatrix}x \ \dot x\ y\end{bmatrix}&lt;br /&gt;
+$$&lt;br /&gt;
+但本例中的观测函数就是非线性的了：&lt;br /&gt;
 $$\text{r} = \sqrt{(x_\text{ac} - x_\text{radar})^2 + (y_\text{ac} - y_\mathtt{radar})^2}$$&lt;/p&gt;
 
-&lt;p&gt;$$\epsilon = \tan^{-1}{\frac{y_\mathtt{ac} - y_\text{radar}}{x_\text{ac} - x_\text{radar}}}$$
-代码实现如下：
+&lt;p&gt;$$\epsilon = \tan^{-1}{\frac{y_\mathtt{ac} - y_\text{radar}}{x_\text{ac} - x_\text{radar}}}$$&lt;br /&gt;
+代码实现如下：&lt;br /&gt;
 首先创造仿真环境：飞机和雷达站&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from numpy.linalg import norm
@@ -8992,32 +8993,32 @@ for _ in time:
 plot_radar(xs, time)    
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;最后，呈现一个较复杂的例子&lt;/strong&gt;
-此例子处理机器人定位问题。我们有一个机器人，它需要用传感器感知地标来定位和导航。
-机器人模型采用经典的自行车模型来建模。
+&lt;p&gt;&lt;strong&gt;最后，呈现一个较复杂的例子&lt;/strong&gt;&lt;br /&gt;
+此例子处理机器人定位问题。我们有一个机器人，它需要用传感器感知地标来定位和导航。&lt;br /&gt;
+机器人模型采用经典的自行车模型来建模。&lt;br /&gt;
 $$\begin{aligned} \bar x &amp;amp;= x - R\sin(\theta) + R\sin(\theta + \beta) &lt;br /&gt;
 \bar y &amp;amp;= y + R\cos(\theta) - R\cos(\theta + \beta) &lt;br /&gt;
-\bar \theta &amp;amp;= \theta + \beta
-\end{aligned}
-$$
-其中$\beta = \frac{d}{w} \tan{(\alpha)}$ ，$R = \frac{d}{\beta}$
-选定状态变量$\mathbf x = \begin{bmatrix}x &amp;amp; y &amp;amp; \theta\end{bmatrix}^\mathsf{T}$
-选定控制变量$\mathbf{u} = \begin{bmatrix}v &amp;amp; \alpha\end{bmatrix}^\mathsf{T}$（α是前轮转向角）
-明确地标p的观测函数：
-$$\begin{aligned}
+\bar \theta &amp;amp;= \theta + \beta&lt;br /&gt;
+\end{aligned}&lt;br /&gt;
+$$&lt;br /&gt;
+其中$\beta = \frac{d}{w} \tan{(\alpha)}$ ，$R = \frac{d}{\beta}$&lt;br /&gt;
+选定状态变量$\mathbf x = \begin{bmatrix}x &amp;amp; y &amp;amp; \theta\end{bmatrix}^\mathsf{T}$&lt;br /&gt;
+选定控制变量$\mathbf{u} = \begin{bmatrix}v &amp;amp; \alpha\end{bmatrix}^\mathsf{T}$（α是前轮转向角）&lt;br /&gt;
+明确地标p的观测函数：&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
 \mathbf{z}&amp;amp; = h(\mathbf x, \mathbf P) &amp;amp;+ \mathcal{N}(0, R)&lt;br /&gt;
-&amp;amp;= \begin{bmatrix}
+&amp;amp;= \begin{bmatrix}&lt;br /&gt;
 \sqrt{(p_x - x)^2 + (p_y - y)^2} &lt;br /&gt;
-\tan^{-1}(\frac{p_y - y}{p_x - x}) - \theta
-\end{bmatrix} &amp;amp;+ \mathcal{N}(0, R)
-\end{aligned}$$
-这里需要小心角度相减的计算问题，即0°附近的离散性，显然可以取模处理之。
-此外还需要注意的是如何对角度求平均？显然359°和1°的平均是0°，但其数值均值却为180°。因此我们需要特别考虑此问题，使用下面的式子计算角度均值：
-$$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1}^n \cos\theta_i}{n}\right)$$
-规定的这些均值计算方法可以传入UKF类的初始化函数。
-具体代码见原书，不赘述，具有很好参考价值。
-实验：
-给一组手工设定的控制序列，撒一些地标，运行如下。可以看到不确定度很小。
+\tan^{-1}(\frac{p_y - y}{p_x - x}) - \theta&lt;br /&gt;
+\end{bmatrix} &amp;amp;+ \mathcal{N}(0, R)&lt;br /&gt;
+\end{aligned}$$&lt;br /&gt;
+这里需要小心角度相减的计算问题，即0°附近的离散性，显然可以取模处理之。&lt;br /&gt;
+此外还需要注意的是如何对角度求平均？显然359°和1°的平均是0°，但其数值均值却为180°。因此我们需要特别考虑此问题，使用下面的式子计算角度均值：&lt;br /&gt;
+$$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1}^n \cos\theta_i}{n}\right)$$&lt;br /&gt;
+规定的这些均值计算方法可以传入UKF类的初始化函数。&lt;br /&gt;
+具体代码见原书，不赘述，具有很好参考价值。&lt;br /&gt;
+实验：&lt;br /&gt;
+给一组手工设定的控制序列，撒一些地标，运行如下。可以看到不确定度很小。&lt;br /&gt;
 
 
 
@@ -9053,8 +9054,8 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 
 &lt;/figure&gt;
-
-删去一些地标，误差显著增大。
+&lt;br /&gt;
+删去一些地标，误差显著增大。&lt;br /&gt;
 
 
 
@@ -9098,34 +9099,34 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 &lt;h1 id=&#34;12-粒子滤波器pf&#34;&gt;12. 粒子滤波器PF&lt;/h1&gt;
 
-&lt;p&gt;之前的技术不能处理多目标，强非线性，强非高斯噪声，无过程模型的场景，这些场景下可以使用PF。
-粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：
-1. 随机产生一群粒子
-粒子可以有位置、方向 和/或 任何其他需要估计的状态变量。
-每一个粒子都有一个权值(概率)，表示它与系统实际状态匹配的可能性。
+&lt;p&gt;之前的技术不能处理多目标，强非线性，强非高斯噪声，无过程模型的场景，这些场景下可以使用PF。&lt;br /&gt;
+粒子滤波器是一类滤波器，通用的粒子滤波算法框架如下：&lt;br /&gt;
+1. 随机产生一群粒子&lt;br /&gt;
+粒子可以有位置、方向 和/或 任何其他需要估计的状态变量。&lt;br /&gt;
+每一个粒子都有一个权值(概率)，表示它与系统实际状态匹配的可能性。&lt;br /&gt;
 用相同的权重初始化每个对象。&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;预测粒子的下一个状态
+&lt;li&gt;&lt;p&gt;预测粒子的下一个状态&lt;br /&gt;
 根据你对真实系统行为的预测来移动粒子。&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;更新
-根据测量结果更新颗粒的权重。
+&lt;li&gt;&lt;p&gt;更新&lt;br /&gt;
+根据测量结果更新颗粒的权重。&lt;br /&gt;
 与测量值紧密相称的粒子的权重要高于与测量值不匹配的粒子。&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;重采样
+&lt;li&gt;&lt;p&gt;重采样&lt;br /&gt;
 抛弃非常不可能的粒子，用更可能的粒子的拷贝替换它们。&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;计算估计
+&lt;li&gt;&lt;p&gt;计算估计&lt;br /&gt;
 （可选）计算一组粒子的加权平均值和协方差，得到状态估计。&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;以车辆追踪问题为例，我们选定（x,y,θ）为粒子的变量
-初始化阶段，随机初始化粒子状态，基于1/N的均等权重
-预测阶段我们让例子有噪声地按控制变量移动
-更新阶段我们计算每个例子对观测的似然度，以似然度更新例子权重
-重采样阶段我们按例子权重随机采样，防止退化。具体操作方法如下：
-对归一化权重[0.0625, 0.125 , 0.1875, 0.25  , 0.125 , 0.1875, 0.0625]，计算累积和序列得[0.0625, 0.1875, 0.375 , 0.625 , 0.75  , 0.9375, 1.    ]以便画出如下的图。之后制造0-1的随机数，按照几何概型，其落在各个色块的概率就是权重，进行N次后就可达到完整的重采样结果。
+&lt;p&gt;以车辆追踪问题为例，我们选定（x,y,θ）为粒子的变量&lt;br /&gt;
+初始化阶段，随机初始化粒子状态，基于1/N的均等权重&lt;br /&gt;
+预测阶段我们让例子有噪声地按控制变量移动&lt;br /&gt;
+更新阶段我们计算每个例子对观测的似然度，以似然度更新例子权重&lt;br /&gt;
+重采样阶段我们按例子权重随机采样，防止退化。具体操作方法如下：&lt;br /&gt;
+对归一化权重[0.0625, 0.125 , 0.1875, 0.25  , 0.125 , 0.1875, 0.0625]，计算累积和序列得[0.0625, 0.1875, 0.375 , 0.625 , 0.75  , 0.9375, 1.    ]以便画出如下的图。之后制造0-1的随机数，按照几何概型，其落在各个色块的概率就是权重，进行N次后就可达到完整的重采样结果。&lt;br /&gt;
 
 
 
@@ -9161,38 +9162,38 @@ $$\bar{\theta} = atan2\left(\frac{\sum_{i=1}^n \sin\theta_i}{n}, \frac{\sum_{i=1
 
 
 &lt;/figure&gt;
-
-重采样不是每次更新都进行的，没有新息注入时重采样并无意义。我们使用一下指标决定何时进行重采样：
-$$\hat{N}_\text{eff} = \frac{1}{\sum w^2}$$（w是粒子权重）
+&lt;br /&gt;
+重采样不是每次更新都进行的，没有新息注入时重采样并无意义。我们使用一下指标决定何时进行重采样：&lt;br /&gt;
+$$\hat{N}_\text{eff} = \frac{1}{\sum w^2}$$（w是粒子权重）&lt;br /&gt;
 重采样在此值小于每一给定的阈值（比如N/2，其中N为粒子数）后进行。此值是对当前有用粒子数量的估计。这种策略称Sampling Importance Resampling (SIR)。&lt;/p&gt;
 
-&lt;p&gt;在上面的预测和更新两步中我们按输入u移动例子，并使用观测更新其对应权重，这种方法的理论依据正是著名的重要性采样（统计学通用方法，也被openai用在PPO中用于构建off-policy learning）：
-使用重要性采样可以更换采样分布，将无法计算的
-$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x)\, dx$$
-转为
-$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x)\, \,  \cdot \,  \frac{\pi(x)}{q(x)}\, dx$$
-在上面的机器人追踪问题中，分布π即机器人状态的分布，这是不一定对的（因为是推断的结果），而q分布即新获得的测量的分布，可以认为是准确的。因此自然的利用重要性采样公式换到q上采样会得到更精准的值。在具体实施中，我们计算的是$\mu = \sum\limits_{i=1}^N x^iw^i$，即加权平均，其中权重w就是重要性采样公式中的π/q。
-&lt;strong&gt;粒子滤波中不同的重采样方法&lt;/strong&gt;
-重采样在粒子滤波中起到防止粒子退化的作用，有重要意义。除了上面的采样方法，还有残差重采样（Residual Resampling），分层重采样（Stratified Resampling），系统重采样（Systematic Resampling）。作者认为其中比较好的是系统重采样，这在采样量小的时候比较明显（所谓好指采样结果符合权重的程度好坏，好的采样应该很好符合权重规定的比例关系），但个人感觉在点稍多的时候这并不是个问题。不过系统重采样有O(N)的复杂度，这比上面的O(Nlog(N))好。
-&lt;strong&gt;总结&lt;/strong&gt;
+&lt;p&gt;在上面的预测和更新两步中我们按输入u移动例子，并使用观测更新其对应权重，这种方法的理论依据正是著名的重要性采样（统计学通用方法，也被openai用在PPO中用于构建off-policy learning）：&lt;br /&gt;
+使用重要性采样可以更换采样分布，将无法计算的&lt;br /&gt;
+$$\mathbb{E}\big[f(x)\big] = \int f(x)\pi(x)\, dx$$&lt;br /&gt;
+转为&lt;br /&gt;
+$$\mathbb{E}\big[f(x)\big] = \int f(x)q(x)\, \,  \cdot \,  \frac{\pi(x)}{q(x)}\, dx$$&lt;br /&gt;
+在上面的机器人追踪问题中，分布π即机器人状态的分布，这是不一定对的（因为是推断的结果），而q分布即新获得的测量的分布，可以认为是准确的。因此自然的利用重要性采样公式换到q上采样会得到更精准的值。在具体实施中，我们计算的是$\mu = \sum\limits_{i=1}^N x^iw^i$，即加权平均，其中权重w就是重要性采样公式中的π/q。&lt;br /&gt;
+&lt;strong&gt;粒子滤波中不同的重采样方法&lt;/strong&gt;&lt;br /&gt;
+重采样在粒子滤波中起到防止粒子退化的作用，有重要意义。除了上面的采样方法，还有残差重采样（Residual Resampling），分层重采样（Stratified Resampling），系统重采样（Systematic Resampling）。作者认为其中比较好的是系统重采样，这在采样量小的时候比较明显（所谓好指采样结果符合权重的程度好坏，好的采样应该很好符合权重规定的比例关系），但个人感觉在点稍多的时候这并不是个问题。不过系统重采样有O(N)的复杂度，这比上面的O(Nlog(N))好。&lt;br /&gt;
+&lt;strong&gt;总结&lt;/strong&gt;&lt;br /&gt;
 在线性和高斯噪声的假设下，卡尔曼滤波是最优估计，而粒子滤波则可处理非线性和无模型系统，不需要高斯和线性假设。但是粒子滤波的性能分析，稳定性分析都很困难，计算量也大，不过这也是处理和非线性有关问题时经常见到的。KF，UKF，EKF已经在工业上获得了很多实时在线应用的机会。随着计算成本的不断下降，未来粒子滤波类可能也会有不错的应用。&lt;/p&gt;
 
 &lt;h1 id=&#34;13-平滑器&#34;&gt;13. 平滑器&lt;/h1&gt;
 
-&lt;p&gt;卡尔曼滤波器是在线滤波方法，之利用历史信息，而对于离线滤波场景，使用平滑器可扩展到使用整个序列信息进行滤波，效果会更好。
-&lt;strong&gt;固定区间平滑（Fixed-Interval Smoothing）&lt;/strong&gt;
-这类平滑器在接受到一个完整的区间后一并进行估计操作。RTS是这类中最主要的方法。RTS先运行标准卡尔曼滤波，得到所有的估计值X和对应系统协方差P。之后用X和P，按下面算法从第K步预测到第1步（即反向预测）：
-预测：
-$$\begin{aligned}
-\mathbf{P} &amp;amp;= \mathbf{FP}_k\mathbf{F}^\mathsf{T} + \mathbf{Q }
-\end{aligned}$$
-更新：
-$$\begin{aligned}
+&lt;p&gt;卡尔曼滤波器是在线滤波方法，之利用历史信息，而对于离线滤波场景，使用平滑器可扩展到使用整个序列信息进行滤波，效果会更好。&lt;br /&gt;
+&lt;strong&gt;固定区间平滑（Fixed-Interval Smoothing）&lt;/strong&gt;&lt;br /&gt;
+这类平滑器在接受到一个完整的区间后一并进行估计操作。RTS是这类中最主要的方法。RTS先运行标准卡尔曼滤波，得到所有的估计值X和对应系统协方差P。之后用X和P，按下面算法从第K步预测到第1步（即反向预测）：&lt;br /&gt;
+预测：&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
+\mathbf{P} &amp;amp;= \mathbf{FP}_k\mathbf{F}^\mathsf{T} + \mathbf{Q }&lt;br /&gt;
+\end{aligned}$$&lt;br /&gt;
+更新：&lt;br /&gt;
+$$\begin{aligned}&lt;br /&gt;
 \mathbf{K}_k &amp;amp;= \mathbf{P}_k\mathbf{F}^\mathsf{T}\mathbf{P}^{-1} &lt;br /&gt;
 \mathbf{x}_k &amp;amp;= \mathbf{x}_k + \mathbf{K}&lt;em&gt;k(\mathbf{x}&lt;/em&gt;{k+1} - \mathbf{Fx}_k) &lt;br /&gt;
-\mathbf{P}_k &amp;amp;= \mathbf{P}_k + \mathbf{K}&lt;em&gt;k(\mathbf{P}&lt;/em&gt;{k+1} - \mathbf{P})\mathbf{K}_k^\mathsf{T}
-\end{aligned}$$
-效果显著：
+\mathbf{P}_k &amp;amp;= \mathbf{P}_k + \mathbf{K}&lt;em&gt;k(\mathbf{P}&lt;/em&gt;{k+1} - \mathbf{P})\mathbf{K}_k^\mathsf{T}&lt;br /&gt;
+\end{aligned}$$&lt;br /&gt;
+效果显著：&lt;br /&gt;
 
 
 
@@ -9232,8 +9233,8 @@ $$\begin{aligned}
 
 &lt;h1 id=&#34;14-自适应滤波&#34;&gt;14. 自适应滤波&lt;/h1&gt;
 
-&lt;p&gt;Adaptive Filtering旨在处理模型不匹配的情况，其检查到有当前过程模型无法描述的动态行为时可以自适应的调整。（回想在之前非自适应的滤波器中，我们只能增大Q以权衡模型的问题，但大的Q会使我们的滤波器不再进行最优估计）
-我们建立一个ManeuveringTarget类来产生人工数据。ManeuveringTarget模拟了二维平面的小车，可以接受转向和加减速指令。另外设计个模拟传感器，吐出加噪声后的（x，y）。给一个转向的数据实例如下：
+&lt;p&gt;Adaptive Filtering旨在处理模型不匹配的情况，其检查到有当前过程模型无法描述的动态行为时可以自适应的调整。（回想在之前非自适应的滤波器中，我们只能增大Q以权衡模型的问题，但大的Q会使我们的滤波器不再进行最优估计）&lt;br /&gt;
+我们建立一个ManeuveringTarget类来产生人工数据。ManeuveringTarget模拟了二维平面的小车，可以接受转向和加减速指令。另外设计个模拟传感器，吐出加噪声后的（x，y）。给一个转向的数据实例如下：&lt;br /&gt;
 
 
 
@@ -9269,8 +9270,8 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-下面我们尝试以匀速直线运动模型的卡尔曼滤波器对齐进行滤波，为方便起见只做x坐标。结果如下，可见由于转向导致的与模型不符，有了很大的估计误差，不过误差在观测的纠正下逐渐变小：
+&lt;br /&gt;
+下面我们尝试以匀速直线运动模型的卡尔曼滤波器对齐进行滤波，为方便起见只做x坐标。结果如下，可见由于转向导致的与模型不符，有了很大的估计误差，不过误差在观测的纠正下逐渐变小：&lt;br /&gt;
 
 
 
@@ -9306,8 +9307,8 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-为了解决这个，我们可以大幅加大Q，但这也导致了估计质量的下降：
+&lt;br /&gt;
+为了解决这个，我们可以大幅加大Q，但这也导致了估计质量的下降：&lt;br /&gt;
 
 
 
@@ -9343,8 +9344,8 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-或，我们可以增大模型阶数，改为横加速度直线运动模型，同样可以有效解决滞后的问题，但依旧顾此失彼，估计噪声明显大了：
+&lt;br /&gt;
+或，我们可以增大模型阶数，改为横加速度直线运动模型，同样可以有效解决滞后的问题，但依旧顾此失彼，估计噪声明显大了：&lt;br /&gt;
 
 
 
@@ -9380,9 +9381,9 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-因此，若我们能设计一种机制动态的改变滤波器模型，比如在恒速运动阶段使用低阶模型降低噪声，在转向等阶段使用高阶模型保证响应则有望较好的平衡矛盾。
-我们可以观察滤波器里的残差来得知目标运动状态何时发生变化，如下：
+&lt;br /&gt;
+因此，若我们能设计一种机制动态的改变滤波器模型，比如在恒速运动阶段使用低阶模型降低噪声，在转向等阶段使用高阶模型保证响应则有望较好的平衡矛盾。&lt;br /&gt;
+我们可以观察滤波器里的残差来得知目标运动状态何时发生变化，如下：&lt;br /&gt;
 
 
 
@@ -9418,10 +9419,10 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-&lt;strong&gt;自适应思路1：可调过程噪声&lt;/strong&gt;
-第一种方法是使用低阶模型，并根据机动是否发生来调整过程噪声。当残差变得“大”时，我们将增加过程噪声。这将导致滤波器更倾向于测量而不是过程预测，并且滤波器将密切跟踪信号。当残差很小时，我们将缩小过程噪声。
-一种连续调整的方法计算残差的归一化值$\epsilon = \mathbf{y^\mathsf{T}S}^{-1}\mathbf{y}$，其中S是过程噪声：$\mathbf{S} = \mathbf{HPH^\mathsf{T}} + \mathbf{R}$。我们可以设一个$\epsilon_{max}$（可通过实验选择，一个不错的经验值是$\epsilon$ 的4~5倍标准差），当$\epsilon \gt \epsilon_{max}$时将Q矩阵成一个扩大系数$q_{factor}$即可。下图$\epsilon_{max}=4， q_{factor}=1000$，可见显著的性能提升。
+&lt;br /&gt;
+&lt;strong&gt;自适应思路1：可调过程噪声&lt;/strong&gt;&lt;br /&gt;
+第一种方法是使用低阶模型，并根据机动是否发生来调整过程噪声。当残差变得“大”时，我们将增加过程噪声。这将导致滤波器更倾向于测量而不是过程预测，并且滤波器将密切跟踪信号。当残差很小时，我们将缩小过程噪声。&lt;br /&gt;
+一种连续调整的方法计算残差的归一化值$\epsilon = \mathbf{y^\mathsf{T}S}^{-1}\mathbf{y}$，其中S是过程噪声：$\mathbf{S} = \mathbf{HPH^\mathsf{T}} + \mathbf{R}$。我们可以设一个$\epsilon_{max}$（可通过实验选择，一个不错的经验值是$\epsilon$ 的4~5倍标准差），当$\epsilon \gt \epsilon_{max}$时将Q矩阵成一个扩大系数$q_{factor}$即可。下图$\epsilon_{max}=4， q_{factor}=1000$，可见显著的性能提升。&lt;br /&gt;
 
 
 
@@ -9457,10 +9458,10 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-此外，还可计算$std = \sqrt{\mathbf{HPH}^\mathsf{T} + \mathbf{R}}$ 之后采用如下策略改变Q：当残差&amp;gt;std的某一倍数时，增大Q
-&lt;strong&gt;自适应思路2：渐消记忆滤波器（Fading memory filters）&lt;/strong&gt;
-此类方法优势不被归类为自适应滤波方法。此方法的关注点在卡尔曼滤波器的记忆性上。标准卡尔曼滤波使用了1~k-1的所有信息，但这可能导致过大的“惯性”，我们加入一个微小的修改，将原方法中$\bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q$更改为$\tilde{\mathbf P} = \alpha^2\mathbf{FPF}^\mathsf T + \mathbf Q$。其中α&amp;gt;1，但通常很接近1，比如1.02。这样做的考虑是若我们增加估计误差协方差，滤波器对估计的不确定性就会增加，因此它给测量增加了权重，从而减小了滤波器的惯性。此法的改动微乎其微，实现很方便，值得一试，虽然效果不是很惊艳。
+&lt;br /&gt;
+此外，还可计算$std = \sqrt{\mathbf{HPH}^\mathsf{T} + \mathbf{R}}$ 之后采用如下策略改变Q：当残差&amp;gt;std的某一倍数时，增大Q&lt;br /&gt;
+&lt;strong&gt;自适应思路2：渐消记忆滤波器（Fading memory filters）&lt;/strong&gt;&lt;br /&gt;
+此类方法优势不被归类为自适应滤波方法。此方法的关注点在卡尔曼滤波器的记忆性上。标准卡尔曼滤波使用了1~k-1的所有信息，但这可能导致过大的“惯性”，我们加入一个微小的修改，将原方法中$\bar{\mathbf P} = \mathbf{FPF}^\mathsf T + \mathbf Q$更改为$\tilde{\mathbf P} = \alpha^2\mathbf{FPF}^\mathsf T + \mathbf Q$。其中α&amp;gt;1，但通常很接近1，比如1.02。这样做的考虑是若我们增加估计误差协方差，滤波器对估计的不确定性就会增加，因此它给测量增加了权重，从而减小了滤波器的惯性。此法的改动微乎其微，实现很方便，值得一试，虽然效果不是很惊艳。&lt;br /&gt;
 
 
 
@@ -9496,9 +9497,9 @@ $$\begin{aligned}
 
 
 &lt;/figure&gt;
-
-&lt;strong&gt;自适应思路3：多模型估计&lt;/strong&gt;
-这是一种集成（ensemble ）的思路。最朴素的想法是搞一把模型，然后看情况切换，当然也可进行UKF,KF的集成或对不同的状态变量使用不同的模型或算法。
+&lt;br /&gt;
+&lt;strong&gt;自适应思路3：多模型估计&lt;/strong&gt;&lt;br /&gt;
+这是一种集成（ensemble ）的思路。最朴素的想法是搞一把模型，然后看情况切换，当然也可进行UKF,KF的集成或对不同的状态变量使用不同的模型或算法。&lt;br /&gt;
 我们很容易实现的方法是对残差进行阈值判断，以此来切换模型，但这种硬切换显然会导致估计结果不连续的跳跃。因此，我们采用多模型自适应估计技术（MMAE），该方法按模型likelihoods给出融合结果。其中似然函数已在前述章节有过讨论：$\mathcal{L} = \frac{1}{\sqrt{2\pi S}}\exp [-\frac{1}{2}\mathbf{y}^\mathsf{T}\mathbf{S}^{-1}\mathbf{y}]$，其中y是残差，S是系统不确定性。之后按$p_k^i = \frac{\mathcal{L}_k^ip_{k-1}^i}{\sum\limits_{j=1}^N \mathcal{L}_k^jp_{k-1}^j}$分配即可。此方法的一个缺陷是算法可能收敛到只信任某一最可能算法上去，这需要被注意，可以通过重新初始化选择权重进行修正。&lt;/p&gt;
 
 &lt;p&gt;此外还有交互式多模型技术 IMM（Interacting Multiple Model），利用贝叶斯方法在多个模型间转移，但为了交互，其要求模型必需有相同的维数，这是个比较大的限制。&lt;/p&gt;

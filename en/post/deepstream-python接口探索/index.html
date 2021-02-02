@@ -844,7 +844,7 @@
     <div class="article-style">
       
 
-<p><h2>Table of Contents</h2>
+<p><h2>Table of Contents</h2><br />
 <nav id="TableOfContents">
 <ul>
 <li><a href="#gstreamer参考阅读">GStreamer参考阅读</a></li>
@@ -856,7 +856,7 @@
 </ul>
 </nav></p>
 
-<p>本文承接<a href="https://blog.csdn.net/leida_wt/article/details/112181863">上文</a>，记录对英伟达DeepStream python接口的初步探索。
+<p>本文承接<a href="https://blog.csdn.net/leida_wt/article/details/112181863">上文</a>，记录对英伟达DeepStream python接口的初步探索。<br />
 
 
 
@@ -898,37 +898,37 @@
 
 <h1 id="gstreamer参考阅读">GStreamer参考阅读</h1>
 
-<p>DeepStream-Python接口依赖GStreamer的python接口建立和操作GStreamer管线，并提供python包pyds提供访问GStreamer metadata的一些接口函数。GStreamer和Gst-Python的相关信息可通过下面的链接进行了解。
-<a href="https://thebigdoc.readthedocs.io/en/latest/gstreamer/gst-concept.html">GStreamer系列之几个入门概念</a>
-<a href="https://blog.csdn.net/qq_32188669/article/details/95185731">Python Gstreamer入门-学习笔记</a>
-<a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769#commentBox">视音频编解码技术零基础学习方法</a>
+<p>DeepStream-Python接口依赖GStreamer的python接口建立和操作GStreamer管线，并提供python包pyds提供访问GStreamer metadata的一些接口函数。GStreamer和Gst-Python的相关信息可通过下面的链接进行了解。<br />
+<a href="https://thebigdoc.readthedocs.io/en/latest/gstreamer/gst-concept.html">GStreamer系列之几个入门概念</a><br />
+<a href="https://blog.csdn.net/qq_32188669/article/details/95185731">Python Gstreamer入门-学习笔记</a><br />
+<a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769#commentBox">视音频编解码技术零基础学习方法</a><br />
 <a href="https://blog.csdn.net/sakulafly/category_1819383.html">GStreamer文档翻译</a></p>
 
 <h1 id="deepstream-python例程">DeepStream-Python例程</h1>
 
-<p>官方例程<a href="https://github.com/NVIDIA-AI-IOT/deepstream_python_apps">DeepStream Python Apps</a>包含如下内容：
-- deepstream-test1 &ndash; 4-class object detection pipeline
-- deepstream-test2 &ndash; 4-class object detection, tracking and attribute classification pipeline
-- deepstream-test3 &ndash; multi-stream pipeline performing 4-class object detection
-- deepstream-test4 &ndash; msgbroker for sending analytics results to the cloud
-- deepstream-imagedata-multistream &ndash; multi-stream pipeline with access to image buffers
-- deepstream-ssd-parser &ndash; SSD model inference via Triton server with output parsing in Python
-- deepstream-test1-usbcam &ndash; deepstream-test1 pipeline with USB camera input
+<p>官方例程<a href="https://github.com/NVIDIA-AI-IOT/deepstream_python_apps">DeepStream Python Apps</a>包含如下内容：<br />
+- deepstream-test1 &ndash; 4-class object detection pipeline<br />
+- deepstream-test2 &ndash; 4-class object detection, tracking and attribute classification pipeline<br />
+- deepstream-test3 &ndash; multi-stream pipeline performing 4-class object detection<br />
+- deepstream-test4 &ndash; msgbroker for sending analytics results to the cloud<br />
+- deepstream-imagedata-multistream &ndash; multi-stream pipeline with access to image buffers<br />
+- deepstream-ssd-parser &ndash; SSD model inference via Triton server with output parsing in Python<br />
+- deepstream-test1-usbcam &ndash; deepstream-test1 pipeline with USB camera input<br />
 - deepstream-test1-rtsp-out &ndash; deepstream-test1 pipeline with RTSP output</p>
 
-<p>为运行DeepStream-Python例程，我们使用nvcr.io/nvidia/deepstream:5.0.1-20.09-samples镜像。该镜像提供SeepStream环境，同时还囊括了示例程序所需使用的模型和测试视频，但不包括python例程仓库。
+<p>为运行DeepStream-Python例程，我们使用nvcr.io/nvidia/deepstream:5.0.1-20.09-samples镜像。该镜像提供SeepStream环境，同时还囊括了示例程序所需使用的模型和测试视频，但不包括python例程仓库。<br />
 将例程仓库克隆到xxx/tlt-python/deepstream_python_apps，执行下面命令启动进入镜像：</p>
 
 <pre><code class="language-bash">xhost +
 docker run --rm --gpus all --name ds_python_test --device=/dev/video0 -it -p 8554:8554  -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 -v &quot;xxx/tlt-python/deepstream_python_apps&quot;:&quot;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&quot; -w /opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/apps/ nvcr.io/nvidia/deepstream:5.0.1-20.09-samples /bin/bash
 </code></pre>
 
-<p>参数解释：
-- gpus all 指定容器可见的GPU
-- device=/dev/video0 将摄像头0映射进入容器
-- -p 8554:8554 映射RTSPStreaming RTSP端口（可选）
-- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机
-- -v &ldquo;xxx/tlt-python/deepstream_python_apps&rdquo;:&ldquo;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&rdquo; 映射例程仓库
+<p>参数解释：<br />
+- gpus all 指定容器可见的GPU<br />
+- device=/dev/video0 将摄像头0映射进入容器<br />
+- -p 8554:8554 映射RTSPStreaming RTSP端口（可选）<br />
+- -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=:0 连接图形界面到宿主机<br />
+- -v &ldquo;xxx/tlt-python/deepstream_python_apps&rdquo;:&ldquo;/opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/&rdquo; 映射例程仓库<br />
 - -w /opt/nvidia/deepstream/deepstream-5.0/sources/deepstream_python_apps/apps/设置进入容器后开启的路径</p>
 
 <p>进入镜像后，我们安装所需依赖包：</p>
@@ -997,7 +997,7 @@ from common.bus_call import bus_call
 import pyds
 </code></pre>
 
-<p>其中gi是PyGObject包，它为基于GObject的库（例如GTK，GStreamer，W​​ebKitGTK，GLib，GIO等）提供python接口。pyds是用于访问GStreamer metadata的包，bus_call和is_aarch64是两个util，分别用于总线回调和cpu体系结构判断。
+<p>其中gi是PyGObject包，它为基于GObject的库（例如GTK，GStreamer，W​​ebKitGTK，GLib，GIO等）提供python接口。pyds是用于访问GStreamer metadata的包，bus_call和is_aarch64是两个util，分别用于总线回调和cpu体系结构判断。<br />
 随后，在main函数中，初始化GStreamer并实例化构建pipeline所需的GStreamer元素。</p>
 
 <pre><code class="language-python"># Standard GStreamer initialization
@@ -1037,7 +1037,7 @@ if not decoder:
     sys.stderr.write(&quot; Unable to create Nvv4l2 Decoder \n&quot;)
 </code></pre>
 
-<p>添加deepstream提供的nvstreammux插件，该插件是功能是聚合多个视频流，组成batch，以便被随后的推理模块处理。
+<p>添加deepstream提供的nvstreammux插件，该插件是功能是聚合多个视频流，组成batch，以便被随后的推理模块处理。<br />
 
 
 
@@ -1090,7 +1090,7 @@ if not pgie:
     sys.stderr.write(&quot; Unable to create pgie \n&quot;)
 </code></pre>
 
-<p>添加可视化渲染模块nvdsosd，该模块接收RGBA格式，故还需加两个转换器。由于是进行帧格式转换，故这两个转换器的开销很小。转换器会根据其前后模块的Cap类型（消息类型）自动转换，不需手动指定转换方式。
+<p>添加可视化渲染模块nvdsosd，该模块接收RGBA格式，故还需加两个转换器。由于是进行帧格式转换，故这两个转换器的开销很小。转换器会根据其前后模块的Cap类型（消息类型）自动转换，不需手动指定转换方式。<br />
 
 
 
@@ -1278,7 +1278,7 @@ if not osdsinkpad:
 osdsinkpad.add_probe(Gst.PadProbeType.BUFFER, osd_sink_pad_buffer_probe, 0)
 </code></pre>
 
-<p>buffer的数据结构的层次关系如下所示。
+<p>buffer的数据结构的层次关系如下所示。<br />
 
 
 
@@ -1314,7 +1314,7 @@ osdsinkpad.add_probe(Gst.PadProbeType.BUFFER, osd_sink_pad_buffer_probe, 0)
 
 
 </figure>
-
+<br />
 在main函数的最后，启动整个pipeline。</p>
 
 <pre><code class="language-python"># start play back and listen to events

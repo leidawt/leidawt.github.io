@@ -844,7 +844,7 @@
     <div class="article-style">
       
 
-<p><h2>目录</h2>
+<p><h2>目录</h2><br />
 <nav id="TableOfContents">
 <ul>
 <li><a href="#基本性质">基本性质</a></li>
@@ -859,7 +859,7 @@
 
 <h1 id="基本性质">基本性质</h1>
 
-<p>为进行状态分类，先引入一组重要性质和定义
+<p>为进行状态分类，先引入一组重要性质和定义<br />
 
 
 
@@ -895,7 +895,7 @@
 
 
 </figure>
-
+<br />
 
 
 
@@ -966,7 +966,7 @@
 
 
 </figure>
-
+<br />
 
 
 
@@ -1002,7 +1002,7 @@
 
 
 </figure>
-
+<br />
 
 
 
@@ -1038,7 +1038,7 @@
 
 
 </figure>
-
+<br />
 
 
 
@@ -1074,7 +1074,7 @@
 
 
 </figure>
-
+<br />
 
 
 
@@ -1186,9 +1186,9 @@
 
 
 </figure>
-
-式子7-94为平衡方程：$\pi=\pi*P$
-不可约且正常返的马氏链一定存在平稳分布，更一般的，只要马氏链存在一个闭的不可约子集，并且该集合中的状态均是正常返的，则存在平稳分布。
+<br />
+式子7-94为平衡方程：$\pi=\pi*P$<br />
+不可约且正常返的马氏链一定存在平稳分布，更一般的，只要马氏链存在一个闭的不可约子集，并且该集合中的状态均是正常返的，则存在平稳分布。<br />
 
 
 
@@ -1228,7 +1228,7 @@
 
 <h1 id="混合时间-mixing-time">混合时间（mixing time）</h1>
 
-<p>在概率论中，马尔可夫链的混合时间是马尔可夫链“接近”其稳态分布的所需时间。
+<p>在概率论中，马尔可夫链的混合时间是马尔可夫链“接近”其稳态分布的所需时间。<br />
 
 
 
@@ -1264,15 +1264,15 @@
 
 
 </figure>
-
-对于遍历链，任何初始分布都以第二大特征值模量（SLEM）$\mu$确定的速率收敛到平稳分布。 谱间隙$1-\mu$，提供了一种可视化的测量方法，具有较大的间隙（较小的SLEM圆），可产生更快的收敛。matlab中估计mixing time的式子是：
+<br />
+对于遍历链，任何初始分布都以第二大特征值模量（SLEM）$\mu$确定的速率收敛到平稳分布。 谱间隙$1-\mu$，提供了一种可视化的测量方法，具有较大的间隙（较小的SLEM圆），可产生更快的收敛。matlab中估计mixing time的式子是：<br />
 $$tMix=-\frac{1}{\log{\mu}}$$</p>
 
 <h1 id="matlab马氏链工具包">MATLAB马氏链工具包</h1>
 
-<p>MATLAB在Econometrics Toolbox中提供<a href="https://www.mathworks.com/help/econ/markov-chain-models.html">dtmc</a>类，可绘制状态转移图、判断遍历性等等
-1. 生成马氏链
-直接输入一步状态转移矩阵即可
+<p>MATLAB在Econometrics Toolbox中提供<a href="https://www.mathworks.com/help/econ/markov-chain-models.html">dtmc</a>类，可绘制状态转移图、判断遍历性等等<br />
+1. 生成马氏链<br />
+直接输入一步状态转移矩阵即可<br />
     <code>
     P = [ 0   0  1/2 1/4 1/4  0   0 ;
           0   0  1/3  0  2/3  0   0 ;
@@ -1282,12 +1282,12 @@ $$tMix=-\frac{1}{\log{\mu}}$$</p>
          1/2 1/2  0   0   0   0   0 ;
          1/4 3/4  0   0   0   0   0 ];
     mc = dtmc(P);
-</code>
-2. 状态类的判断
-    通过绘制状态转移图即可判断马氏链中state类型：
+</code><br />
+2. 状态类的判断<br />
+    通过绘制状态转移图即可判断马氏链中state类型：<br />
     <code>
     graphplot(mc,'ColorNodes',true);
-</code>
+</code><br />
 
 
 
@@ -1332,7 +1332,7 @@ $$tMix=-\frac{1}{\log{\mu}}$$</p>
 tfErg = isergodic(mc)
 </code></pre></li>
 
-<li><p>周期性
+<li><p>周期性<br />
 周期性可以状态分布概率直观的看出来</p>
 
 <pre><code>X1 = redistribute(mc,20);
@@ -1377,7 +1377,7 @@ distplot(mc,X1);
 </figure>
 </li>
 
-<li><p>平稳分布及混合时间
+<li><p>平稳分布及混合时间<br />
 直接调用下面命令即可</p>
 
 <pre><code>[xFix,tMix] = asymptotics(mc)
@@ -1424,12 +1424,12 @@ eigplot(mc);
 
 
 </figure>
-
+<br />
 其中粉色阴影表示最大特征值和第二大特征值之间的gap，越大则收敛越快（mixing time越小），若存在周期=k，则半径为1的圆上会有k个点，即存在k个模为1的特征值。</p>
 
 <h1 id="参考">参考</h1>
 
-<p><a href="https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav">https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav</a>
+<p><a href="https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav">https://www.mathworks.com/help/econ/markov-process-models.html?s_tid=CRUX_lftnav</a><br />
 《随机过程及其应用》第二版 陆大金</p></li>
 </ol>
 

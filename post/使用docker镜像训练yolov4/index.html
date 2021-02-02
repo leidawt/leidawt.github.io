@@ -844,7 +844,7 @@
     <div class="article-style">
       
 
-<p><h2>目录</h2>
+<p><h2>目录</h2><br />
 <nav id="TableOfContents">
 <ul>
 <li><a href="#镜像制作">镜像制作</a></li>
@@ -858,7 +858,7 @@
 
 <h1 id="镜像制作">镜像制作</h1>
 
-<p>Ref: <a href="https://github.com/alexeyab/darknet">https://github.com/alexeyab/darknet</a>
+<p>Ref: <a href="https://github.com/alexeyab/darknet">https://github.com/alexeyab/darknet</a><br />
 <strong>注：制作好的镜像已上传至docker hub，可直接拉取使用：</strong></p>
 
 <pre><code class="language-bash">docker pull leidawt/darknet-yolov4
@@ -867,9 +867,10 @@
 <p>依赖环境：</p>
 
 <ul>
-<li>Ubuntu 18.04</li>
-<li>Docker &gt;19.04</li>
-<li>nvidia-container-toolkit</li>
+<li>Ubuntu 18.04<br /></li>
+<li>Docker &gt;19.04<br /></li>
+<li>nvidia-container-toolkit<br />
+<br /></li>
 </ul>
 
 <p>为建立镜像，编写如下Dockerfile脚本文件，以nvidia/cuda:10.1-cudnn7-deve为基础镜像开始构建：</p>
@@ -900,7 +901,7 @@ COPY ./darknet-master/ .
 # RUN ./build.sh
 </code></pre>
 
-<p><strong>注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：</strong>
+<p><strong>注：get-pip.py文件和sources.list文件下载后放置到和Dockerfile同一目录：</strong><br />
 链接: <a href="https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw">https://pan.baidu.com/s/1dyxf-XV14CQwihfBPtv1Vw</a> 提取码: n8xx</p>
 
 <p>执行镜像构建：</p>
@@ -919,7 +920,7 @@ COPY ./darknet-master/ .
 ./build
 </code></pre>
 
-<p>编译成功后，按ctrl+D退出容器。
+<p>编译成功后，按ctrl+D退出容器。<br />
 commit容器变更到镜像，并删除临时容器:</p>
 
 <pre><code class="language-bash">docker commit temp_yolo leidawt/darknet-yolov4:v1
@@ -930,7 +931,7 @@ docker container rm temp_yolo
 
 <h1 id="准备数据集和配置文件">准备数据集和配置文件</h1>
 
-<p>YOLO的数据集构成结构如下：
+<p>YOLO的数据集构成结构如下：<br />
 
 
 
@@ -966,16 +967,16 @@ docker container rm temp_yolo
 
 
 </figure>
-
+<br />
 每张数据图片对于一个同名的txt标注文件，标注文件格式如下：</p>
 
 <pre><code>&lt;object-class&gt; &lt;x_center&gt; &lt;y_center&gt; &lt;width&gt; &lt;height&gt;
 </code></pre>
 
-<p>object-class：所属类号，如 0，1，2，3
-x_center：边界框中心x坐标的相对值（x/imageWidth）
-y_center：边界框中心y坐标的相对值（y/imageHeight）
-width: 边界框宽度的相对值（w/imageWidth）
+<p>object-class：所属类号，如 0，1，2，3<br />
+x_center：边界框中心x坐标的相对值（x/imageWidth）<br />
+y_center：边界框中心y坐标的相对值（y/imageHeight）<br />
+width: 边界框宽度的相对值（w/imageWidth）<br />
 height: 边界框高度的相对值（h/imageHeight）</p>
 
 <pre><code>0 0.5583817829457363 0.791343669250646 0.05644327860159183 0.07525770480212245
@@ -999,14 +1000,14 @@ height: 边界框高度的相对值（h/imageHeight）</p>
 0 0.361328125 0.5132378472222221 0.026971726190476216 0.04991319444444445
 </code></pre>
 
-<p>做好数据集后，下一步准备所需的配置文件
-- obj.names（类名）:
-    形如：
+<p>做好数据集后，下一步准备所需的配置文件<br />
+- obj.names（类名）:<br />
+    形如：<br />
     <code>
     button
-</code>
-- test.txt（测试集路径索引）:
-    形如：
+</code><br />
+- test.txt（测试集路径索引）:<br />
+    形如：<br />
     <code>
     data/obj/73.jpg 
     data/obj/28.jpg 
@@ -1015,7 +1016,7 @@ height: 边界框高度的相对值（h/imageHeight）</p>
 </code></p>
 
 <ul>
-<li><p>train.txt（训练集路径索引）:
+<li><p>train.txt（训练集路径索引）:<br />
 形如：</p>
 
 <pre><code>data/obj/34.jpg
@@ -1032,8 +1033,8 @@ data/obj/50.jpg
     names = data/obj.names
 </code></pre></li>
 
-<li><p>yolov4-custom.cfg （配置文件）
-从Github<a href="https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg">下载</a>yolov4-custom.cfg文件，按<a href="https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects">此处</a>说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：
+<li><p>yolov4-custom.cfg （配置文件）<br />
+从Github<a href="https://github.com/AlexeyAB/darknet/blob/master/cfg/yolov4-custom.cfg">下载</a>yolov4-custom.cfg文件，按<a href="https://github.com/alexeyab/darknet#how-to-train-to-detect-your-custom-objects">此处</a>说明进行修改。为了减少手动修改的工作量，写了个小脚本进行自动化：<br />
 util_yolo_cfg_builder.py:</p>
 
 <pre><code class="language-python"># -*- coding: utf-8 -*-
@@ -1073,7 +1074,7 @@ with open('./yolov4-custom.cfg', 'w') as f:
 </code></pre></li>
 </ul>
 
-<p>准备预训练权重文件yolov4.conv.137
+<p>准备预训练权重文件yolov4.conv.137<br />
 下载：链接: <a href="https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g">https://pan.baidu.com/s/13ymluUl4wUe8daqVDQQr5g</a> 提取码: g6en</p>
 
 <h1 id="训练">训练</h1>
@@ -1083,7 +1084,7 @@ with open('./yolov4-custom.cfg', 'w') as f:
 <pre><code class="language-bash">docker run --rm --gpus all -p 8888:8888 -v 【数据集和配置文件所在文件夹】:/my_cfgs -it leidawt/darknet-yolov4:v1 /bin/bash
 </code></pre>
 
-<p>其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&ndash;gpus all指定所需使用的GPU。
+<p>其中bind 8888方便通过网页监控训练进度，使用-v映射所需文件，使用&ndash;gpus all指定所需使用的GPU。<br />
 进入镜像后，执行下述命令把各文件拷贝到正确的路径：</p>
 
 <pre><code class="language-bash">cd /my_cfgs
@@ -1104,7 +1105,7 @@ cd -
 <pre><code class="language-bash">./darknet detector train data/obj.data cfg/yolov4-custom.cfg.cfg yolov4.conv.137 -dont_show -mjpeg_port 8888 -map
 </code></pre>
 
-<p>通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。
+<p>通过浏览器访问【宿主机IP:8888】即可监控实时训练进度。<br />
 训练参数文件将自动保存在../backup路径下。</p>
 
 <h1 id="推理">推理</h1>
@@ -1114,7 +1115,7 @@ cd -
 <pre><code class="language-bash">./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&lt;xxxxxx&gt;.weights -dont_show data/obj/1.jpg   
 </code></pre>
 
-<p>该命令生成一个带预测框的predictions.jpg文件。
+<p>该命令生成一个带预测框的predictions.jpg文件。<br />
 批量图片推理：</p>
 
 <pre><code class="language-bash">./darknet detector test data/obj.data cfg/yolov4-custom.cfg backup/&lt;xxxxxx&gt;.weights -ext_output -dont_show -out test_result.json &lt; data/test.txt
