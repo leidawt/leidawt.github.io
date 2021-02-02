@@ -49,7 +49,7 @@
   
   <url>
     <loc>https://leidawt.github.io/authors/admin/</loc>
-    <lastmod>2021-01-13T12:00:00+08:00</lastmod>
+    <lastmod>2021-01-31T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -64,7 +64,7 @@
   
   <url>
     <loc>https://leidawt.github.io/</loc>
-    <lastmod>2021-01-13T12:00:00+08:00</lastmod>
+    <lastmod>2021-01-31T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -79,7 +79,7 @@
   
   <url>
     <loc>https://leidawt.github.io/authors/</loc>
-    <lastmod>2021-01-13T12:00:00+08:00</lastmod>
+    <lastmod>2021-01-31T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -93,8 +93,23 @@
   </url>
   
   <url>
+    <loc>https://leidawt.github.io/post/deepstream-python%E6%8E%A5%E5%8F%A3%E6%8E%A2%E7%B4%A2/</loc>
+    <lastmod>2021-01-31T12:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/deepstream-python%E6%8E%A5%E5%8F%A3%E6%8E%A2%E7%B4%A2/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/deepstream-python%E6%8E%A5%E5%8F%A3%E6%8E%A2%E7%B4%A2/"
+                />
+  </url>
+  
+  <url>
     <loc>https://leidawt.github.io/post/</loc>
-    <lastmod>2021-01-13T12:00:00+08:00</lastmod>
+    <lastmod>2021-01-31T12:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -104,6 +119,21 @@
                 rel="alternate"
                 hreflang="zh"
                 href="https://leidawt.github.io/post/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8latexdiff%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%AE%BA%E6%96%87%E5%8F%98%E6%9B%B4/</loc>
+    <lastmod>2021-01-24T12:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://leidawt.github.io/en/post/%E4%BD%BF%E7%94%A8latexdiff%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%AE%BA%E6%96%87%E5%8F%98%E6%9B%B4/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://leidawt.github.io/post/%E4%BD%BF%E7%94%A8latexdiff%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%AE%BA%E6%96%87%E5%8F%98%E6%9B%B4/"
                 />
   </url>
   
